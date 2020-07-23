@@ -11,11 +11,12 @@ import SideMenu from './SideMenu'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     menuButton: {
-      marginRight: theme.spacing(2),
+      // marginRight: theme.spacing(2),
     },
 
     title: {
       flexGrow: 1,
+      textAlign: 'center',
     },
   })
 )
