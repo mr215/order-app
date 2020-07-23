@@ -10,14 +10,12 @@ import App from './layouts/App'
 import './index.css'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-      <CssBaseline />
+  <ThemeProvider theme={theme}>
+    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+    <CssBaseline />
 
-      <App />
-    </ThemeProvider>
-  </React.StrictMode>,
+    <App />
+  </ThemeProvider>,
   document.getElementById('root')
 )
 
