@@ -15,7 +15,10 @@ export interface OrderFormProps {
   onSubmit: (values: Order) => void
 }
 
-export default function OrderForm({ defaultValues, onSubmit }: OrderFormProps) {
+export default function SupplyHoundForm({
+  defaultValues,
+  onSubmit,
+}: OrderFormProps) {
   const [values, setValues] = useState<Order>(defaultValues)
 
   const handleChange = (prop: keyof Order) => (
@@ -124,7 +127,7 @@ export default function OrderForm({ defaultValues, onSubmit }: OrderFormProps) {
           size="large"
           onClick={handleSubmit}
         >
-          Continue
+          Submit
         </Button>
       </Box>
     </Box>

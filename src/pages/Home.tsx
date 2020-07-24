@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 
-import OrderForm, { OrderFormValues } from '../components/forms/OrderForm'
+import { Order } from '../types'
+import OrderForm from '../components/forms/OrderForm'
 
 export default function Home() {
-  const [values, setValues] = useState<OrderFormValues>({
+  const [values, setValues] = useState<Order>({
     pickupAddress: '',
     deliveryAddress: '',
     vehicleType: 'car',
@@ -12,7 +13,7 @@ export default function Home() {
     orderThrough: '',
   })
 
-  const handleSubmit = (values: OrderFormValues) => {
+  const handleSubmit = (values: Order) => {
     // TODO:
   }
 
