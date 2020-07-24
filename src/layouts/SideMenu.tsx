@@ -6,8 +6,12 @@ import Divider from '@material-ui/core/Divider'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import InboxIcon from '@material-ui/icons/MoveToInbox'
-import MailIcon from '@material-ui/icons/Mail'
+
+import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined'
+import PaymentOutlinedIcon from '@material-ui/icons/PaymentOutlined'
+import FormatListBulletedOutlinedIcon from '@material-ui/icons/FormatListBulletedOutlined'
+import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined'
+import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined'
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right'
 
@@ -18,11 +22,8 @@ interface SideMenuProps {
 }
 
 const useStyles = makeStyles({
-  list: {
+  menu: {
     width: 250,
-  },
-  fullList: {
-    width: 'auto',
   },
 })
 
@@ -44,39 +45,6 @@ function SideMenu({ open, anchor = 'left', onToggle }: SideMenuProps) {
     onToggle(open)
   }
 
-  const list = () => (
-    <div
-      role="presentation"
-      className={classes.list}
-      onClick={handleToggle(false)}
-      onKeyDown={handleToggle(false)}
-    >
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-
-      <Divider />
-
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  )
-
   return (
     <SwipeableDrawer
       open={open}
@@ -84,7 +52,64 @@ function SideMenu({ open, anchor = 'left', onToggle }: SideMenuProps) {
       onOpen={handleToggle(true)}
       onClose={handleToggle(false)}
     >
-      {list()}
+      <div
+        role="presentation"
+        className={classes.menu}
+        onClick={handleToggle(false)}
+        onKeyDown={handleToggle(false)}
+      >
+        <List disablePadding>
+          <ListItem button>
+            <ListItemIcon>
+              <HomeOutlinedIcon />
+            </ListItemIcon>
+
+            <ListItemText primary="Home" />
+          </ListItem>
+
+          <Divider />
+
+          <ListItem button>
+            <ListItemIcon>
+              <PaymentOutlinedIcon />
+            </ListItemIcon>
+
+            <ListItemText primary="Payments" />
+          </ListItem>
+
+          <Divider />
+
+          <ListItem button>
+            <ListItemIcon>
+              <FormatListBulletedOutlinedIcon />
+            </ListItemIcon>
+
+            <ListItemText primary="Tasks" />
+          </ListItem>
+
+          <Divider />
+
+          <ListItem button>
+            <ListItemIcon>
+              <ShareOutlinedIcon />
+            </ListItemIcon>
+
+            <ListItemText primary="Referrals" />
+          </ListItem>
+
+          <Divider />
+
+          <ListItem button>
+            <ListItemIcon>
+              <PhoneOutlinedIcon />
+            </ListItemIcon>
+
+            <ListItemText primary="+1 (415) 349-5085" />
+          </ListItem>
+
+          <Divider />
+        </List>
+      </div>
     </SwipeableDrawer>
   )
 }
