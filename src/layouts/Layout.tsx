@@ -1,6 +1,7 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import Container from '@material-ui/core/Container'
 
 import Home from '../pages/Home'
 import Header from './Header'
@@ -34,7 +35,7 @@ function Layout() {
   const classes = useStyles()
 
   return (
-    <div className={classes.root}>
+    <Container className={classes.root} disableGutters>
       <Header />
 
       <div className={classes.content}>
@@ -42,7 +43,7 @@ function Layout() {
           <Route exact path="/" component={Home} />
         </Switch>
       </div>
-    </div>
+    </Container>
   )
 }
 
