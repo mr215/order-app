@@ -1,3 +1,8 @@
+export interface OrderItem {
+  description: string
+  image?: string
+}
+
 export interface Order {
   pickupAddress: string
   deliveryAddress: string
@@ -5,4 +10,7 @@ export interface Order {
   lastestDeliverByTime: string
   jobName: string
   orderThrough: string
+
+  items?: OrderItem[]
+  externalOrderId?: string
 }

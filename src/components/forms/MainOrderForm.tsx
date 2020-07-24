@@ -10,15 +10,15 @@ import FormLabel from '@material-ui/core/FormLabel'
 
 import { Order } from '../../types'
 
-export interface OrderFormProps {
+export interface MainOrderFormProps {
   defaultValues: Order
   onSubmit: (values: Order) => void
 }
 
-export default function SupplyHoundForm({
+export default function MainOrderForm({
   defaultValues,
   onSubmit,
-}: OrderFormProps) {
+}: MainOrderFormProps) {
   const [values, setValues] = useState<Order>(defaultValues)
 
   const handleChange = (prop: keyof Order) => (
@@ -127,7 +127,7 @@ export default function SupplyHoundForm({
           size="large"
           onClick={handleSubmit}
         >
-          Submit
+          Continue
         </Button>
       </Box>
     </Box>
