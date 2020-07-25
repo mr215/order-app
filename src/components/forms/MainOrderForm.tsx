@@ -8,7 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
 
-import { Order } from '../../types'
+import { Order, OrderThrough } from '../../types'
 
 export interface MainOrderFormProps {
   defaultValues: Order
@@ -103,17 +103,22 @@ export default function MainOrderForm({
 
             <RadioGroup
               row
-              aria-label="orderThrough"
+              aria-label="Order through"
               name="orderThrough"
               value={values.orderThrough}
               onChange={handleChange('orderThrough')}
             >
               <FormControlLabel
-                value="SupplyHound"
+                value={OrderThrough.SupplyHound}
                 control={<Radio />}
                 label="Yes"
               />
-              <FormControlLabel value="" control={<Radio />} label="No" />
+
+              <FormControlLabel
+                value={OrderThrough.Supplier}
+                control={<Radio />}
+                label="No"
+              />
             </RadioGroup>
           </FormControl>
         </Box>

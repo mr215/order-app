@@ -1,3 +1,8 @@
+export enum OrderThrough {
+  SupplyHound = 'SupplyHound',
+  Supplier = 'Supplier',
+}
+
 export interface OrderItem {
   description: string
   image?: string
@@ -9,7 +14,7 @@ export interface Order {
   vehicleType: string
   lastestDeliverByTime: string
   jobName: string
-  orderThrough: string
+  orderThrough: OrderThrough
 
   items?: OrderItem[]
   externalOrderId?: string
