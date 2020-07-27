@@ -2,21 +2,28 @@ import React, { useState } from 'react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 
 import SideMenu from './SideMenu'
+import logoImg from '../images/logo.png'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    menuButton: {
-      // marginRight: theme.spacing(2),
+    toolbar: {
+      minHeight: 70,
     },
 
-    title: {
-      flexGrow: 1,
-      textAlign: 'center',
+    imageContainer: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   })
 )
@@ -35,11 +42,10 @@ function Header() {
 
   return (
     <>
-      <AppBar position="static">
-        <Toolbar>
+      <AppBar position="static" color="transparent">
+        <Toolbar className={classes.toolbar}>
           <IconButton
             edge="start"
-            className={classes.menuButton}
             color="inherit"
             aria-label="menu"
             onClick={handleMenuOpen}
@@ -47,9 +53,9 @@ function Header() {
             <MenuIcon />
           </IconButton>
 
-          <Typography variant="h6" className={classes.title}>
-            SupplyHound
-          </Typography>
+          <div className={classes.imageContainer}>
+            <img src={logoImg} alt="logo" width={50} />
+          </div>
         </Toolbar>
       </AppBar>
 
