@@ -9,6 +9,8 @@ import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
 
 import { Order, OrderThrough } from '../../types'
+import carImg from '../../images/car.png'
+import truckImg from '../../images/truck.png'
 
 export interface MainOrderFormProps {
   defaultValues: Order
@@ -60,20 +62,26 @@ export default function MainOrderForm({
           <FormControl component="fieldset">
             <FormLabel component="legend">Vehicle Type</FormLabel>
 
-            <RadioGroup
-              row
-              aria-label="vehicleType"
-              name="vehicleType"
-              value={values.vehicleType}
-              onChange={handleChange('vehicleType')}
-            >
-              <FormControlLabel value="car" control={<Radio />} label="Car" />
-              <FormControlLabel
-                value="truck"
-                control={<Radio />}
-                label="Truck"
-              />
-            </RadioGroup>
+            <Box mt={2}>
+              <RadioGroup
+                row
+                aria-label="vehicleType"
+                name="vehicleType"
+                value={values.vehicleType}
+                onChange={handleChange('vehicleType')}
+              >
+                <FormControlLabel
+                  value="car"
+                  control={<Radio />}
+                  label={<img src={carImg} alt="car" width={100} />}
+                />
+                <FormControlLabel
+                  value="truck"
+                  control={<Radio />}
+                  label={<img src={truckImg} alt="truck" width={100} />}
+                />
+              </RadioGroup>
+            </Box>
           </FormControl>
         </Box>
 
@@ -128,7 +136,7 @@ export default function MainOrderForm({
         <Button
           fullWidth
           variant="contained"
-          color="primary"
+          color="secondary"
           size="large"
           onClick={handleSubmit}
         >
