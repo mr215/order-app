@@ -10,7 +10,7 @@ export default function Home() {
     pickupAddress: '',
     deliveryAddress: '',
     vehicleType: 'car',
-    lastestDeliverByTime: '2017-05-24T10:30',
+    lastestDeliverByTime: '',
     jobName: '',
     orderThrough: OrderThrough.SupplyHound,
   })

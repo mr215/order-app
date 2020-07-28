@@ -43,6 +43,41 @@ export default function MainOrderForm({
         <Box mb={3}>
           <TextField
             fullWidth
+            label="Job Name"
+            value={values.jobName}
+            onChange={handleChange('jobName')}
+          />
+        </Box>
+
+        <Box mb={3}>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Order through SupplyHound?</FormLabel>
+
+            <RadioGroup
+              row
+              aria-label="Order through"
+              name="orderThrough"
+              value={values.orderThrough}
+              onChange={handleChange('orderThrough')}
+            >
+              <FormControlLabel
+                value={OrderThrough.SupplyHound}
+                control={<Radio />}
+                label="Yes"
+              />
+
+              <FormControlLabel
+                value={OrderThrough.Supplier}
+                control={<Radio />}
+                label="No"
+              />
+            </RadioGroup>
+          </FormControl>
+        </Box>
+
+        <Box mb={3}>
+          <TextField
+            fullWidth
             label="Pickup Address"
             value={values.pickupAddress}
             onChange={handleChange('pickupAddress')}
@@ -94,41 +129,6 @@ export default function MainOrderForm({
             InputLabelProps={{ shrink: true }}
             onChange={handleChange('lastestDeliverByTime')}
           />
-        </Box>
-
-        <Box mb={3}>
-          <TextField
-            fullWidth
-            label="Job Name"
-            value={values.jobName}
-            onChange={handleChange('jobName')}
-          />
-        </Box>
-
-        <Box mb={3}>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Order through SupplyHound?</FormLabel>
-
-            <RadioGroup
-              row
-              aria-label="Order through"
-              name="orderThrough"
-              value={values.orderThrough}
-              onChange={handleChange('orderThrough')}
-            >
-              <FormControlLabel
-                value={OrderThrough.SupplyHound}
-                control={<Radio />}
-                label="Yes"
-              />
-
-              <FormControlLabel
-                value={OrderThrough.Supplier}
-                control={<Radio />}
-                label="No"
-              />
-            </RadioGroup>
-          </FormControl>
         </Box>
       </Box>
 
