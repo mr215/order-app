@@ -1,46 +1,48 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { withFormik, FormikProps, Field, FormikBag } from 'formik'
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
-import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
-import { Order } from '../../types'
+import { ExternalOrderFormValues } from 'types'
+import { FormikTextField } from 'components/formik'
 
-export interface ExternalOrderProps {
-  defaultValues: Order
-  onSubmit: (values: Order) => void
+interface ExternalOrderFormProps {
+  defaultValues: ExternalOrderFormValues
+  onSubmit: (values: ExternalOrderFormValues) => void
 }
 
-export default function ExternalOrder({
-  defaultValues,
-  onSubmit,
-}: ExternalOrderProps) {
-  const [values, setValues] = useState<Order>(defaultValues)
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    form: {
+      flex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      padding: theme.spacing(2),
+    },
 
-  const handleChange = (prop: keyof Order) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
+    field: {
+      marginBottom: theme.spacing(3),
+    },
+  })
+)
 
-  const handleSubmit = (event: React.MouseEvent) => {
-    onSubmit(values)
-  }
-
-  useEffect(() => {
-    setValues(defaultValues)
-  }, [defaultValues])
+function ExternalOrderForm({
+  handleSubmit,
+}: ExternalOrderFormProps & FormikProps<ExternalOrderFormValues>) {
+  const classes = useStyles()
 
   return (
-    <Box flexGrow={1} display="flex" flexDirection="column" p={2}>
+    <form className={classes.form} onSubmit={handleSubmit}>
       <Box flexGrow={1}>
-        <Box mb={3}>
-          <TextField
-            label="Order/PO #"
-            fullWidth
-            value={values.externalOrderId}
-            onChange={handleChange('externalOrderId')}
-          />
-        </Box>
+        <Field
+          component={FormikTextField}
+          fullWidth
+          type="text"
+          name="externalOrderId"
+          label="Order/PO #"
+          className={classes.field}
+        />
 
         <Box>
           <Button variant="contained" size="small">
@@ -49,17 +51,35 @@ export default function ExternalOrder({
         </Box>
       </Box>
 
-      <Box>
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          size="large"
-          onClick={handleSubmit}
-        >
-          Submit
-        </Button>
-      </Box>
-    </Box>
+      <Button
+        fullWidth
+        type="submit"
+        variant="contained"
+        color="secondary"
+        size="large"
+      >
+        Submit
+      </Button>
+    </form>
   )
 }
+
+export default withFormik<ExternalOrderFormProps, ExternalOrderFormValues>({
+  displayName: 'ExternalOrderForm',
+  enableReinitialize: true,
+
+  mapPropsToValues({
+    defaultValues,
+  }: ExternalOrderFormProps): ExternalOrderFormValues {
+    return defaultValues
+  },
+
+  handleSubmit(
+    values: ExternalOrderFormValues,
+    {
+      props: { onSubmit },
+    }: FormikBag<ExternalOrderFormProps, ExternalOrderFormValues>
+  ) {
+    onSubmit(values)
+  },
+})(ExternalOrderForm)

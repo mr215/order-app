@@ -17,7 +17,7 @@ import truckImg from 'images/truck.png'
 
 interface MainOrderFormProps {
   defaultValues: MainOrderFormValues
-  onSubmit: (order: Order) => void
+  onSubmit: (values: MainOrderFormValues) => void
 }
 
 const useStyles = makeStyles((theme: Theme) =>
