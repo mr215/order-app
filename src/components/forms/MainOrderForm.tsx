@@ -1,16 +1,13 @@
-import React, { useState, useEffect, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import { withFormik, FormikProps, Field, FormikBag } from 'formik'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Button from '@material-ui/core/Button'
 import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormControl from '@material-ui/core/FormControl'
-import FormLabel from '@material-ui/core/FormLabel'
 
-import { Order, OrderThrough, MainOrderFormValues } from 'types'
-import { FormikTextField } from 'components/formik'
+import { OrderThrough, MainOrderFormValues } from 'types'
+import { FormikTextField, FormikRadioGroup } from 'components/formik'
 
 import carImg from 'images/car.png'
 import truckImg from 'images/truck.png'
@@ -32,27 +29,18 @@ const useStyles = makeStyles((theme: Theme) =>
     field: {
       marginBottom: theme.spacing(3),
     },
+
+    vehicleTypeImage: {
+      width: 100,
+      padding: theme.spacing(2, 0),
+    },
   })
 )
 
 function MainOrderForm({
-  defaultValues,
-
-  // Formik
   handleSubmit,
 }: MainOrderFormProps & FormikProps<MainOrderFormValues>): ReactElement {
   const classes = useStyles()
-  const [values, setValues] = useState<Order>(defaultValues)
-
-  const handleChange = (prop: keyof Order) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
-
-  useEffect(() => {
-    setValues(defaultValues)
-  }, [defaultValues])
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
@@ -66,29 +54,25 @@ function MainOrderForm({
           className={classes.field}
         />
 
-        <FormControl component="fieldset" className={classes.field}>
-          <FormLabel component="legend">Order through SupplyHound?</FormLabel>
+        <Field
+          component={FormikRadioGroup}
+          name="orderThrough"
+          className={classes.field}
+          label="Order through SupplyHound?"
+          radioGroupProps={{ row: true, ariaLabel: 'Order through' }}
+        >
+          <FormControlLabel
+            value={OrderThrough.SupplyHound}
+            control={<Radio />}
+            label="Yes"
+          />
 
-          <RadioGroup
-            row
-            aria-label="Order through"
-            name="orderThrough"
-            value={values.orderThrough}
-            onChange={handleChange('orderThrough')}
-          >
-            <FormControlLabel
-              value={OrderThrough.SupplyHound}
-              control={<Radio />}
-              label="Yes"
-            />
-
-            <FormControlLabel
-              value={OrderThrough.Supplier}
-              control={<Radio />}
-              label="No"
-            />
-          </RadioGroup>
-        </FormControl>
+          <FormControlLabel
+            value={OrderThrough.Supplier}
+            control={<Radio />}
+            label="No"
+          />
+        </Field>
 
         <Field
           component={FormikTextField}
@@ -108,30 +92,36 @@ function MainOrderForm({
           className={classes.field}
         />
 
-        <FormControl component="fieldset" className={classes.field}>
-          <FormLabel component="legend">Vehicle Type</FormLabel>
-
-          <Box mt={2}>
-            <RadioGroup
-              row
-              aria-label="vehicleType"
-              name="vehicleType"
-              value={values.vehicleType}
-              onChange={handleChange('vehicleType')}
-            >
-              <FormControlLabel
-                value="car"
-                control={<Radio />}
-                label={<img src={carImg} alt="car" width={100} />}
+        <Field
+          component={FormikRadioGroup}
+          name="vehicleType"
+          className={classes.field}
+          label="Vehicle Type"
+          radioGroupProps={{ row: true, ariaLabel: 'Vehicle type' }}
+        >
+          <FormControlLabel
+            value="car"
+            control={<Radio />}
+            label={
+              <img
+                src={carImg}
+                alt="car"
+                className={classes.vehicleTypeImage}
               />
-              <FormControlLabel
-                value="truck"
-                control={<Radio />}
-                label={<img src={truckImg} alt="truck" width={100} />}
+            }
+          />
+          <FormControlLabel
+            value="truck"
+            control={<Radio />}
+            label={
+              <img
+                src={truckImg}
+                alt="truck"
+                className={classes.vehicleTypeImage}
               />
-            </RadioGroup>
-          </Box>
-        </FormControl>
+            }
+          />
+        </Field>
 
         <Field
           component={FormikTextField}
@@ -144,17 +134,15 @@ function MainOrderForm({
         />
       </Box>
 
-      <Box>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="secondary"
-          size="large"
-        >
-          Continue
-        </Button>
-      </Box>
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="secondary"
+        size="large"
+      >
+        Continue
+      </Button>
     </form>
   )
 }

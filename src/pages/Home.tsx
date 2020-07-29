@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 
-import { Order, OrderThrough } from '../types'
+import {
+  MainOrderFormValues,
+  ExternalOrderFormValues,
+  Order,
+  OrderThrough,
+} from '../types'
 import MainOrderForm from '../components/forms/MainOrderForm'
 import ItemsForm from '../components/forms/ItemsForm'
 import ExternalOrderForm from '../components/forms/ExternalOrderForm'
@@ -13,16 +18,20 @@ export default function Home() {
     lastestDeliverByTime: '',
     jobName: '',
     orderThrough: OrderThrough.SupplyHound,
+    externalOrderId: '',
   })
   const [step, setStep] = useState(0)
 
-  const handleSubmit = (newValues: Order) => {
+  const handleSubmit = (
+    newValues: MainOrderFormValues | ExternalOrderFormValues
+  ) => {
     if (step === 0) {
-      setValues(newValues)
+      setValues({ ...values, ...newValues })
 
       setStep(step + 1)
     } else {
       // TODO: Handle submit
+      console.log('submit', newValues)
     }
   }
 
