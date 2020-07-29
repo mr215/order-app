@@ -9,13 +9,15 @@ export interface OrderItem {
 }
 
 export interface Order {
+  jobName: string
+  orderThrough: OrderThrough
   pickupAddress: string
   deliveryAddress: string
   vehicleType: string
   lastestDeliverByTime: string
-  jobName: string
-  orderThrough: OrderThrough
 
   items?: OrderItem[]
   externalOrderId?: string
 }
+
+export type MainOrderFormValues = Order
