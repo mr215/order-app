@@ -22,7 +22,7 @@ function FormikRadioGroup({
   const error = getIn(errors, field.name)
 
   return (
-    <FormControl {...props}>
+    <FormControl {...props} error={!!error}>
       {label && <FormLabel {...labelProps}>{label}</FormLabel>}
 
       <RadioGroup {...field} {...radioGroupProps}>

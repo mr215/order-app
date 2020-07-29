@@ -9,7 +9,7 @@ function FormikTextField({
 }: FieldProps & TextFieldProps): ReactElement {
   const error = getIn(errors, field.name)
 
-  return <TextField {...props} {...field} helperText={error} />
+  return <TextField {...props} {...field} error={!!error} helperText={error} />
 }
 
 export default FormikTextField
