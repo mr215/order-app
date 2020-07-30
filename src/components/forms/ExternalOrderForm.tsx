@@ -2,10 +2,11 @@ import React from 'react'
 import { withFormik, FormikProps, Field, FormikBag } from 'formik'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
-import Button from '@material-ui/core/Button'
+import * as Yup from 'yup'
 
 import { ExternalOrderFormValues } from 'types'
 import { FormikTextField } from 'components/formik'
+import Button from 'components/Button'
 
 interface ExternalOrderFormProps {
   defaultValues: ExternalOrderFormValues
@@ -28,6 +29,8 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 function ExternalOrderForm({
+  isValid,
+  isSubmitting,
   handleSubmit,
 }: ExternalOrderFormProps & FormikProps<ExternalOrderFormValues>) {
   const classes = useStyles()
@@ -57,6 +60,8 @@ function ExternalOrderForm({
         variant="contained"
         color="secondary"
         size="large"
+        disabled={!isValid}
+        loading={isSubmitting}
       >
         Submit
       </Button>
@@ -68,6 +73,10 @@ export default withFormik<ExternalOrderFormProps, ExternalOrderFormValues>({
   displayName: 'ExternalOrderForm',
   enableReinitialize: true,
 
+  validationSchema: Yup.object().shape({
+    externalOrderId: Yup.string().required('Order No. is required'),
+  }),
+
   mapPropsToValues({
     defaultValues,
   }: ExternalOrderFormProps): ExternalOrderFormValues {
@@ -78,8 +87,11 @@ export default withFormik<ExternalOrderFormProps, ExternalOrderFormValues>({
     values: ExternalOrderFormValues,
     {
       props: { onSubmit },
+      setSubmitting,
     }: FormikBag<ExternalOrderFormProps, ExternalOrderFormValues>
   ) {
     onSubmit(values)
+
+    setSubmitting(false)
   },
 })(ExternalOrderForm)

@@ -74,7 +74,7 @@ export default function ItemsForm({ defaultValues, onSubmit }: ItemsFormProps) {
         <Button
           fullWidth
           variant="contained"
-          color="primary"
+          color="secondary"
           size="large"
           onClick={handleSubmit}
         >
