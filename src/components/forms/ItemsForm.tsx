@@ -9,7 +9,10 @@ import {
 } from 'formik'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
+import IconButton from '@material-ui/core/IconButton'
 import InputAdornment from '@material-ui/core/InputAdornment'
+import DeleteIcon from '@material-ui/icons/Delete'
+
 import * as Yup from 'yup'
 
 import { ItemsFormValues, OrderItem } from 'types'
@@ -29,10 +32,6 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'column',
       padding: theme.spacing(2),
     },
-
-    field: {
-      marginBottom: theme.spacing(2),
-    },
   })
 )
 
@@ -51,26 +50,33 @@ function ItemsForm({
           render={helpers => (
             <>
               {(values.items || []).map((item: OrderItem, index: number) => (
-                <Field
-                  key={index}
-                  name={`items.${index}.description`}
-                  component={FormikTextField}
-                  className={classes.field}
-                  multiline
-                  fullWidth
-                  variant="outlined"
-                  label="Description"
-                  rowsMax={4}
-                  InputProps={{
-                    startAdornment: (
-                      <Box mr={1}>
-                        <InputAdornment position="start">
-                          {index + 1}
-                        </InputAdornment>
-                      </Box>
-                    ),
-                  }}
-                />
+                <Box key={index} display="flex" alignItems="flex-start" mb={2}>
+                  <Field
+                    name={`items.${index}.description`}
+                    component={FormikTextField}
+                    multiline
+                    fullWidth
+                    variant="outlined"
+                    label="Description"
+                    rowsMax={4}
+                    InputProps={{
+                      startAdornment: (
+                        <Box mr={1}>
+                          <InputAdornment position="start">
+                            {index + 1}
+                          </InputAdornment>
+                        </Box>
+                      ),
+                    }}
+                  />
+
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => helpers.remove(index)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Box>
               ))}
 
               <Box textAlign="right">
