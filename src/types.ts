@@ -28,3 +28,4 @@ export interface Order {
 export type MainOrderFormValues = Omit<Order, 'items' | 'externalOrderId'>
 
 export type ExternalOrderFormValues = Pick<Order, 'externalOrderId'>
+export type ItemsFormValues = Pick<Order, 'items'>

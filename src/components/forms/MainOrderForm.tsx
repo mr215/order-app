@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { withFormik, FormikProps, Field, FormikBag } from 'formik'
+import { withFormik, FormikProps, FormikBag, Form, Field } from 'formik'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -41,17 +41,11 @@ const useStyles = makeStyles((theme: Theme) =>
 function MainOrderForm({
   isValid,
   isSubmitting,
-  handleSubmit,
 }: MainOrderFormProps & FormikProps<MainOrderFormValues>): ReactElement {
   const classes = useStyles()
 
   return (
-    <form
-      className={classes.form}
-      noValidate
-      autoComplete="off"
-      onSubmit={handleSubmit}
-    >
+    <Form className={classes.form} noValidate autoComplete="off">
       <Box flexGrow={1}>
         <Field
           name="jobName"
@@ -159,7 +153,7 @@ function MainOrderForm({
       >
         Continue
       </Button>
-    </form>
+    </Form>
   )
 }
 

@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 
 import {
+  OrderThrough,
+  Order,
   MainOrderFormValues,
   ExternalOrderFormValues,
-  Order,
-  OrderThrough,
+  ItemsFormValues,
 } from '../types'
 import MainOrderForm from '../components/forms/MainOrderForm'
 import ItemsForm from '../components/forms/ItemsForm'
@@ -23,7 +24,7 @@ export default function Home() {
   const [step, setStep] = useState(0)
 
   const handleSubmit = (
-    newValues: MainOrderFormValues | ExternalOrderFormValues
+    newValues: MainOrderFormValues | ExternalOrderFormValues | ItemsFormValues
   ) => {
     if (step === 0) {
       setValues({ ...values, ...newValues })

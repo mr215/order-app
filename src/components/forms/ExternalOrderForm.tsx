@@ -1,5 +1,5 @@
 import React from 'react'
-import { withFormik, FormikProps, Field, FormikBag } from 'formik'
+import { withFormik, FormikProps, FormikBag, Form, Field } from 'formik'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import * as Yup from 'yup'
@@ -31,12 +31,11 @@ const useStyles = makeStyles((theme: Theme) =>
 function ExternalOrderForm({
   isValid,
   isSubmitting,
-  handleSubmit,
 }: ExternalOrderFormProps & FormikProps<ExternalOrderFormValues>) {
   const classes = useStyles()
 
   return (
-    <form className={classes.form} onSubmit={handleSubmit}>
+    <Form className={classes.form} noValidate autoComplete="off">
       <Box flexGrow={1}>
         <Field
           component={FormikTextField}
@@ -65,7 +64,7 @@ function ExternalOrderForm({
       >
         Submit
       </Button>
-    </form>
+    </Form>
   )
 }
 
