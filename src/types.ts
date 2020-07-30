@@ -3,6 +3,11 @@ export enum OrderThrough {
   Supplier = 'Supplier',
 }
 
+export enum VehicleType {
+  Car = 'car',
+  Truck = 'truck',
+}
+
 export interface OrderItem {
   description: string
   image?: string

@@ -3,11 +3,12 @@ import { withFormik, FormikProps, Field, FormikBag } from 'formik'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Button from '@material-ui/core/Button'
 import Radio from '@material-ui/core/Radio'
+import * as Yup from 'yup'
 
-import { OrderThrough, MainOrderFormValues } from 'types'
+import { OrderThrough, VehicleType, MainOrderFormValues } from 'types'
 import { FormikTextField, FormikRadioGroup } from 'components/formik'
+import Button from 'components/Button'
 
 import carImg from 'images/car.png'
 import truckImg from 'images/truck.png'
@@ -38,28 +39,37 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 function MainOrderForm({
+  isValid,
+  isSubmitting,
   handleSubmit,
 }: MainOrderFormProps & FormikProps<MainOrderFormValues>): ReactElement {
   const classes = useStyles()
 
   return (
-    <form className={classes.form} onSubmit={handleSubmit}>
+    <form
+      className={classes.form}
+      noValidate
+      autoComplete="off"
+      onSubmit={handleSubmit}
+    >
       <Box flexGrow={1}>
         <Field
+          name="jobName"
           component={FormikTextField}
+          required
           fullWidth
           type="text"
-          name="jobName"
           label="Job Name"
           className={classes.field}
         />
 
         <Field
-          component={FormikRadioGroup}
           name="orderThrough"
+          component={FormikRadioGroup}
+          required
           className={classes.field}
           label="Order through SupplyHound?"
-          radioGroupProps={{ row: true, ariaLabel: 'Order through' }}
+          radioGroupProps={{ row: true, 'aria-label': 'Order through' }}
         >
           <FormControlLabel
             value={OrderThrough.SupplyHound}
@@ -75,32 +85,35 @@ function MainOrderForm({
         </Field>
 
         <Field
+          name="pickupAddress"
           component={FormikTextField}
+          required
           fullWidth
           type="text"
-          name="pickupAddress"
           label="Pickup Address"
           className={classes.field}
         />
 
         <Field
+          name="deliveryAddress"
           component={FormikTextField}
+          required
           fullWidth
           type="text"
-          name="deliveryAddress"
           label="Delivery Address"
           className={classes.field}
         />
 
         <Field
-          component={FormikRadioGroup}
           name="vehicleType"
+          component={FormikRadioGroup}
+          required
           className={classes.field}
           label="Vehicle Type"
-          radioGroupProps={{ row: true, ariaLabel: 'Vehicle type' }}
+          radioGroupProps={{ row: true, 'aria-label': 'Vehicle type' }}
         >
           <FormControlLabel
-            value="car"
+            value={VehicleType.Car}
             control={<Radio />}
             label={
               <img
@@ -111,7 +124,7 @@ function MainOrderForm({
             }
           />
           <FormControlLabel
-            value="truck"
+            value={VehicleType.Truck}
             control={<Radio />}
             label={
               <img
@@ -124,10 +137,11 @@ function MainOrderForm({
         </Field>
 
         <Field
+          name="lastestDeliverByTime"
           component={FormikTextField}
+          required
           fullWidth
           type="datetime-local"
-          name="lastestDeliverByTime"
           label="Latest Deliver By"
           InputLabelProps={{ shrink: true }}
           className={classes.field}
@@ -140,6 +154,8 @@ function MainOrderForm({
         variant="contained"
         color="secondary"
         size="large"
+        disabled={!isValid}
+        loading={isSubmitting}
       >
         Continue
       </Button>
@@ -151,14 +167,32 @@ export default withFormik<MainOrderFormProps, MainOrderFormValues>({
   displayName: 'MainOrderForm',
   enableReinitialize: true,
 
+  validationSchema: Yup.object().shape({
+    jobName: Yup.string().required('Job name is required'),
+    orderThrough: Yup.mixed()
+      .required()
+      .oneOf([OrderThrough.SupplyHound, OrderThrough.Supplier] as const),
+    pickupAddress: Yup.string().required('Pickup address is required'),
+    deliveryAddress: Yup.string().required('Delivery address is required'),
+    vehicleType: Yup.mixed()
+      .required()
+      .oneOf([VehicleType.Car, VehicleType.Truck] as const),
+    lastestDeliverByTime: Yup.string().required('Delivery time is required'),
+  }),
+
   mapPropsToValues({ defaultValues }: MainOrderFormProps): MainOrderFormValues {
     return defaultValues
   },
 
   handleSubmit(
     values: MainOrderFormValues,
-    { props: { onSubmit } }: FormikBag<MainOrderFormProps, MainOrderFormValues>
+    {
+      props: { onSubmit },
+      setSubmitting,
+    }: FormikBag<MainOrderFormProps, MainOrderFormValues>
   ) {
     onSubmit(values)
+
+    setSubmitting(false)
   },
 })(MainOrderForm)
