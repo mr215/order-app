@@ -4,12 +4,20 @@ import TextField, { TextFieldProps } from '@material-ui/core/TextField'
 
 function FormikTextField({
   field,
-  form: { errors },
+  form,
   ...props
 }: FieldProps & TextFieldProps): ReactElement {
-  const error = getIn(errors, field.name)
+  const error = getIn(form.errors, field.name)
+  const touched = getIn(form.touched, field.name)
 
-  return <TextField {...props} {...field} error={!!error} helperText={error} />
+  return (
+    <TextField
+      {...props}
+      {...field}
+      error={touched && !!error}
+      helperText={touched ? error : ''}
+    />
+  )
 }
 
 export default FormikTextField
