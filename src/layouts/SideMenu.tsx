@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import List from '@material-ui/core/List'
@@ -59,7 +60,7 @@ function SideMenu({ open, anchor = 'left', onToggle }: SideMenuProps) {
         onKeyDown={handleToggle(false)}
       >
         <List disablePadding>
-          <ListItem button>
+          <ListItem button component={NavLink} to="/">
             <ListItemIcon>
               <HomeOutlinedIcon />
             </ListItemIcon>
