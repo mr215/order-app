@@ -61,7 +61,6 @@ function MainOrderForm({
           name="orderThrough"
           component={FormikRadioGroup}
           required
-          className={classes.field}
           label="Order through SupplyHound?"
           radioGroupProps={{ row: true, 'aria-label': 'Order through' }}
         >
@@ -102,7 +101,6 @@ function MainOrderForm({
           name="vehicleType"
           component={FormikRadioGroup}
           required
-          className={classes.field}
           label="Vehicle Type"
           radioGroupProps={{ row: true, 'aria-label': 'Vehicle type' }}
         >

@@ -15,13 +15,13 @@ import DeleteIcon from '@material-ui/icons/Delete'
 
 import * as Yup from 'yup'
 
-import { ItemsFormValues, OrderItem } from 'types'
+import { OrderItemsFormValues, OrderItem } from 'types'
 import { FormikTextField } from 'components/formik'
 import Button from 'components/Button'
 
-interface ItemsFormProps {
-  defaultValues: ItemsFormValues
-  onSubmit: (values: ItemsFormValues) => void
+interface OrderItemsFormProps {
+  defaultValues: OrderItemsFormValues
+  onSubmit: (values: OrderItemsFormValues) => void
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -35,11 +35,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-function ItemsForm({
+function OrderItemsForm({
   values,
   isValid,
   isSubmitting,
-}: ItemsFormProps & FormikProps<ItemsFormValues>): ReactElement {
+}: OrderItemsFormProps & FormikProps<OrderItemsFormValues>): ReactElement {
   const classes = useStyles()
 
   return (
@@ -108,8 +108,8 @@ function ItemsForm({
   )
 }
 
-export default withFormik<ItemsFormProps, ItemsFormValues>({
-  displayName: 'ItemsForm',
+export default withFormik<OrderItemsFormProps, OrderItemsFormValues>({
+  displayName: 'OrderItemsForm',
   enableReinitialize: true,
 
   validationSchema: Yup.object().shape({
@@ -123,19 +123,21 @@ export default withFormik<ItemsFormProps, ItemsFormValues>({
       .min(1, 'Must have mininum of 1 item'),
   }),
 
-  mapPropsToValues({ defaultValues }: ItemsFormProps): ItemsFormValues {
+  mapPropsToValues({
+    defaultValues,
+  }: OrderItemsFormProps): OrderItemsFormValues {
     return defaultValues
   },
 
   handleSubmit(
-    values: ItemsFormValues,
+    values: OrderItemsFormValues,
     {
       props: { onSubmit },
       setSubmitting,
-    }: FormikBag<ItemsFormProps, ItemsFormValues>
+    }: FormikBag<OrderItemsFormProps, OrderItemsFormValues>
   ) {
     onSubmit(values)
 
     setSubmitting(false)
   },
-})(ItemsForm)
+})(OrderItemsForm)
