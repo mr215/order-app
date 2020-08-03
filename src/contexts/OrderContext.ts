@@ -2,9 +2,14 @@ import { createContext } from 'react'
 
 import { Order } from 'types'
 
-const OrderContext = createContext({
-  order: {},
-  updateOrder: (values: Partial<Order>): void => {},
+interface OrderContextProps {
+  order: Order
+  updateOrder: (values: Partial<Order>) => void
+}
+
+const OrderContext = createContext<OrderContextProps>({
+  order: {} as Order,
+  updateOrder: () => {},
 })
 
 export default OrderContext

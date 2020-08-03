@@ -15,8 +15,8 @@ function OrderContextProvider(props: OrderContextProviderProps): ReactElement {
     lastestDeliverByTime: '',
     jobName: '',
     orderThrough: OrderThrough.SupplyHound,
-    externalOrderId: '',
-    items: [],
+    orderId: '',
+    items: [{ description: '' }],
   })
 
   const updateOrder = (values: Partial<Order>) => {

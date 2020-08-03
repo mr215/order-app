@@ -21,11 +21,10 @@ export interface Order {
   vehicleType: string
   lastestDeliverByTime: string
 
-  items?: OrderItem[]
-  externalOrderId?: string
+  items: OrderItem[]
+  orderId: string
 }
 
-export type MainOrderFormValues = Omit<Order, 'items' | 'externalOrderId'>
+export type MainOrderFormValues = Omit<Order, 'items' | 'orderId'>
 
-export type ExternalOrderFormValues = Pick<Order, 'externalOrderId'>
-export type OrderItemsFormValues = Pick<Order, 'items'>
+export type OrderItemsFormValues = Pick<Order, 'items' | 'orderId'>
