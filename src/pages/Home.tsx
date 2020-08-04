@@ -19,10 +19,5 @@ export default function Home({ history }: HomeProps) {
     })
   }
 
-  return (
-    <MainOrderForm
-      defaultValues={order as MainOrderFormValues}
-      onSubmit={handleSubmit}
-    />
-  )
+  return <MainOrderForm order={order} onSubmit={handleSubmit} />
 }

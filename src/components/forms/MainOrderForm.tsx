@@ -6,7 +6,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Radio from '@material-ui/core/Radio'
 import * as Yup from 'yup'
 
-import { OrderThrough, VehicleType, MainOrderFormValues } from 'types'
+import { OrderThrough, VehicleType, Order, MainOrderFormValues } from 'types'
 import { FormikTextField, FormikRadioGroup } from 'components/formik'
 import Button from 'components/Button'
 
@@ -14,7 +14,7 @@ import carImg from 'images/car.png'
 import truckImg from 'images/truck.png'
 
 interface MainOrderFormProps {
-  defaultValues: MainOrderFormValues
+  order: Order
   onSubmit: (values: MainOrderFormValues) => void
 }
 
@@ -172,8 +172,8 @@ export default withFormik<MainOrderFormProps, MainOrderFormValues>({
     lastestDeliverByTime: Yup.string().required('Delivery time is required'),
   }),
 
-  mapPropsToValues({ defaultValues }: MainOrderFormProps): MainOrderFormValues {
-    return defaultValues
+  mapPropsToValues({ order }: MainOrderFormProps): MainOrderFormValues {
+    return order as MainOrderFormValues
   },
 
   handleSubmit(
