@@ -10,6 +10,7 @@ export enum VehicleType {
 
 export interface OrderItem {
   description: string
+  quantity: number
   image?: string
 }
 
@@ -28,3 +29,8 @@ export interface Order {
 export type MainOrderFormValues = Omit<Order, 'items' | 'orderId'>
 
 export type OrderItemsFormValues = Pick<Order, 'items' | 'orderId'>
+
+export const DEFAULT_ORDER_ITEM: OrderItem = {
+  description: '',
+  quantity: 0,
+}

@@ -15,7 +15,13 @@ import DeleteIcon from '@material-ui/icons/Delete'
 
 import * as Yup from 'yup'
 
-import { Order, OrderItemsFormValues, OrderItem, OrderThrough } from 'types'
+import {
+  Order,
+  OrderItemsFormValues,
+  OrderItem,
+  OrderThrough,
+  DEFAULT_ORDER_ITEM,
+} from 'types'
 import { FormikTextField } from 'components/formik'
 import Button from 'components/Button'
 
@@ -117,7 +123,7 @@ function OrderItemsForm({
                   <Button
                     variant="contained"
                     size="small"
-                    onClick={() => helpers.push({ description: '' })}
+                    onClick={() => helpers.push(DEFAULT_ORDER_ITEM)}
                   >
                     Add Item
                   </Button>

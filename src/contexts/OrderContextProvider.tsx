@@ -1,6 +1,6 @@
 import React, { useState, ReactElement } from 'react'
 
-import { OrderThrough, Order } from 'types'
+import { OrderThrough, Order, DEFAULT_ORDER_ITEM } from 'types'
 import OrderContext from './OrderContext'
 
 interface OrderContextProviderProps {
@@ -16,7 +16,7 @@ function OrderContextProvider(props: OrderContextProviderProps): ReactElement {
     jobName: '',
     orderThrough: OrderThrough.SupplyHound,
     orderId: '',
-    items: [{ description: '' }],
+    items: [DEFAULT_ORDER_ITEM],
   })
 
   const updateOrder = (values: Partial<Order>) => {
