@@ -147,7 +147,7 @@ function OrderItemsForm({
         disabled={!isValid}
         loading={isSubmitting}
       >
-        Submit
+        Continue
       </Button>
     </Form>
   )

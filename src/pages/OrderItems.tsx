@@ -9,6 +9,8 @@ export default function OrderItems() {
 
   const handleSubmit = (values: OrderItemsFormValues) => {
     updateOrder(values)
+
+    // TODO: Redirect to payment summary page
   }
 
   return <OrderItemsForm order={order} onSubmit={handleSubmit} />
