@@ -10,7 +10,6 @@ import {
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import IconButton from '@material-ui/core/IconButton'
-import InputAdornment from '@material-ui/core/InputAdornment'
 import DeleteIcon from '@material-ui/icons/Delete'
 
 import * as Yup from 'yup'
@@ -87,22 +86,27 @@ function OrderItemsForm({
                     alignItems="flex-start"
                     mb={2}
                   >
+                    <Box mr={1}>
+                      <Field
+                        name={`items.${index}.quantity`}
+                        component={FormikTextField}
+                        type="number"
+                        label="Quantity"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    </Box>
+
                     <Field
                       name={`items.${index}.description`}
                       component={FormikTextField}
+                      label="Description"
                       multiline
                       fullWidth
-                      variant="outlined"
-                      label="Description"
-                      rowsMax={4}
-                      InputProps={{
-                        startAdornment: (
-                          <Box mr={1}>
-                            <InputAdornment position="start">
-                              {index + 1}
-                            </InputAdornment>
-                          </Box>
-                        ),
+                      rowsMax={2}
+                      InputLabelProps={{
+                        shrink: true,
                       }}
                     />
 
@@ -163,6 +167,7 @@ export default withFormik<OrderItemsFormProps, OrderItemsFormValues>({
         .of(
           Yup.object().shape({
             description: Yup.string().required('Required'),
+            quantity: Yup.number().required('Required').moreThan(0, 'Invalid'),
           })
         )
         .required('Must have items')
