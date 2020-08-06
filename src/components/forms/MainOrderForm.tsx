@@ -61,7 +61,7 @@ function MainOrderForm({
           name="orderThrough"
           component={FormikRadioGroup}
           required
-          label="Order through SupplyHound?"
+          label="Submit a list to your supplier through SupplyHound?"
           radioGroupProps={{ row: true, 'aria-label': 'Order through' }}
         >
           <FormControlLabel
@@ -73,7 +73,7 @@ function MainOrderForm({
           <FormControlLabel
             value={OrderThrough.Supplier}
             control={<Radio />}
-            label="No"
+            label="No thanks, I'll call in myself"
           />
         </Field>
 
@@ -83,7 +83,7 @@ function MainOrderForm({
           required
           fullWidth
           type="text"
-          label="Pickup Address"
+          label="Pick up From"
           className={classes.field}
         />
 
@@ -93,7 +93,7 @@ function MainOrderForm({
           required
           fullWidth
           type="text"
-          label="Delivery Address"
+          label="Deliver To"
           className={classes.field}
         />
 
