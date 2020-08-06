@@ -6,6 +6,7 @@ import Container from '@material-ui/core/Container'
 import OrderContextProvider from 'contexts/OrderContextProvider'
 import Home from 'pages/Home'
 import OrderItems from 'pages/OrderItems'
+import PaymentSummary from 'pages/PaymentSummary'
 
 import Header from './Header'
 
@@ -43,6 +44,7 @@ function Layout() {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/order-items" component={OrderItems} />
+            <Route exact path="/payment-summary" component={PaymentSummary} />
           </Switch>
         </div>
       </Container>
