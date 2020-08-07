@@ -1,16 +1,21 @@
 import React, { useContext } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 
 import { OrderItemsFormValues } from 'types'
 import OrderContext from 'contexts/OrderContext'
 import OrderItemsForm from 'components/forms/OrderItemsForm'
 
-export default function OrderItems() {
+interface OrderItemsProps extends RouteComponentProps<any> {}
+
+export default function OrderItems({ history }: OrderItemsProps) {
   const { order, updateOrder } = useContext(OrderContext)
 
   const handleSubmit = (values: OrderItemsFormValues) => {
     updateOrder(values)
 
-    // TODO: Redirect to payment summary page
+    setTimeout(() => {
+      history.push('/payment-summary')
+    })
   }
 
   return <OrderItemsForm order={order} onSubmit={handleSubmit} />
