@@ -1,0 +1,7 @@
+{
+  "name": "supplyhound-order-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
