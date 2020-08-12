@@ -10,73 +10,49 @@ import {
   IonListHeader,
   IonMenu,
   IonMenuToggle,
-  IonNote,
 } from '@ionic/react'
 import {
-  archiveOutline,
-  archiveSharp,
-  bookmarkOutline,
-  heartOutline,
-  heartSharp,
-  mailOutline,
-  mailSharp,
-  paperPlaneOutline,
-  paperPlaneSharp,
-  trashOutline,
-  trashSharp,
-  warningOutline,
-  warningSharp,
+  callOutline,
+  cardOutline,
+  homeOutline,
+  listOutline,
+  shareSocialOutline,
 } from 'ionicons/icons'
 
-import './Menu.css'
-
-interface AppPage {
-  url: string
-  iosIcon: string
-  mdIcon: string
+interface MenuItem {
   title: string
+  icon: string
+  routerLink?: string
+  href?: string
 }
 
-const appPages: AppPage[] = [
+const menuItems: MenuItem[] = [
   {
-    title: 'Inbox',
-    url: '/page/Inbox',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp,
+    title: 'Home',
+    icon: homeOutline,
+    routerLink: '/page/Home',
   },
   {
-    title: 'Outbox',
-    url: '/page/Outbox',
-    iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp,
+    title: 'Payment',
+    icon: cardOutline,
+    routerLink: '/page/Payment',
   },
   {
-    title: 'Favorites',
-    url: '/page/Favorites',
-    iosIcon: heartOutline,
-    mdIcon: heartSharp,
+    title: 'Tasks',
+    icon: listOutline,
+    routerLink: '/page/Tasks',
   },
   {
-    title: 'Archived',
-    url: '/page/Archived',
-    iosIcon: archiveOutline,
-    mdIcon: archiveSharp,
+    title: 'Referrals',
+    icon: shareSocialOutline,
+    routerLink: '/page/Referrals',
   },
   {
-    title: 'Trash',
-    url: '/page/Trash',
-    iosIcon: trashOutline,
-    mdIcon: trashSharp,
-  },
-  {
-    title: 'Spam',
-    url: '/page/Spam',
-    iosIcon: warningOutline,
-    mdIcon: warningSharp,
+    title: '+1 (415) 349-5085',
+    icon: callOutline,
+    href: 'tel:4153495085',
   },
 ]
-
-const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders']
 
 const Menu: React.FC = () => {
   const location = useLocation()
@@ -86,40 +62,29 @@ const Menu: React.FC = () => {
       <IonContent>
         <IonList id="inbox-list">
           <IonListHeader>Inbox</IonListHeader>
-          <IonNote>hi@ionicframework.com</IonNote>
-          {appPages.map((appPage, index) => {
+
+          {menuItems.map((menuItem, index) => {
+            const routerProps = menuItem.href
+              ? { href: menuItem.href }
+              : { routerLink: menuItem.routerLink }
+
             return (
               <IonMenuToggle key={index} autoHide={false}>
                 <IonItem
                   className={
-                    location.pathname === appPage.url ? 'selected' : ''
+                    location.pathname === menuItem.routerLink ? 'selected' : ''
                   }
-                  routerLink={appPage.url}
+                  {...routerProps}
                   routerDirection="none"
                   lines="none"
                   detail={false}
                 >
-                  <IonIcon
-                    slot="start"
-                    ios={appPage.iosIcon}
-                    md={appPage.mdIcon}
-                  />
-                  <IonLabel>{appPage.title}</IonLabel>
+                  <IonIcon slot="start" icon={menuItem.icon} />
+                  <IonLabel>{menuItem.title}</IonLabel>
                 </IonItem>
               </IonMenuToggle>
             )
           })}
-        </IonList>
-
-        <IonList id="labels-list">
-          <IonListHeader>Labels</IonListHeader>
-
-          {labels.map((label, index) => (
-            <IonItem lines="none" key={index}>
-              <IonIcon slot="start" icon={bookmarkOutline} />
-              <IonLabel>{label}</IonLabel>
-            </IonItem>
-          ))}
         </IonList>
       </IonContent>
     </IonMenu>

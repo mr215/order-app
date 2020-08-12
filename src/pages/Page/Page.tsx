@@ -4,13 +4,13 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonLabel,
   IonMenuButton,
   IonPage,
   IonTitle,
   IonToolbar,
 } from '@ionic/react'
 
-import ExploreContainer from 'components/ExploreContainer/ExploreContainer'
 import './Page.css'
 
 const Page: React.FC = () => {
@@ -28,12 +28,7 @@ const Page: React.FC = () => {
       </IonHeader>
 
       <IonContent>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">{name}</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <ExploreContainer name={name} />
+        <IonLabel>{name}</IonLabel>
       </IonContent>
     </IonPage>
   )
