@@ -1,31 +1,14 @@
 import React from 'react'
 import { useParams } from 'react-router'
-import {
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonLabel,
-  IonMenuButton,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from '@ionic/react'
-
-import './Page.css'
+import { IonContent, IonLabel, IonPage } from '@ionic/react'
+import Header from 'components/Header/Header'
 
 const Page: React.FC = () => {
   const { name } = useParams<{ name: string }>()
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonMenuButton />
-          </IonButtons>
-          <IonTitle>{name}</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <Header />
 
       <IonContent>
         <IonLabel>{name}</IonLabel>

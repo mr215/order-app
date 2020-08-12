@@ -61,7 +61,7 @@ const Menu: React.FC = () => {
     <IonMenu contentId="main" type="overlay">
       <IonContent>
         <IonList id="inbox-list">
-          <IonListHeader>Inbox</IonListHeader>
+          <IonListHeader>Menu</IonListHeader>
 
           {menuItems.map((menuItem, index) => {
             const routerProps = menuItem.href
