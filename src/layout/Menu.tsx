@@ -60,7 +60,7 @@ const Menu: React.FC = () => {
   return (
     <IonMenu contentId="main" type="overlay">
       <IonContent>
-        <IonList id="inbox-list">
+        <IonList>
           <IonListHeader>Menu</IonListHeader>
 
           {menuItems.map((menuItem, index) => {
