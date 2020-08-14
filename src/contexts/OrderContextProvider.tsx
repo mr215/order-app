@@ -12,7 +12,7 @@ function OrderContextProvider(props: OrderContextProviderProps): ReactElement {
     pickupAddress: '',
     deliveryAddress: '',
     vehicleType: VehicleType.Truck,
-    lastestDeliverByTime: '',
+    lastestDeliverByTime: new Date().toISOString(),
     jobName: '',
     orderThrough: OrderThrough.SupplyHound,
     orderId: '',
