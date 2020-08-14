@@ -1,26 +1,26 @@
 import React, { ComponentProps } from 'react'
-import styled from 'styled-components'
 import clsx from 'clsx'
 import { FieldProps, getIn } from 'formik'
-import { IonItem, IonLabel, IonInput, IonText } from '@ionic/react'
+import {
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
+  IonText,
+} from '@ionic/react'
 
-interface InputProps extends ComponentProps<typeof IonInput> {
+import ErrorText from '../components/ErrorText'
+
+interface Props extends ComponentProps<typeof IonInput> {
   label: string
-  labelProps: ComponentProps<typeof IonLabel>
   required?: boolean
 }
 
-const ErrorLabel = styled(IonLabel)`
-  padding: 0.25rem 1rem;
-  font-size: 0.75rem;
-  color: var(--ion-color-danger);
-`
-
-const FormikInput: React.FC<FieldProps & InputProps> = ({
+const FormikInput: React.FC<FieldProps & Props> = ({
   field: { name, value },
   form,
   label,
-  labelProps,
   required,
   ...props
 }) => {
@@ -28,14 +28,14 @@ const FormikInput: React.FC<FieldProps & InputProps> = ({
   const touched = getIn(form.touched, name)
 
   return (
-    <>
-      <IonItem className={clsx({ 'ion-invalid': error && touched })}>
-        {label && (
-          <IonLabel {...labelProps} color={error && touched ? 'danger' : ''}>
-            {label} {required && <IonText color="danger">*</IonText>}
-          </IonLabel>
-        )}
+    <IonList>
+      <IonListHeader>
+        <IonLabel color={error && touched ? 'danger' : ''}>
+          {label} {required && <IonText color="danger">*</IonText>}
+        </IonLabel>
+      </IonListHeader>
 
+      <IonItem className={clsx({ 'ion-invalid': error && touched })}>
         <IonInput
           {...props}
           value={value}
@@ -44,8 +44,8 @@ const FormikInput: React.FC<FieldProps & InputProps> = ({
         />
       </IonItem>
 
-      {error && touched && <ErrorLabel>{error}</ErrorLabel>}
-    </>
+      {error && touched && <ErrorText>{error}</ErrorText>}
+    </IonList>
   )
 }
 
