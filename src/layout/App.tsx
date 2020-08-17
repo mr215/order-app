@@ -6,6 +6,7 @@ import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
 import OrderContextProvider from 'contexts/OrderContextProvider'
 import LogIn from 'pages/LogIn'
 import Home from 'pages/Home'
+import OrderItems from 'pages/OrderItems'
 import Page from 'pages/Page'
 
 import Menu from './Menu'
@@ -18,7 +19,7 @@ const App: React.FC = () => (
     <IonReactRouter>
       <Switch>
         {/* TODO: Login routes */}
-        <Route path="/login" component={LogIn} exact />
+        <Route exact path="/login" component={LogIn} />
 
         {/* App page routes */}
         <OrderContextProvider>
@@ -26,11 +27,12 @@ const App: React.FC = () => (
             <Menu />
 
             <IonRouterOutlet id="main">
-              <Route path="/home" component={Home} exact />
+              <Route exact path="/home" component={Home} />
+              <Route exact path="/order-items" component={OrderItems} />
 
-              <Route path="/page/:name" component={Page} exact />
+              <Route exact path="/page/:name" component={Page} />
 
-              <Redirect from="/" to="/home" exact />
+              <Redirect exact from="/" to="/home" />
             </IonRouterOutlet>
           </IonSplitPane>
         </OrderContextProvider>
