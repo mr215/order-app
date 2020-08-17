@@ -30,7 +30,7 @@ const menuItems: MenuItem[] = [
   {
     title: 'Home',
     icon: homeOutline,
-    routerLink: '/page/Home',
+    routerLink: '/home',
   },
   {
     title: 'Payment',
