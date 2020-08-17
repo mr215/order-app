@@ -1,6 +1,6 @@
 import React, { useState, ReactElement } from 'react'
 
-import { OrderThrough, Order, DEFAULT_ORDER_ITEM, VehicleType } from 'types'
+import { DEFAULT_ORDER_ITEM, OrderThrough, Order, VehicleType } from 'types'
 import OrderContext from './OrderContext'
 
 interface OrderContextProviderProps {
@@ -12,7 +12,7 @@ function OrderContextProvider(props: OrderContextProviderProps): ReactElement {
     pickupAddress: '',
     deliveryAddress: '',
     vehicleType: VehicleType.Truck,
-    lastestDeliverByTime: '',
+    lastestDeliverByTime: new Date().toISOString(),
     jobName: '',
     orderThrough: OrderThrough.SupplyHound,
     orderId: '',
