@@ -41,11 +41,13 @@ const FormikRadioGroup: React.FC<FieldProps & Props> = ({
       {...props}
     >
       <IonListHeader>
-        <IonLabel {...labelProps}>{label}</IonLabel>
+        <IonLabel {...labelProps}>
+          <h3>{label}</h3>
+        </IonLabel>
       </IonListHeader>
 
       {items.map(item => (
-        <IonItem key={item.value}>
+        <IonItem key={item.value} lines="full">
           <IonLabel>{item.label}</IonLabel>
           <IonRadio
             slot={slot}

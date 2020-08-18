@@ -33,10 +33,12 @@ const FormikDatetime: React.FC<FieldProps & Props> = ({
   const touched = getIn(form.touched, name)
 
   return (
-    <IonList>
+    <IonList lines="full">
       <IonListHeader>
         <IonLabel color={error && touched ? 'danger' : ''}>
-          {label} {required && <IonText color="danger">*</IonText>}
+          <h3>
+            {label} {required && <IonText color="danger">*</IonText>}
+          </h3>
         </IonLabel>
       </IonListHeader>
 
