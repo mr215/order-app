@@ -1,4 +1,5 @@
 import React, { useState, ReactElement } from 'react'
+import { formatISO } from 'date-fns'
 
 import { DEFAULT_ORDER_ITEM, OrderThrough, Order, VehicleType } from 'types'
 import OrderContext from './OrderContext'
@@ -12,7 +13,7 @@ function OrderContextProvider(props: OrderContextProviderProps): ReactElement {
     pickupAddress: '',
     deliveryAddress: '',
     vehicleType: VehicleType.Truck,
-    lastestDeliverByTime: new Date().toISOString(),
+    lastestDeliverByTime: formatISO(new Date()),
     jobName: '',
     orderThrough: OrderThrough.SupplyHound,
     orderId: '',
