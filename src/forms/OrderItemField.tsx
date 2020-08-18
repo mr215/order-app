@@ -1,10 +1,9 @@
 import React, { MouseEventHandler } from 'react'
 import styled from 'styled-components'
 import { closeCircle } from 'ionicons/icons'
-import { IonIcon, IonItem, IonLabel, IonList } from '@ionic/react'
+import { IonIcon, IonItem, IonItemGroup, IonLabel, IonText } from '@ionic/react'
 
 import { OrderItem } from 'types'
-import ErrorText from './components/ErrorText'
 
 interface Props {
   orderItem: OrderItem
@@ -15,6 +14,11 @@ interface Props {
 
 const QuantityLabel = styled.div`
   text-align: right;
+`
+
+const ErrorLabel = styled(IonLabel)`
+  font-size: 0.75rem !important;
+  margin-left: 1rem;
 `
 
 const OrderItemField: React.FC<Props> = ({
@@ -35,9 +39,15 @@ const OrderItemField: React.FC<Props> = ({
   }
 
   return (
-    <IonList lines="full">
-      <IonItem detail={false} button onClick={handleEdit}>
-        <IonLabel className="ion-text-wrap">{orderItem.description}</IonLabel>
+    <IonItemGroup>
+      <IonItem detail={false} lines="full" button onClick={handleEdit}>
+        <IonLabel className="ion-text-wrap">
+          {orderItem.description || (
+            <IonText color="medium">
+              Click to enter description and quantity
+            </IonText>
+          )}
+        </IonLabel>
 
         <QuantityLabel slot="end">{orderItem.quantity}</QuantityLabel>
 
@@ -45,9 +55,11 @@ const OrderItemField: React.FC<Props> = ({
       </IonItem>
 
       {Object.keys(errors).map(key => (
-        <ErrorText key={key}>{errors[key]}</ErrorText>
+        <ErrorLabel key={key} color="danger">
+          {errors[key]}
+        </ErrorLabel>
       ))}
-    </IonList>
+    </IonItemGroup>
   )
 }
 

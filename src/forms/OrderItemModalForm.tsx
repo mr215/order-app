@@ -30,7 +30,7 @@ const OrderItemModalForm: React.FC<Props & FormikProps<OrderItem>> = ({
   submitForm,
 }) => {
   return (
-    <IonModal isOpen>
+    <IonModal isOpen onDidDismiss={onCancel}>
       <IonContent>
         <IonList>
           <IonListHeader>

@@ -95,7 +95,7 @@ const MainOrderForm: React.FC<
           label="Latest Deliver By"
           required
           min="2020-08-17"
-          displayFormat="DDD MMM D h:mm A"
+          displayFormat="DDD MMM D HH:mm"
           minuteValues={[0, 15, 30, 45]}
         />
       </IonContent>

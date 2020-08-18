@@ -101,8 +101,10 @@ const OrderItemsForm: React.FC<
                 }
               )}
 
-              <IonItem button lines="none" onClick={() => handleEdit(-1)}>
-                <IonButton slot="end">Add order item</IonButton>
+              <IonItem detail={false} lines="none">
+                <IonButton slot="end" onClick={() => handleEdit(-1)}>
+                  Add order item
+                </IonButton>
               </IonItem>
             </>
           )}
