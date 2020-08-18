@@ -16,6 +16,7 @@ import * as Yup from 'yup'
 
 import { OrderItem, DEFAULT_ORDER_ITEM } from 'types'
 import FormikInput from './fields/FormikInput'
+import FormikTextarea from './fields/FormikTextarea'
 
 interface Props {
   orderItem: OrderItem | null
@@ -38,9 +39,10 @@ const OrderItemModalForm: React.FC<Props & FormikProps<OrderItem>> = ({
 
           <Field
             name="description"
-            component={FormikInput}
+            component={FormikTextarea}
             type="text"
             label="Description"
+            rows={4}
             required
           />
 
