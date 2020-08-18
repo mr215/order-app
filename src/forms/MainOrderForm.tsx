@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 import { IonButton, IonContent, IonFooter, IonImg } from '@ionic/react'
+import { formatISO } from 'date-fns'
 
 import * as Yup from 'yup'
 
@@ -28,6 +29,8 @@ const VehicleImg = styled(IonImg)`
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
 > = ({ isValid, submitForm }) => {
+  const today = formatISO(new Date())
+
   return (
     <>
       <IonContent>
@@ -94,7 +97,7 @@ const MainOrderForm: React.FC<
           component={FormikDatetime}
           label="Latest Deliver By"
           required
-          min="2020-08-17"
+          min={today}
           displayFormat="DDD MMM D HH:mm"
           minuteValues={[0, 15, 30, 45]}
         />
