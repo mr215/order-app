@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import {
   withFormik,
   FormikProps,
@@ -8,10 +7,17 @@ import {
   FieldArray,
   getIn,
 } from 'formik'
-import { IonButton, IonContent, IonFooter } from '@ionic/react'
+import {
+  IonButton,
+  IonContent,
+  IonFooter,
+  IonLabel,
+  IonList,
+  IonListHeader,
+} from '@ionic/react'
 import * as Yup from 'yup'
 
-import OrderItemField from './components/OrderItemField'
+import OrderItemField from './OrderItemField'
 
 import {
   OrderThrough,
@@ -29,7 +35,7 @@ interface OrderItemsFormProps {
 
 const OrderItemsForm: React.FC<
   OrderItemsFormProps & FormikProps<OrderItemsFormValues>
-> = ({ order, values, errors, isValid, submitForm }) => {
+> = ({ order, values, errors, isValid, setFieldValue, submitForm }) => {
   return (
     <>
       <IonContent>
@@ -41,35 +47,43 @@ const OrderItemsForm: React.FC<
             label="Order/PO #"
           />
         ) : (
-          <FieldArray
-            name="items"
-            render={helpers => (
-              <>
-                {(values.items || []).map(
-                  (orderItem: OrderItem, index: number) => {
-                    const name = `items[${index}]`
-                    const itemErrors = Object.values(
-                      getIn(errors, name) || {}
-                    ) as string[]
+          <IonList>
+            <IonListHeader>
+              <IonLabel>Order Items</IonLabel>
+            </IonListHeader>
 
-                    return (
-                      <OrderItemField
-                        key={index}
-                        orderItem={orderItem}
-                        errors={itemErrors}
-                        onChange={() => {}}
-                        onRemove={() => {
-                          if (values.items.length > 1) {
-                            helpers.remove(index)
-                          }
-                        }}
-                      />
-                    )
-                  }
-                )}
-              </>
-            )}
-          />
+            <FieldArray
+              name="items"
+              render={helpers => (
+                <>
+                  {(values.items || []).map(
+                    (orderItem: OrderItem, index: number) => {
+                      const name = `items[${index}]`
+                      const itemErrors = Object.values(
+                        getIn(errors, name) || {}
+                      ) as string[]
+
+                      return (
+                        <OrderItemField
+                          key={index}
+                          orderItem={orderItem}
+                          errors={itemErrors}
+                          onChange={newOrderItem => {
+                            setFieldValue(name, newOrderItem)
+                          }}
+                          onRemove={() => {
+                            if (values.items.length > 1) {
+                              helpers.remove(index)
+                            }
+                          }}
+                        />
+                      )
+                    }
+                  )}
+                </>
+              )}
+            />
+          </IonList>
         )}
       </IonContent>
 
