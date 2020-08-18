@@ -4,13 +4,13 @@ import { FieldProps, getIn } from 'formik'
 import {
   IonInput,
   IonItem,
+  IonItemDivider,
+  IonItemGroup,
   IonLabel,
-  IonList,
-  IonListHeader,
   IonText,
 } from '@ionic/react'
 
-import ErrorText from '../components/ErrorText'
+import ErrorLabel from '../components/ErrorLabel'
 
 interface Props extends ComponentProps<typeof IonInput> {
   label: string
@@ -28,16 +28,20 @@ const FormikInput: React.FC<FieldProps & Props> = ({
   const touched = getIn(form.touched, name)
 
   return (
-    <IonList lines="full">
-      <IonListHeader>
-        <IonLabel color={error && touched ? 'danger' : ''}>
-          <h3>
-            {label} {required && <IonText color="danger">*</IonText>}
-          </h3>
+    <IonItemGroup>
+      <IonItemDivider>
+        <IonLabel className="ion-text-wrap">
+          {label}
+          {required && <IonText color="danger">*</IonText>}
         </IonLabel>
-      </IonListHeader>
 
-      <IonItem className={clsx({ 'ion-invalid': error && touched })}>
+        {error && touched && <ErrorLabel>{error}</ErrorLabel>}
+      </IonItemDivider>
+
+      <IonItem
+        lines="full"
+        className={clsx({ 'ion-invalid': error && touched })}
+      >
         <IonInput
           {...props}
           value={value}
@@ -45,9 +49,7 @@ const FormikInput: React.FC<FieldProps & Props> = ({
           onIonChange={e => form.setFieldValue(name, e.detail.value!)}
         />
       </IonItem>
-
-      {error && touched && <ErrorText>{error}</ErrorText>}
-    </IonList>
+    </IonItemGroup>
   )
 }
 

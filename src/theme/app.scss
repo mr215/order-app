@@ -16,3 +16,7 @@
 
 /* Theme variables */
 @import './variables';
+
+ion-item {
+  --highlight-height: 2px;
+}

@@ -21,7 +21,7 @@ interface MainOrderFormProps {
 const VehicleImg = styled(IonImg)`
   ::part(image) {
     width: auto;
-    height: 2rem;
+    height: ${(props: { height?: string }) => props.height ?? '2rem'};
   }
 `
 
@@ -43,7 +43,7 @@ const MainOrderForm: React.FC<
           name="orderThrough"
           component={FormikRadioGroup}
           label="Submit a list to your supplier through SupplyHound?"
-          slot="end"
+          radioProps={{ slot: 'start', mode: 'md' }}
           items={[
             {
               label: 'Yes',
@@ -76,15 +76,15 @@ const MainOrderForm: React.FC<
           name="vehicleType"
           component={FormikRadioGroup}
           label="Vehicle Type"
-          slot="end"
+          radioProps={{ slot: 'start', mode: 'md' }}
           items={[
-            {
-              label: <VehicleImg src={carImg} alt="car" />,
-              value: VehicleType.Car,
-            },
             {
               label: <VehicleImg src={truckImg} alt="truck" />,
               value: VehicleType.Truck,
+            },
+            {
+              label: <VehicleImg src={carImg} alt="car" height="1.5rem" />,
+              value: VehicleType.Car,
             },
           ]}
         />
