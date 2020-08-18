@@ -1,14 +1,16 @@
 import React from 'react'
-import styled from 'styled-components'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 import {
   IonButton,
+  IonCol,
   IonContent,
   IonFooter,
+  IonGrid,
   IonLabel,
   IonList,
   IonListHeader,
   IonModal,
+  IonRow,
 } from '@ionic/react'
 
 import { OrderItem } from 'types'
@@ -21,23 +23,13 @@ interface Props {
   onCancel: () => void
 }
 
-const StyledIonModal = styled(IonModal)`
-  // --border-radius: 0.5rem;
-  // --max-width: 80%;
-  // --max-height: 400px;
-`
-
-const StyledIonFooter = styled(IonFooter)`
-  display: flex;
-`
-
 const OrderItemModalForm: React.FC<Props & FormikProps<OrderItem>> = ({
   isOpen,
   onCancel,
   submitForm,
 }) => {
   return (
-    <StyledIonModal isOpen={isOpen}>
+    <IonModal isOpen={isOpen}>
       <IonContent>
         <IonList>
           <IonListHeader>
@@ -62,16 +54,24 @@ const OrderItemModalForm: React.FC<Props & FormikProps<OrderItem>> = ({
         </IonList>
       </IonContent>
 
-      <StyledIonFooter>
-        <IonButton expand="block" fill="outline" onClick={onCancel}>
-          Close Modal
-        </IonButton>
+      <IonFooter>
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <IonButton expand="block" fill="outline" onClick={onCancel}>
+                Cancel
+              </IonButton>
+            </IonCol>
 
-        <IonButton expand="block" onClick={submitForm}>
-          OK
-        </IonButton>
-      </StyledIonFooter>
-    </StyledIonModal>
+            <IonCol>
+              <IonButton expand="block" onClick={submitForm}>
+                OK
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </IonFooter>
+    </IonModal>
   )
 }
 
