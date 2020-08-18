@@ -12,28 +12,28 @@ import {
   IonModal,
   IonRow,
 } from '@ionic/react'
+import * as Yup from 'yup'
 
-import { OrderItem } from 'types'
+import { OrderItem, DEFAULT_ORDER_ITEM } from 'types'
 import FormikInput from './fields/FormikInput'
 
 interface Props {
-  isOpen: boolean
-  orderItem: OrderItem
+  orderItem: OrderItem | null
   onSubmit: (orderItem: OrderItem) => void
   onCancel: () => void
 }
 
 const OrderItemModalForm: React.FC<Props & FormikProps<OrderItem>> = ({
-  isOpen,
+  orderItem,
   onCancel,
   submitForm,
 }) => {
   return (
-    <IonModal isOpen={isOpen}>
+    <IonModal isOpen>
       <IonContent>
         <IonList>
           <IonListHeader>
-            <IonLabel>Edit Order Item</IonLabel>
+            <IonLabel>{orderItem ? 'Edit' : 'Add'} Order Item</IonLabel>
           </IonListHeader>
 
           <Field
@@ -79,16 +79,21 @@ export default withFormik<Props, OrderItem>({
   displayName: 'OrderItemModalForm',
   enableReinitialize: true,
 
+  validationSchema: Yup.object().shape({
+    description: Yup.string().required('Description is required'),
+    quantity: Yup.number()
+      .required('Quantity is required')
+      .moreThan(0, 'Quantity is invalid'),
+  }),
+
   mapPropsToValues({ orderItem }: Props): OrderItem {
-    return orderItem
+    return orderItem ?? DEFAULT_ORDER_ITEM
   },
 
   handleSubmit(
     values: OrderItem,
-    { props: { onSubmit }, setSubmitting }: FormikBag<Props, OrderItem>
+    { props: { onSubmit } }: FormikBag<Props, OrderItem>
   ) {
     onSubmit(values)
-
-    setSubmitting(false)
   },
 })(OrderItemModalForm)

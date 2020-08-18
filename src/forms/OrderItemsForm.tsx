@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useMemo } from 'react'
 import {
   withFormik,
   FormikProps,
@@ -11,6 +11,7 @@ import {
   IonButton,
   IonContent,
   IonFooter,
+  IonItem,
   IonLabel,
   IonList,
   IonListHeader,
@@ -18,14 +19,9 @@ import {
 import * as Yup from 'yup'
 
 import OrderItemField from './OrderItemField'
+import OrderItemModalForm from './OrderItemModalForm'
 
-import {
-  OrderThrough,
-  Order,
-  OrderItem,
-  OrderItemsFormValues,
-  DEFAULT_ORDER_ITEM,
-} from 'types'
+import { OrderThrough, Order, OrderItem, OrderItemsFormValues } from 'types'
 import FormikInput from './fields/FormikInput'
 
 interface OrderItemsFormProps {
@@ -36,55 +32,99 @@ interface OrderItemsFormProps {
 const OrderItemsForm: React.FC<
   OrderItemsFormProps & FormikProps<OrderItemsFormValues>
 > = ({ order, values, errors, isValid, setFieldValue, submitForm }) => {
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [orderItemIndexInEdit, setOrderItemIndexInEdit] = useState<number>(-1)
+  const orderItemInEdit = useMemo(
+    () =>
+      orderItemIndexInEdit > -1 ? values.items[orderItemIndexInEdit] : null,
+    [values.items, orderItemIndexInEdit]
+  )
+
+  const renderOrderId = () => (
+    <Field
+      name="orderId"
+      component={FormikInput}
+      type="text"
+      label="Order/PO #"
+    />
+  )
+
+  const handleEdit = (index: number) => {
+    setOrderItemIndexInEdit(index)
+
+    setShowModal(true)
+  }
+
+  const handleEditCancel = () => {
+    setShowModal(false)
+  }
+
+  const handleEditSubmit = (newOrderItem: OrderItem) => {
+    if (orderItemIndexInEdit > -1) {
+      setFieldValue(`items[${orderItemIndexInEdit}]`, newOrderItem)
+    } else {
+      setFieldValue('items', [...values.items, newOrderItem])
+    }
+
+    setShowModal(false)
+  }
+
+  const renderOrderItems = () => (
+    <>
+      <IonList>
+        <IonListHeader>
+          <IonLabel>Order Items</IonLabel>
+        </IonListHeader>
+
+        <FieldArray
+          name="items"
+          render={helpers => (
+            <>
+              {(values.items || []).map(
+                (orderItem: OrderItem, index: number) => {
+                  const name = `items[${index}]`
+                  const itemErrors = getIn(errors, name) || {}
+
+                  return (
+                    <OrderItemField
+                      key={index}
+                      orderItem={orderItem}
+                      errors={itemErrors}
+                      onEdit={() => handleEdit(index)}
+                      onRemove={() => {
+                        if (values.items.length > 1) {
+                          helpers.remove(index)
+                        }
+                      }}
+                    />
+                  )
+                }
+              )}
+
+              <IonItem button lines="none" onClick={() => handleEdit(-1)}>
+                <IonButton slot="end">Add order item</IonButton>
+              </IonItem>
+            </>
+          )}
+        />
+      </IonList>
+
+      {showModal && (
+        <OrderItemModalForm
+          orderItem={orderItemInEdit}
+          onSubmit={handleEditSubmit}
+          onCancel={handleEditCancel}
+        />
+      )}
+    </>
+  )
+
   return (
     <>
       <IonContent>
-        {order.orderThrough === OrderThrough.Supplier ? (
-          <Field
-            name="orderId"
-            component={FormikInput}
-            type="text"
-            label="Order/PO #"
-          />
-        ) : (
-          <IonList>
-            <IonListHeader>
-              <IonLabel>Order Items</IonLabel>
-            </IonListHeader>
-
-            <FieldArray
-              name="items"
-              render={helpers => (
-                <>
-                  {(values.items || []).map(
-                    (orderItem: OrderItem, index: number) => {
-                      const name = `items[${index}]`
-                      const itemErrors = Object.values(
-                        getIn(errors, name) || {}
-                      ) as string[]
-
-                      return (
-                        <OrderItemField
-                          key={index}
-                          orderItem={orderItem}
-                          errors={itemErrors}
-                          onChange={newOrderItem => {
-                            setFieldValue(name, newOrderItem)
-                          }}
-                          onRemove={() => {
-                            if (values.items.length > 1) {
-                              helpers.remove(index)
-                            }
-                          }}
-                        />
-                      )
-                    }
-                  )}
-                </>
-              )}
-            />
-          </IonList>
-        )}
+        {order.orderThrough === OrderThrough.Supplier
+          ? renderOrderId()
+          : renderOrderItems()}
       </IonContent>
 
       <IonFooter className="ion-padding ion-no-border">

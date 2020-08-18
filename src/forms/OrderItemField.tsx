@@ -1,16 +1,15 @@
-import React, { useState, MouseEventHandler } from 'react'
+import React, { MouseEventHandler } from 'react'
 import styled from 'styled-components'
 import { closeCircle } from 'ionicons/icons'
 import { IonIcon, IonItem, IonLabel, IonList } from '@ionic/react'
 
 import { OrderItem } from 'types'
-import OrderItemModalForm from './OrderItemModalForm'
 import ErrorText from './components/ErrorText'
 
 interface Props {
   orderItem: OrderItem
-  errors?: string[]
-  onChange: (orderItem: OrderItem) => void
+  errors?: { [key: string]: string }
+  onEdit: () => void
   onRemove: () => void
 }
 
@@ -20,11 +19,14 @@ const QuantityLabel = styled.div`
 
 const OrderItemField: React.FC<Props> = ({
   orderItem,
-  errors = [],
-  onChange,
+  errors = {},
+  onEdit,
   onRemove,
 }) => {
-  const [showModal, setShowModal] = useState(false)
+  const handleEdit: MouseEventHandler = e => {
+    e.stopPropagation()
+    onEdit()
+  }
 
   const handleRemove: MouseEventHandler = e => {
     e.stopPropagation()
@@ -32,39 +34,20 @@ const OrderItemField: React.FC<Props> = ({
     onRemove()
   }
 
-  const handleChange = (newOrderItem: OrderItem) => {
-    setShowModal(false)
-
-    onChange(newOrderItem)
-  }
-
-  const handleCancel = () => {
-    setShowModal(false)
-  }
-
   return (
-    <>
-      <IonList lines="full">
-        <IonItem detail={false} button onClick={() => setShowModal(true)}>
-          <IonLabel className="ion-text-wrap">{orderItem.description}</IonLabel>
+    <IonList lines="full">
+      <IonItem detail={false} button onClick={handleEdit}>
+        <IonLabel className="ion-text-wrap">{orderItem.description}</IonLabel>
 
-          <QuantityLabel slot="end">{orderItem.quantity}</QuantityLabel>
+        <QuantityLabel slot="end">{orderItem.quantity}</QuantityLabel>
 
-          <IonIcon icon={closeCircle} slot="end" onClick={handleRemove} />
-        </IonItem>
+        <IonIcon icon={closeCircle} slot="end" onClick={handleRemove} />
+      </IonItem>
 
-        {errors.map((error, index) => (
-          <ErrorText key={index}>{error}</ErrorText>
-        ))}
-      </IonList>
-
-      <OrderItemModalForm
-        isOpen={showModal}
-        orderItem={orderItem}
-        onSubmit={handleChange}
-        onCancel={handleCancel}
-      />
-    </>
+      {Object.keys(errors).map(key => (
+        <ErrorText key={key}>{errors[key]}</ErrorText>
+      ))}
+    </IonList>
   )
 }
 
