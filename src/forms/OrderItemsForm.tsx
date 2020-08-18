@@ -1,10 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
-import { withFormik, FormikProps, FormikBag, Field, FieldArray } from 'formik'
+import {
+  withFormik,
+  FormikProps,
+  FormikBag,
+  Field,
+  FieldArray,
+  getIn,
+} from 'formik'
 import { IonButton, IonContent, IonFooter } from '@ionic/react'
 import * as Yup from 'yup'
 
-import OrderItemInput from './components/OrderItemInput'
+import OrderItemField from './components/OrderItemField'
 
 import {
   OrderThrough,
@@ -22,7 +29,7 @@ interface OrderItemsFormProps {
 
 const OrderItemsForm: React.FC<
   OrderItemsFormProps & FormikProps<OrderItemsFormValues>
-> = ({ order, values, isValid, submitForm }) => {
+> = ({ order, values, errors, isValid, submitForm }) => {
   return (
     <>
       <IonContent>
@@ -39,18 +46,26 @@ const OrderItemsForm: React.FC<
             render={helpers => (
               <>
                 {(values.items || []).map(
-                  (orderItem: OrderItem, index: number) => (
-                    <OrderItemInput
-                      key={index}
-                      orderItem={orderItem}
-                      onChange={() => {}}
-                      onRemove={() => {
-                        if (values.items.length > 0) {
-                          helpers.remove(index)
-                        }
-                      }}
-                    />
-                  )
+                  (orderItem: OrderItem, index: number) => {
+                    const name = `items[${index}]`
+                    const itemErrors = Object.values(
+                      getIn(errors, name) || {}
+                    ) as string[]
+
+                    return (
+                      <OrderItemField
+                        key={index}
+                        orderItem={orderItem}
+                        errors={itemErrors}
+                        onChange={() => {}}
+                        onRemove={() => {
+                          if (values.items.length > 1) {
+                            helpers.remove(index)
+                          }
+                        }}
+                      />
+                    )
+                  }
                 )}
               </>
             )}
@@ -80,12 +95,14 @@ export default withFormik<OrderItemsFormProps, OrderItemsFormValues>({
       items: Yup.array()
         .of(
           Yup.object().shape({
-            description: Yup.string().required('Required'),
-            quantity: Yup.number().required('Required').moreThan(0, 'Invalid'),
+            description: Yup.string().required('Description is required'),
+            quantity: Yup.number()
+              .required('Quantity is required')
+              .moreThan(0, 'Quantity is invalid'),
           })
         )
-        .required('Must have items')
-        .min(1, 'Must have mininum of 1 item'),
+        .required('Order items are required')
+        .min(1, 'Order must have mininum of 1 item'),
     })
 
     return order.orderThrough === OrderThrough.Supplier
