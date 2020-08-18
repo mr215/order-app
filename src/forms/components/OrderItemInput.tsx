@@ -25,7 +25,7 @@ const OrderItemInput: React.FC<Props> = ({ orderItem, onChange, onRemove }) => {
 
         <QuantityLabel slot="end">{orderItem.quantity}</QuantityLabel>
 
-        <IonIcon icon={closeCircle} slot="end" />
+        <IonIcon icon={closeCircle} slot="end" onClick={onRemove} />
       </IonItem>
     </>
   )

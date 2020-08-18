@@ -41,9 +41,14 @@ const OrderItemsForm: React.FC<
                 {(values.items || []).map(
                   (orderItem: OrderItem, index: number) => (
                     <OrderItemInput
+                      key={index}
                       orderItem={orderItem}
                       onChange={() => {}}
-                      onRemove={() => {}}
+                      onRemove={() => {
+                        if (values.items.length > 0) {
+                          helpers.remove(index)
+                        }
+                      }}
                     />
                   )
                 )}
