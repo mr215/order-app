@@ -2,8 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { withFormik, FormikProps, FormikBag, Field, FieldArray } from 'formik'
 import { IonButton, IonContent, IonFooter } from '@ionic/react'
-
 import * as Yup from 'yup'
+
+import OrderItemInput from './components/OrderItemInput'
 
 import {
   OrderThrough,
@@ -37,13 +38,15 @@ const OrderItemsForm: React.FC<
             name="items"
             render={helpers => (
               <>
-                {(values.items || []).map((item: OrderItem, index: number) => (
-                  <Field
-                    name={`items.${index}.description`}
-                    component={FormikInput}
-                    label="Description"
-                  />
-                ))}
+                {(values.items || []).map(
+                  (orderItem: OrderItem, index: number) => (
+                    <OrderItemInput
+                      orderItem={orderItem}
+                      onChange={() => {}}
+                      onRemove={() => {}}
+                    />
+                  )
+                )}
               </>
             )}
           />
