@@ -34,3 +34,17 @@ export const DEFAULT_ORDER_ITEM: OrderItem = {
   description: '',
   quantity: 0,
 }
+
+export interface User {
+  firstName: string
+  lastName: string
+  email: string
+  phoneNumber: string,
+  companyName: string,
+  accountingEmail: string,
+  password: string,
+}
+
+export type SignUpFormValues = Required<User>
+
+export type LogInFormValues = Partial<User>
