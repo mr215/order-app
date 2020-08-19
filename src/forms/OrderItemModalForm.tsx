@@ -30,7 +30,7 @@ const OrderItemModalForm: React.FC<Props & FormikProps<OrderItem>> = ({
   submitForm,
 }) => {
   return (
-    <IonModal isOpen onDidDismiss={onCancel}>
+    <IonModal isOpen mode="ios" onDidDismiss={onCancel}>
       <IonContent>
         <IonList>
           <IonListHeader>
@@ -56,7 +56,7 @@ const OrderItemModalForm: React.FC<Props & FormikProps<OrderItem>> = ({
         </IonList>
       </IonContent>
 
-      <IonFooter>
+      <IonFooter mode="ios">
         <IonGrid>
           <IonRow>
             <IonCol>

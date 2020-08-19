@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import { IonButton, IonContent, IonFooter, IonImg } from '@ionic/react'
+import { IonButton, IonContent, IonFooter } from '@ionic/react'
 import { formatISO } from 'date-fns'
 
 import * as Yup from 'yup'
@@ -101,7 +101,7 @@ const MainOrderForm: React.FC<
         />
       </IonContent>
 
-      <IonFooter className="ion-padding ion-no-border">
+      <IonFooter mode="ios" className="ion-padding ion-no-border">
         <IonButton expand="block" disabled={!isValid} onClick={submitForm}>
           Continue
         </IonButton>

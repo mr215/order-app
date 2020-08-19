@@ -71,7 +71,7 @@ const OrderItemsForm: React.FC<
 
   const renderOrderItems = () => (
     <>
-      <IonList>
+      <IonList mode="ios">
         <IonListHeader>
           <IonLabel>Order Items</IonLabel>
         </IonListHeader>
@@ -129,7 +129,7 @@ const OrderItemsForm: React.FC<
           : renderOrderItems()}
       </IonContent>
 
-      <IonFooter className="ion-padding ion-no-border">
+      <IonFooter mode="ios" className="ion-padding ion-no-border">
         <IonButton expand="block" disabled={!isValid} onClick={submitForm}>
           Continue
         </IonButton>

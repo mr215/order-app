@@ -12,8 +12,13 @@ interface Props {
   onRemove: () => void
 }
 
-const QuantityLabel = styled.div`
-  text-align: right;
+const OrderItemLabel = styled(IonLabel)`
+  display: flex !important;
+  align-items: center;
+`
+
+const QuantityText = styled(IonText)`
+  margin-right: 1rem;
 `
 
 const ErrorLabel = styled(IonLabel)`
@@ -41,15 +46,18 @@ const OrderItemField: React.FC<Props> = ({
   return (
     <IonItemGroup>
       <IonItem detail={false} lines="full" button onClick={handleEdit}>
-        <IonLabel className="ion-text-wrap">
-          {orderItem.description || (
+        <OrderItemLabel className="ion-text-wrap">
+          {orderItem.description || orderItem.quantity ? (
+            <>
+              <QuantityText>{orderItem.quantity}</QuantityText>
+              <IonText>{orderItem.description}</IonText>
+            </>
+          ) : (
             <IonText color="medium">
               Click to enter description and quantity
             </IonText>
           )}
-        </IonLabel>
-
-        <QuantityLabel slot="end">{orderItem.quantity}</QuantityLabel>
+        </OrderItemLabel>
 
         <IonIcon icon={closeCircle} slot="end" onClick={handleRemove} />
       </IonItem>

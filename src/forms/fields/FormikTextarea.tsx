@@ -31,7 +31,8 @@ const FormikTextarea: React.FC<FieldProps & Props> = ({
     <IonItemGroup>
       <IonItemDivider mode="ios">
         <IonLabel className="ion-text-wrap">
-          {label} {required && <IonText color="danger">*</IonText>}
+          {label}
+          {required && <IonText color="danger">*</IonText>}
         </IonLabel>
 
         {error && touched && <ErrorLabel>{error}</ErrorLabel>}
