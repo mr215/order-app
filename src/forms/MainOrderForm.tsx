@@ -29,7 +29,7 @@ const VehicleImg = styled(IonImg)`
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
 > = ({ isValid, submitForm }) => {
-  const today = formatISO(new Date())
+  const today = formatISO(new Date(), { representation: 'date' })
 
   return (
     <>
@@ -98,7 +98,7 @@ const MainOrderForm: React.FC<
           label="Latest Deliver By"
           required
           min={today}
-          displayFormat="DDD MMM D HH:mm"
+          displayFormat="DDD MMM D h:mm A"
           minuteValues={[0, 15, 30, 45]}
         />
       </IonContent>
