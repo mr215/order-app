@@ -14,7 +14,7 @@ import {
 } from '@ionic/react'
 import * as Yup from 'yup'
 
-import { OrderItem, DEFAULT_ORDER_ITEM } from 'types'
+import { DEFAULT_ORDER_ITEM, OrderItem } from 'types'
 import FormikInput from './fields/FormikInput'
 import FormikTextarea from './fields/FormikTextarea'
 

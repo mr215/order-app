@@ -19,11 +19,12 @@ const OrderItemLabel = styled(IonLabel)`
 
 const QuantityText = styled(IonText)`
   margin-right: 1rem;
+  width: 4rem;
 `
 
 const ErrorLabel = styled(IonLabel)`
   font-size: 0.75rem !important;
-  margin-left: 1rem;
+  margin: 0.25rem 1.25rem;
 `
 
 const OrderItemField: React.FC<Props> = ({

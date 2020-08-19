@@ -21,7 +21,13 @@ import * as Yup from 'yup'
 import OrderItemField from './OrderItemField'
 import OrderItemModalForm from './OrderItemModalForm'
 
-import { OrderThrough, Order, OrderItem, OrderItemsFormValues } from 'types'
+import {
+  DEFAULT_ORDER_ITEM,
+  OrderThrough,
+  Order,
+  OrderItem,
+  OrderItemsFormValues,
+} from 'types'
 import FormikInput from './fields/FormikInput'
 
 interface OrderItemsFormProps {
@@ -94,6 +100,8 @@ const OrderItemsForm: React.FC<
                       onRemove={() => {
                         if (values.items.length > 1) {
                           helpers.remove(index)
+                        } else {
+                          helpers.replace(0, DEFAULT_ORDER_ITEM)
                         }
                       }}
                     />
