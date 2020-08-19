@@ -1,28 +1,23 @@
 import React, { ComponentProps } from 'react'
-import styled from 'styled-components'
 import clsx from 'clsx'
 import { FieldProps, getIn } from 'formik'
 import {
-  IonDatetime,
   IonItem,
   IonItemDivider,
   IonItemGroup,
   IonLabel,
   IonText,
+  IonTextarea,
 } from '@ionic/react'
 
 import ErrorLabel from '../components/ErrorLabel'
 
-interface Props extends ComponentProps<typeof IonDatetime> {
+interface Props extends ComponentProps<typeof IonTextarea> {
   label: string
   required?: boolean
 }
 
-const StyledDatetime = styled(IonDatetime)`
-  --padding-start: 0;
-`
-
-const FormikDatetime: React.FC<FieldProps & Props> = ({
+const FormikTextarea: React.FC<FieldProps & Props> = ({
   field: { name, value },
   form,
   label,
@@ -36,8 +31,7 @@ const FormikDatetime: React.FC<FieldProps & Props> = ({
     <IonItemGroup>
       <IonItemDivider>
         <IonLabel className="ion-text-wrap">
-          {label}
-          {required && <IonText color="danger">*</IonText>}
+          {label} {required && <IonText color="danger">*</IonText>}
         </IonLabel>
 
         {error && touched && <ErrorLabel>{error}</ErrorLabel>}
@@ -47,7 +41,7 @@ const FormikDatetime: React.FC<FieldProps & Props> = ({
         lines="full"
         className={clsx({ 'ion-invalid': error && touched })}
       >
-        <StyledDatetime
+        <IonTextarea
           {...props}
           value={value}
           onIonBlur={e => form.setFieldTouched(name)}
@@ -58,4 +52,4 @@ const FormikDatetime: React.FC<FieldProps & Props> = ({
   )
 }
 
-export default FormikDatetime
+export default FormikTextarea

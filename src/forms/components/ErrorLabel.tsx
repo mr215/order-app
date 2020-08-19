@@ -2,9 +2,10 @@ import styled from 'styled-components'
 import { IonLabel } from '@ionic/react'
 
 const ErrorLabel = styled(IonLabel)`
-  padding: 0.25rem 1rem;
-  font-size: 0.75rem;
-  color: var(--ion-color-danger);
+  --color: var(--ion-color-danger) !important;
+
+  font-size: 0.75rem !important;
+  margin-left: 1rem;
 `
 
 export default ErrorLabel

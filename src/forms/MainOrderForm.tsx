@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 import { IonButton, IonContent, IonFooter, IonImg } from '@ionic/react'
+import { formatISO } from 'date-fns'
 
 import * as Yup from 'yup'
 
@@ -21,13 +22,15 @@ interface MainOrderFormProps {
 const VehicleImg = styled(IonImg)`
   ::part(image) {
     width: auto;
-    height: 2rem;
+    height: ${(props: { height?: string }) => props.height ?? '2rem'};
   }
 `
 
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
 > = ({ isValid, submitForm }) => {
+  const today = formatISO(new Date())
+
   return (
     <>
       <IonContent>
@@ -43,7 +46,7 @@ const MainOrderForm: React.FC<
           name="orderThrough"
           component={FormikRadioGroup}
           label="Submit a list to your supplier through SupplyHound?"
-          slot="end"
+          radioProps={{ slot: 'start', mode: 'md' }}
           items={[
             {
               label: 'Yes',
@@ -76,15 +79,15 @@ const MainOrderForm: React.FC<
           name="vehicleType"
           component={FormikRadioGroup}
           label="Vehicle Type"
-          slot="end"
+          radioProps={{ slot: 'start', mode: 'md' }}
           items={[
-            {
-              label: <VehicleImg src={carImg} alt="car" />,
-              value: VehicleType.Car,
-            },
             {
               label: <VehicleImg src={truckImg} alt="truck" />,
               value: VehicleType.Truck,
+            },
+            {
+              label: <VehicleImg src={carImg} alt="car" height="1.5rem" />,
+              value: VehicleType.Car,
             },
           ]}
         />
@@ -94,8 +97,8 @@ const MainOrderForm: React.FC<
           component={FormikDatetime}
           label="Latest Deliver By"
           required
-          min="2020-08-17"
-          displayFormat="DDD MMM D h:mm A"
+          min={today}
+          displayFormat="DDD MMM D HH:mm"
           minuteValues={[0, 15, 30, 45]}
         />
       </IonContent>

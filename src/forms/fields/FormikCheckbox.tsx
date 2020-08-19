@@ -6,7 +6,7 @@ import {
     IonCheckbox,
 } from '@ionic/react'
 
-import ErrorText from '../components/ErrorText'
+import ErrorText from '../components/ErrorLabel'
 
 interface CheckboxItem {
     label: ReactElement

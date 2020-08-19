@@ -1,17 +1,27 @@
-import React from 'react'
-import styled from 'styled-components'
-import { withFormik, FormikProps, FormikBag, Field, FieldArray } from 'formik'
-import { IonButton, IonContent, IonFooter } from '@ionic/react'
-
+import React, { useState, useMemo } from 'react'
+import {
+  withFormik,
+  FormikProps,
+  FormikBag,
+  Field,
+  FieldArray,
+  getIn,
+} from 'formik'
+import {
+  IonButton,
+  IonContent,
+  IonFooter,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
+} from '@ionic/react'
 import * as Yup from 'yup'
 
-import {
-  OrderThrough,
-  Order,
-  OrderItem,
-  OrderItemsFormValues,
-  DEFAULT_ORDER_ITEM,
-} from 'types'
+import OrderItemField from './OrderItemField'
+import OrderItemModalForm from './OrderItemModalForm'
+
+import { OrderThrough, Order, OrderItem, OrderItemsFormValues } from 'types'
 import FormikInput from './fields/FormikInput'
 
 interface OrderItemsFormProps {
@@ -21,33 +31,102 @@ interface OrderItemsFormProps {
 
 const OrderItemsForm: React.FC<
   OrderItemsFormProps & FormikProps<OrderItemsFormValues>
-> = ({ order, values, isValid, submitForm }) => {
+> = ({ order, values, errors, isValid, setFieldValue, submitForm }) => {
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [orderItemIndexInEdit, setOrderItemIndexInEdit] = useState<number>(-1)
+  const orderItemInEdit = useMemo(
+    () =>
+      orderItemIndexInEdit > -1 ? values.items[orderItemIndexInEdit] : null,
+    [values.items, orderItemIndexInEdit]
+  )
+
+  const renderOrderId = () => (
+    <Field
+      name="orderId"
+      component={FormikInput}
+      type="text"
+      label="Order/PO #"
+    />
+  )
+
+  const handleEdit = (index: number) => {
+    setOrderItemIndexInEdit(index)
+
+    setShowModal(true)
+  }
+
+  const handleEditCancel = () => {
+    setShowModal(false)
+  }
+
+  const handleEditSubmit = (newOrderItem: OrderItem) => {
+    if (orderItemIndexInEdit > -1) {
+      setFieldValue(`items[${orderItemIndexInEdit}]`, newOrderItem)
+    } else {
+      setFieldValue('items', [...values.items, newOrderItem])
+    }
+
+    setShowModal(false)
+  }
+
+  const renderOrderItems = () => (
+    <>
+      <IonList>
+        <IonListHeader>
+          <IonLabel>Order Items</IonLabel>
+        </IonListHeader>
+
+        <FieldArray
+          name="items"
+          render={helpers => (
+            <>
+              {(values.items || []).map(
+                (orderItem: OrderItem, index: number) => {
+                  const name = `items[${index}]`
+                  const itemErrors = getIn(errors, name) || {}
+
+                  return (
+                    <OrderItemField
+                      key={index}
+                      orderItem={orderItem}
+                      errors={itemErrors}
+                      onEdit={() => handleEdit(index)}
+                      onRemove={() => {
+                        if (values.items.length > 1) {
+                          helpers.remove(index)
+                        }
+                      }}
+                    />
+                  )
+                }
+              )}
+
+              <IonItem detail={false} lines="none">
+                <IonButton slot="end" onClick={() => handleEdit(-1)}>
+                  Add order item
+                </IonButton>
+              </IonItem>
+            </>
+          )}
+        />
+      </IonList>
+
+      {showModal && (
+        <OrderItemModalForm
+          orderItem={orderItemInEdit}
+          onSubmit={handleEditSubmit}
+          onCancel={handleEditCancel}
+        />
+      )}
+    </>
+  )
+
   return (
     <>
       <IonContent>
-        {order.orderThrough === OrderThrough.Supplier ? (
-          <Field
-            name="orderId"
-            component={FormikInput}
-            type="text"
-            label="Order/PO #"
-          />
-        ) : (
-          <FieldArray
-            name="items"
-            render={helpers => (
-              <>
-                {(values.items || []).map((item: OrderItem, index: number) => (
-                  <Field
-                    name={`items.${index}.description`}
-                    component={FormikInput}
-                    label="Description"
-                  />
-                ))}
-              </>
-            )}
-          />
-        )}
+        {order.orderThrough === OrderThrough.Supplier
+          ? renderOrderId()
+          : renderOrderItems()}
       </IonContent>
 
       <IonFooter className="ion-padding ion-no-border">
@@ -72,12 +151,14 @@ export default withFormik<OrderItemsFormProps, OrderItemsFormValues>({
       items: Yup.array()
         .of(
           Yup.object().shape({
-            description: Yup.string().required('Required'),
-            quantity: Yup.number().required('Required').moreThan(0, 'Invalid'),
+            description: Yup.string().required('Description is required'),
+            quantity: Yup.number()
+              .required('Quantity is required')
+              .moreThan(0, 'Quantity is invalid'),
           })
         )
-        .required('Must have items')
-        .min(1, 'Must have mininum of 1 item'),
+        .required('Order items are required')
+        .min(1, 'Order must have mininum of 1 item'),
     })
 
     return order.orderThrough === OrderThrough.Supplier

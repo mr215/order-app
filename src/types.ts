@@ -10,7 +10,7 @@ export enum VehicleType {
 
 export interface OrderItem {
   description: string
-  quantity: number
+  quantity?: number
   image?: string
 }
 
@@ -32,7 +32,6 @@ export type OrderItemsFormValues = Pick<Order, 'items' | 'orderId'>
 
 export const DEFAULT_ORDER_ITEM: OrderItem = {
   description: '',
-  quantity: 0,
 }
 
 export interface User {

@@ -2,13 +2,13 @@ import React, { ComponentProps, ReactElement } from 'react'
 import { FieldProps, getIn } from 'formik'
 import {
   IonItem,
+  IonItemDivider,
   IonLabel,
-  IonListHeader,
   IonRadio,
   IonRadioGroup,
 } from '@ionic/react'
 
-import ErrorText from '../components/ErrorText'
+import ErrorLabel from '../components/ErrorLabel'
 
 interface RadioItem {
   label: ReactElement
@@ -17,8 +17,7 @@ interface RadioItem {
 
 interface Props extends ComponentProps<typeof IonRadioGroup> {
   label: string
-  labelProps: ComponentProps<typeof IonLabel>
-  slot?: string
+  radioProps: ComponentProps<typeof IonRadio>
   items: RadioItem[]
 }
 
@@ -26,8 +25,7 @@ const FormikRadioGroup: React.FC<FieldProps & Props> = ({
   field: { name, value },
   form,
   label,
-  labelProps,
-  slot = 'start',
+  radioProps,
   items,
   ...props
 }) => {
@@ -40,22 +38,22 @@ const FormikRadioGroup: React.FC<FieldProps & Props> = ({
       onIonChange={e => form.setFieldValue(name, e.detail.value!)}
       {...props}
     >
-      <IonListHeader>
-        <IonLabel {...labelProps}>{label}</IonLabel>
-      </IonListHeader>
+      <IonItemDivider>
+        <IonLabel className="ion-text-wrap">{label}</IonLabel>
+
+        {error && touched && <ErrorLabel>{error}</ErrorLabel>}
+      </IonItemDivider>
 
       {items.map(item => (
-        <IonItem key={item.value}>
+        <IonItem key={item.value} lines="full">
           <IonLabel>{item.label}</IonLabel>
           <IonRadio
-            slot={slot}
+            {...radioProps}
             value={item.value}
             onIonBlur={e => form.setFieldTouched(name)}
           />
         </IonItem>
       ))}
-
-      {error && touched && <ErrorText>{error}</ErrorText>}
     </IonRadioGroup>
   )
 }

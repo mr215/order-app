@@ -34,7 +34,7 @@ const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({ is
 
         <IonItemDivider>
           <p>
-            Already have an account? Log In
+            New to SupplyHound? Sign up
           </p>
         </IonItemDivider>
 
