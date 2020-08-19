@@ -19,11 +19,9 @@ interface MainOrderFormProps {
   onSubmit: (values: MainOrderFormValues) => void
 }
 
-const VehicleImg = styled(IonImg)`
-  ::part(image) {
-    width: auto;
-    height: ${(props: { height?: string }) => props.height ?? '2rem'};
-  }
+const VehicleImg = styled.img`
+  width: auto;
+  height: ${(props: { height?: string }) => props.height ?? '2rem'};
 `
 
 const MainOrderForm: React.FC<
@@ -86,7 +84,7 @@ const MainOrderForm: React.FC<
               value: VehicleType.Truck,
             },
             {
-              label: <VehicleImg src={carImg} alt="car" height="1.5rem" />,
+              label: <VehicleImg src={carImg} alt="car" height="1.8rem" />,
               value: VehicleType.Car,
             },
           ]}
