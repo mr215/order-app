@@ -17,7 +17,7 @@ const LogoImg = styled(IonImg)`
 
 const Header: React.FC = () => {
   return (
-    <IonHeader>
+    <IonHeader mode="ios">
       <IonToolbar>
         <IonButtons slot="start">
           <IonMenuButton />

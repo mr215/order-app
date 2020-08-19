@@ -60,7 +60,7 @@ const Menu: React.FC = () => {
   return (
     <IonMenu contentId="main" type="overlay">
       <IonContent>
-        <IonList>
+        <IonList mode="ios">
           <IonListHeader>Menu</IonListHeader>
 
           {menuItems.map((menuItem, index) => {
@@ -71,6 +71,7 @@ const Menu: React.FC = () => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
                 <IonItem
+                  mode="ios"
                   className={
                     location.pathname === menuItem.routerLink ? 'selected' : ''
                   }

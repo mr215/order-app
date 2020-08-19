@@ -38,14 +38,14 @@ const FormikRadioGroup: React.FC<FieldProps & Props> = ({
       onIonChange={e => form.setFieldValue(name, e.detail.value!)}
       {...props}
     >
-      <IonItemDivider>
+      <IonItemDivider mode="ios">
         <IonLabel className="ion-text-wrap">{label}</IonLabel>
 
         {error && touched && <ErrorLabel>{error}</ErrorLabel>}
       </IonItemDivider>
 
       {items.map(item => (
-        <IonItem key={item.value} lines="full">
+        <IonItem key={item.value} lines="full" mode="ios">
           <IonLabel>{item.label}</IonLabel>
           <IonRadio
             {...radioProps}
