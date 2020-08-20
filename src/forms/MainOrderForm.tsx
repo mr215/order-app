@@ -37,6 +37,7 @@ const MainOrderForm: React.FC<
           component={FormikInput}
           type="text"
           label="Job Name"
+          placeholder="Enter job name"
           required
         />
 
@@ -62,6 +63,7 @@ const MainOrderForm: React.FC<
           component={FormikInput}
           type="text"
           label="Pick up From"
+          placeholder="Enter pickup address"
           required
         />
 
@@ -70,6 +72,7 @@ const MainOrderForm: React.FC<
           component={FormikInput}
           type="text"
           label="Deliver To"
+          placeholder="Enter delivery address"
           required
         />
 

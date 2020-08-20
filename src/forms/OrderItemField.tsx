@@ -47,11 +47,13 @@ const OrderItemField: React.FC<Props> = ({
   return (
     <IonItemGroup>
       <IonItem detail={false} lines="full" button onClick={handleEdit}>
-        <OrderItemLabel className="ion-text-wrap">
+        <OrderItemLabel>
           {orderItem.description || orderItem.quantity ? (
             <>
               <QuantityText>{orderItem.quantity}</QuantityText>
-              <IonText>{orderItem.description}</IonText>
+              <IonText className="ion-text-wrap">
+                {orderItem.description}
+              </IonText>
             </>
           ) : (
             <IonText color="medium">
