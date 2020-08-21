@@ -34,7 +34,7 @@ const FormikDatetime: React.FC<FieldProps & Props> = ({
 
   return (
     <IonItemGroup>
-      <IonItemDivider>
+      <IonItemDivider mode="ios">
         <IonLabel className="ion-text-wrap">
           {label}
           {required && <IonText color="danger">*</IonText>}
@@ -44,11 +44,13 @@ const FormikDatetime: React.FC<FieldProps & Props> = ({
       </IonItemDivider>
 
       <IonItem
+        mode="ios"
         lines="full"
         className={clsx({ 'ion-invalid': error && touched })}
       >
         <StyledDatetime
           {...props}
+          mode="ios"
           value={value}
           onIonBlur={e => form.setFieldTouched(name)}
           onIonChange={e => form.setFieldValue(name, e.detail.value!)}

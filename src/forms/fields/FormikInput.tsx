@@ -29,7 +29,7 @@ const FormikInput: React.FC<FieldProps & Props> = ({
 
   return (
     <IonItemGroup>
-      <IonItemDivider>
+      <IonItemDivider mode="ios">
         <IonLabel className="ion-text-wrap">
           {label}
           {required && <IonText color="danger">*</IonText>}
@@ -40,10 +40,12 @@ const FormikInput: React.FC<FieldProps & Props> = ({
 
       <IonItem
         lines="full"
+        mode="ios"
         className={clsx({ 'ion-invalid': error && touched })}
       >
         <IonInput
           {...props}
+          mode="ios"
           value={value}
           onIonBlur={e => form.setFieldTouched(name)}
           onIonChange={e => form.setFieldValue(name, e.detail.value!)}

@@ -19,17 +19,15 @@ interface MainOrderFormProps {
   onSubmit: (values: MainOrderFormValues) => void
 }
 
-const VehicleImg = styled(IonImg)`
-  ::part(image) {
-    width: auto;
-    height: ${(props: { height?: string }) => props.height ?? '2rem'};
-  }
+const VehicleImg = styled.img`
+  width: auto;
+  height: ${(props: { height?: string }) => props.height ?? '2rem'};
 `
 
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
 > = ({ isValid, submitForm }) => {
-  const today = formatISO(new Date())
+  const today = formatISO(new Date(), { representation: 'date' })
 
   return (
     <>
@@ -86,7 +84,7 @@ const MainOrderForm: React.FC<
               value: VehicleType.Truck,
             },
             {
-              label: <VehicleImg src={carImg} alt="car" height="1.5rem" />,
+              label: <VehicleImg src={carImg} alt="car" height="1.8rem" />,
               value: VehicleType.Car,
             },
           ]}
@@ -98,7 +96,7 @@ const MainOrderForm: React.FC<
           label="Latest Deliver By"
           required
           min={today}
-          displayFormat="DDD MMM D HH:mm"
+          displayFormat="DDD MMM D h:mm A"
           minuteValues={[0, 15, 30, 45]}
         />
       </IonContent>
