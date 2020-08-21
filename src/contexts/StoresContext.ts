@@ -2,8 +2,8 @@ import { createContext } from 'react'
 
 import OrderStore from 'stores/orderStore'
 
-const storesContext = createContext({
+const StoresContext = createContext({
   orderStore: new OrderStore(),
 })
 
-export default storesContext
+export default StoresContext
