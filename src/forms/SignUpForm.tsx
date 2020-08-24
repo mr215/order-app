@@ -1,6 +1,6 @@
 import React from 'react'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import { IonButton, IonContent, IonFooter, IonItemDivider } from '@ionic/react'
+import { IonButton, IonContent, IonFooter, IonItem, IonLabel, IonItemDivider } from '@ionic/react'
 
 import * as Yup from 'yup'
 
@@ -42,7 +42,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
         />
 
         <Field
-          name="phoneNumber"
+          name="phone"
           component={FormikInput}
           type="text"
           label="Phone Number"
@@ -81,16 +81,18 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           slot="end"
           required
           item={{
-              label: "I authorize Supply Hound, Inc. to pickup and deliver the items specified by my use of this service. See Privacy and Terms",
               value: true,
           }}
         />
       </IonContent>
-
+      
       <IonItemDivider>
-          <p>
-            Already have an account? Log In
-          </p>
+        <IonItem>
+          Already have an account? 
+            <IonItem routerLink="/login">
+                <IonLabel> Log In </IonLabel>
+            </IonItem>
+        </IonItem>
       </IonItemDivider>
 
       <IonFooter className="ion-padding ion-no-border">
@@ -110,7 +112,7 @@ export default withFormik<SignUpFormProps, SignUpFormValues>({
     firstName: Yup.string().required('First name is required'),
     lastName: Yup.string().required('Last name is required'),
     email: Yup.string().required('Email address is required'),
-    phoneNumber: Yup.string().required('Phone number is required'),
+    phone: Yup.string().required('Phone number is required'),
     companyName: Yup.string().required('Email address is required'),
     accountingEmail: Yup.string().required('Accounting email is required'),
     password: Yup.string().required('Password is required'),

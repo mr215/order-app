@@ -1,6 +1,6 @@
 import React from 'react'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import { IonButton, IonContent, IonFooter, IonItemDivider } from '@ionic/react'
+import { IonButton, IonContent, IonFooter, IonItem, IonLabel, IonItemDivider } from '@ionic/react'
 
 import * as Yup from 'yup'
 
@@ -33,9 +33,12 @@ const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({ is
         /> 
 
         <IonItemDivider>
-          <p>
-            New to SupplyHound? Sign up
-          </p>
+            <IonItem>
+                New to SupplyHound?
+                <IonItem routerLink="/new">
+                    <IonLabel> Sign Up </IonLabel>
+                </IonItem>
+            </IonItem>
         </IonItemDivider>
 
         <IonFooter className="ion-padding ion-no-border">
@@ -49,7 +52,7 @@ const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({ is
 }
 
 export default withFormik<LogInFormProps, LogInFormValues>({
-  displayName: 'SignUpForm',
+  displayName: 'LogInForm',
   enableReinitialize: true,
 
   validationSchema: Yup.object().shape({

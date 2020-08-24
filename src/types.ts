@@ -38,7 +38,7 @@ export interface User {
   firstName: string
   lastName: string
   email: string
-  phoneNumber: string,
+  phone: string,
   companyName: string,
   accountingEmail: string,
   password: string,
@@ -47,3 +47,4 @@ export interface User {
 export type SignUpFormValues = Required<User>
 
 export type LogInFormValues = Partial<User>
+

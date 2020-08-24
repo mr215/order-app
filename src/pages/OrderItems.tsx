@@ -1,28 +1,26 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { IonPage } from '@ionic/react'
 
 import { OrderItemsFormValues } from 'types'
-import OrderContext from 'contexts/OrderContext'
+import useStores from 'hooks/useStores'
 import Header from 'components/Header'
 import OrderItemsForm from 'forms/OrderItemsForm'
 
 const OrderItems: React.FC<RouteComponentProps> = ({ history }) => {
-  const { order, updateOrder } = useContext(OrderContext)
+  const { orderStore } = useStores()
 
   const handleSubmit = (values: OrderItemsFormValues) => {
-    updateOrder(values)
+    orderStore.updateOrder(values)
 
-    setTimeout(() => {
-      history.push({ pathname: '/page/payment-summary' })
-    })
+    history.push({ pathname: '/page/payment-summary' })
   }
 
   return (
     <IonPage>
       <Header />
 
-      <OrderItemsForm order={order} onSubmit={handleSubmit} />
+      <OrderItemsForm order={orderStore.order} onSubmit={handleSubmit} />
     </IonPage>
   )
 }

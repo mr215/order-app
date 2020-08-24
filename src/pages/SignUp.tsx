@@ -1,36 +1,30 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { IonPage, IonLabel, IonItemDivider } from '@ionic/react'
+import { IonPage, IonLabel } from '@ionic/react'
 
 import { SignUpFormValues } from 'types'
-import UserContext from 'contexts/UserContext'
+import useStores from 'hooks/useStores'
 import Header from 'components/Header'
 import SignUpForm from 'forms/SignUpForm'
 
 const SignUp: React.FC<RouteComponentProps> = ({
   history }) => {
-    const { user, updateUser } = useContext(UserContext)
+    const { userStore } = useStores()
 
     const handleSubmit = (values: SignUpFormValues) => {
-      updateUser(values)
+      userStore.updateUser(values)
       
-      setTimeout(() => {
-        history.push({ pathname: '/home' })
-      })
+      history.push({ pathname: '/home' })
     }
 
     return (
       <IonPage>
           <Header />
-          <IonItemDivider>
-            <IonLabel>
-              <h2> Sign Up </h2>
-                <p>
-                    Welcome to SupplyHound! Please enter your info below to get started.
-                </p>
-            </IonLabel>
-          </IonItemDivider>
-          <SignUpForm user={user} onSubmit={handleSubmit} />
+          <h2> Sign Up </h2>
+          <IonLabel>
+            Welcome to SupplyHound! Please enter your info below to get started.
+          </IonLabel>
+          <SignUpForm user={userStore.user} onSubmit={handleSubmit} />
       </IonPage>
     )
   }

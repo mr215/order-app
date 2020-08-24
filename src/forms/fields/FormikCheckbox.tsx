@@ -34,7 +34,7 @@ const FormikCheckbox: React.FC<FieldProps & Props> = ({
 
     return (
             <IonItem key={name}>
-                <IonLabel>{label}</IonLabel>
+                {label}
                 <IonCheckbox 
                     slot={slot}
                     value={value}

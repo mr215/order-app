@@ -14,7 +14,7 @@ import {
 } from '@ionic/react'
 import * as Yup from 'yup'
 
-import { OrderItem, DEFAULT_ORDER_ITEM } from 'types'
+import { DEFAULT_ORDER_ITEM, OrderItem } from 'types'
 import FormikInput from './fields/FormikInput'
 import FormikTextarea from './fields/FormikTextarea'
 
@@ -30,7 +30,7 @@ const OrderItemModalForm: React.FC<Props & FormikProps<OrderItem>> = ({
   submitForm,
 }) => {
   return (
-    <IonModal isOpen onDidDismiss={onCancel}>
+    <IonModal isOpen mode="ios" onDidDismiss={onCancel}>
       <IonContent>
         <IonList>
           <IonListHeader>
@@ -56,7 +56,7 @@ const OrderItemModalForm: React.FC<Props & FormikProps<OrderItem>> = ({
         </IonList>
       </IonContent>
 
-      <IonFooter>
+      <IonFooter mode="ios">
         <IonGrid>
           <IonRow>
             <IonCol>
