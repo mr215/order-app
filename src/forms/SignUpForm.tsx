@@ -71,7 +71,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           type="text"
           label="Password"
           required
-        /> 
+        />
 
         <Field
           name="authorize"
@@ -91,7 +91,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
               <IonLabel> Log In </IonLabel>
           </IonItem>
         </IonItem>
-        
+
       </IonContent>
       
 

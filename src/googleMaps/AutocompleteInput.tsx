@@ -19,13 +19,17 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = observer(({ order, o
         > 
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
-            <input { ...getInputProps({ placeholder: "Type address" })}/>
+            <input { ...getInputProps({ placeholder: "Type address", className: 'color' })}/>
   
             <div>
               {loading ? <div> ...loading </div> : null}
   
               {suggestions.map( suggestion => {
                 const style = {
+                  listView: {
+                    position: "absolute",
+                    zIndex: "1000",
+                  },
                   backgroundColor: suggestion.active ? "yellow" : "black"
                 };
   

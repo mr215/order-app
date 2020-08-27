@@ -14,6 +14,12 @@ export interface OrderItem {
   image?: string
 }
 
+export interface DeliveryNote {
+  contact: string
+  phone: string
+  notes: string
+}
+
 export interface Order {
   jobName: string
   orderThrough: OrderThrough
@@ -21,6 +27,8 @@ export interface Order {
   deliveryAddress: string
   vehicleType: string
   lastestDeliverByTime: string
+  pickupNote: string
+  deliveryNote: DeliveryNote 
 
   items: OrderItem[]
   orderId: string

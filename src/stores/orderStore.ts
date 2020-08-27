@@ -10,6 +10,12 @@ const DEFAULT_ORDER = {
   lastestDeliverByTime: formatISO(new Date()),
   jobName: '',
   orderThrough: OrderThrough.SupplyHound,
+  pickupNote: '',
+  deliveryNote: {
+    contact: '',
+    phone: '',
+    notes: ''
+  },
   orderId: '',
   items: [DEFAULT_ORDER_ITEM],
 }
