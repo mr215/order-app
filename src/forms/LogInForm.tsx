@@ -1,6 +1,12 @@
 import React from 'react'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import { IonButton, IonContent, IonFooter, IonItem, IonLabel, IonItemDivider } from '@ionic/react'
+import {
+  IonButton,
+  IonContent,
+  IonFooter,
+  IonItem,
+  IonLabel,
+} from '@ionic/react'
 
 import * as Yup from 'yup'
 
@@ -10,9 +16,12 @@ import FormikInput from './fields/FormikInput'
 interface LogInFormProps {
   user: User
   onSubmit: (values: LogInFormValues) => void
-} 
+}
 
-const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({ isValid, submitForm }) => {
+const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({
+  isValid,
+  submitForm,
+}) => {
   return (
     <>
       <IonContent>
@@ -30,7 +39,7 @@ const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({ is
           type="text"
           label="Password"
           required
-        /> 
+        />
 
         <IonItem>
           New to SupplyHound?
@@ -40,9 +49,9 @@ const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({ is
         </IonItem>
 
         <IonFooter className="ion-padding ion-no-border">
-            <IonButton expand="block" disabled={!isValid} onClick={submitForm}>
+          <IonButton expand="block" disabled={!isValid} onClick={submitForm}>
             Log In
-            </IonButton>
+          </IonButton>
         </IonFooter>
       </IonContent>
     </>

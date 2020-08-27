@@ -1,4 +1,4 @@
-import { observable, action, set, computed } from 'mobx'
+import { observable, action, set } from 'mobx'
 import { formatISO } from 'date-fns'
 
 import { Order, VehicleType, OrderThrough, DEFAULT_ORDER_ITEM } from 'types'
@@ -14,7 +14,7 @@ const DEFAULT_ORDER = {
   deliveryNote: {
     contact: '',
     phone: '',
-    notes: ''
+    notes: '',
   },
   orderId: '',
   items: [DEFAULT_ORDER_ITEM],
@@ -30,10 +30,9 @@ export default class OrderStore {
   }
 
   @action
-  editPickup(address: string){
-    set(this.order, {pickupAddress: address})
+  editPickup(address: string) {
+    set(this.order, { pickupAddress: address })
   }
-
 
   @action
   resetOrder() {

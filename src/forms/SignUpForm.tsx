@@ -1,6 +1,12 @@
 import React from 'react'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import { IonButton, IonContent, IonFooter, IonItem, IonLabel, IonItemDivider } from '@ionic/react'
+import {
+  IonButton,
+  IonContent,
+  IonFooter,
+  IonItem,
+  IonLabel,
+} from '@ionic/react'
 
 import * as Yup from 'yup'
 
@@ -11,9 +17,12 @@ import FormikCheckbox from './fields/FormikCheckbox'
 interface SignUpFormProps {
   user: User
   onSubmit: (values: SignUpFormValues) => void
-} 
+}
 
-const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({ isValid, submitForm }) => {
+const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
+  isValid,
+  submitForm,
+}) => {
   return (
     <>
       <IonContent>
@@ -55,7 +64,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           type="text"
           label="Company Name"
           required
-        /> 
+        />
 
         <Field
           name="accountingEmail"
@@ -63,7 +72,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           type="text"
           label="Accounting Email"
           required
-        /> 
+        />
 
         <Field
           name="password"
@@ -81,20 +90,17 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           slot="end"
           required
           item={{
-              value: true,
+            value: true,
           }}
         />
 
         <IonItem>
-          Already have an account? 
+          Already have an account?
           <IonItem routerLink="/login">
-              <IonLabel> Log In </IonLabel>
+            <IonLabel> Log In </IonLabel>
           </IonItem>
         </IonItem>
-
       </IonContent>
-      
-
 
       <IonFooter className="ion-padding ion-no-border">
         <IonButton expand="block" disabled={!isValid} onClick={submitForm}>
@@ -117,9 +123,7 @@ export default withFormik<SignUpFormProps, SignUpFormValues>({
     companyName: Yup.string().required('Email address is required'),
     accountingEmail: Yup.string().required('Accounting email is required'),
     password: Yup.string().required('Password is required'),
-    authorize: Yup.mixed()
-    .required()
-    .oneOf([true])
+    authorize: Yup.mixed().required().oneOf([true]),
   }),
 
   mapPropsToValues({ user }: SignUpFormProps): SignUpFormValues {

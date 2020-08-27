@@ -14,7 +14,6 @@ import FormikRadioGroup from './fields/FormikRadioGroup'
 import carImg from 'images/car.png'
 import truckImg from 'images/truck.png'
 
-import AutocompleteInput from 'googleMaps/AutocompleteInput'
 import FormikTextarea from './fields/FormikTextarea'
 
 interface MainOrderFormProps {
@@ -75,12 +74,6 @@ const MainOrderForm: React.FC<
           ]}
         />
 
-        <AutocompleteInput 
-          order={order} 
-          onChange={onChange}
-          onSelect={onSelect}/>
-
-
         <Field
           name="pickupAddress"
           component={FormikInput}
@@ -91,21 +84,17 @@ const MainOrderForm: React.FC<
         />
 
         <IonModal isOpen={openPickupNotes}>
-          <Field 
+          <Field
             name="pickupNote"
             component={FormikTextarea}
             type="text"
             label="Pickup Notes"
             placeholder="Enter relevant pickup notes"
           />
-          <IonButton onClick={showPickupNotes}>
-            Close
-          </IonButton>
+          <IonButton onClick={showPickupNotes}>Close</IonButton>
         </IonModal>
 
-        <IonButton onClick={showPickupNotes}>
-          Enter Pickup Notes
-        </IonButton>
+        <IonButton onClick={showPickupNotes}>Enter Pickup Notes</IonButton>
 
         <Field
           name="deliveryAddress"
@@ -115,39 +104,35 @@ const MainOrderForm: React.FC<
           placeholder="Enter delivery address"
           required
         />
-        
+
         <IonModal isOpen={openDeliveryNotes}>
           <IonContent>
-          <Field 
-            name="deliveryNote.contact"
-            component={FormikInput}
-            type="text"
-            label="Contact Name"
-            placeholder="Enter contact's name"
-          />
-          <Field 
-            name="deliveryNote.phone"
-            component={FormikInput}
-            type="text"
-            label="Contact Phone Number"
-            placeholder="Enter contact's phone number"
-          />
-          <Field 
-            name="deliveryNote.notes"
-            component={FormikTextarea}
-            type="text"
-            label="Delivery Notes"
-            placeholder="Enter relevant delivery notes"
-          />
+            <Field
+              name="deliveryNote.contact"
+              component={FormikInput}
+              type="text"
+              label="Contact Name"
+              placeholder="Enter contact's name"
+            />
+            <Field
+              name="deliveryNote.phone"
+              component={FormikInput}
+              type="text"
+              label="Contact Phone Number"
+              placeholder="Enter contact's phone number"
+            />
+            <Field
+              name="deliveryNote.notes"
+              component={FormikTextarea}
+              type="text"
+              label="Delivery Notes"
+              placeholder="Enter relevant delivery notes"
+            />
           </IonContent>
-          <IonButton onClick={showDeliveryNotes}>
-            Close
-          </IonButton>
+          <IonButton onClick={showDeliveryNotes}>Close</IonButton>
         </IonModal>
-        
-        <IonButton onClick={showDeliveryNotes}>
-          Enter Delivery Notes
-        </IonButton>
+
+        <IonButton onClick={showDeliveryNotes}>Enter Delivery Notes</IonButton>
 
         <Field
           name="vehicleType"
