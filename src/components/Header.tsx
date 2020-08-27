@@ -13,6 +13,7 @@ import logoImg from 'images/logo.png'
 
 interface Props {
   home?: boolean
+  login?: boolean
 }
 
 const LogoImg = styled(IonImg)`
@@ -20,12 +21,15 @@ const LogoImg = styled(IonImg)`
   margin: 0.5rem 0;
 `
 
-const Header: React.FC<Props> = ({ home = false }) => {
+const Header: React.FC<Props> = ({ home = false, login = false }) => {
   return (
     <IonHeader mode="ios">
       <IonToolbar>
         <IonButtons slot="start">
-          {home ? <IonMenuButton /> : <IonBackButton defaultHref="/home" />}
+          {home ? <IonMenuButton /> : 
+            !login ? <IonBackButton defaultHref="/home" /> : 
+            null
+          }
         </IonButtons>
 
         <LogoImg src={logoImg} alt="logo" />

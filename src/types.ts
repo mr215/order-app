@@ -14,6 +14,12 @@ export interface OrderItem {
   image?: string
 }
 
+export interface DeliveryNote {
+  contact: string
+  phone: string
+  notes: string
+}
+
 export interface Order {
   jobName: string
   orderThrough: OrderThrough
@@ -21,6 +27,8 @@ export interface Order {
   deliveryAddress: string
   vehicleType: string
   lastestDeliverByTime: string
+  pickupNote: string
+  deliveryNote: DeliveryNote 
 
   items: OrderItem[]
   orderId: string
@@ -33,3 +41,17 @@ export type OrderItemsFormValues = Pick<Order, 'items' | 'orderId'>
 export const DEFAULT_ORDER_ITEM: OrderItem = {
   description: '',
 }
+
+export interface User {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string,
+  companyName: string,
+  accountingEmail: string,
+  password: string,
+}
+
+export type SignUpFormValues = Required<User>
+
+export type LogInFormValues = Partial<User>
