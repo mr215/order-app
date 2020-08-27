@@ -14,9 +14,13 @@ import FormikRadioGroup from './fields/FormikRadioGroup'
 import carImg from 'images/car.png'
 import truckImg from 'images/truck.png'
 
+import AutocompleteInput from 'googleMaps/AutocompleteInput'
+
 interface MainOrderFormProps {
   order: Order
   onSubmit: (values: MainOrderFormValues) => void
+  onChange: (value: string) => void
+  onSelect: (value: string) => void
 }
 
 const VehicleImg = styled.img`
@@ -26,7 +30,7 @@ const VehicleImg = styled.img`
 
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
-> = ({ isValid, submitForm }) => {
+> = ({ order, isValid, submitForm, onChange, onSelect }) => {
   const today = formatISO(new Date(), { representation: 'date' })
 
   return (
@@ -57,6 +61,12 @@ const MainOrderForm: React.FC<
             },
           ]}
         />
+
+        <AutocompleteInput 
+          order={order} 
+          onChange={onChange}
+          onSelect={onSelect}/>
+
 
         <Field
           name="pickupAddress"

@@ -84,16 +84,17 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
               value: true,
           }}
         />
-      </IonContent>
-      
-      <IonItemDivider>
+
         <IonItem>
           Already have an account? 
-            <IonItem routerLink="/login">
-                <IonLabel> Log In </IonLabel>
-            </IonItem>
+          <IonItem routerLink="/login">
+              <IonLabel> Log In </IonLabel>
+          </IonItem>
         </IonItem>
-      </IonItemDivider>
+        
+      </IonContent>
+      
+
 
       <IonFooter className="ion-padding ion-no-border">
         <IonButton expand="block" disabled={!isValid} onClick={submitForm}>

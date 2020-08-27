@@ -1,4 +1,4 @@
-import { observable, action, set } from 'mobx'
+import { observable, action, set, computed } from 'mobx'
 import { formatISO } from 'date-fns'
 
 import { Order, VehicleType, OrderThrough, DEFAULT_ORDER_ITEM } from 'types'
@@ -22,6 +22,12 @@ export default class OrderStore {
   updateOrder(newOrder: Partial<Order>) {
     set(this.order, newOrder)
   }
+
+  @action
+  editPickup(address: string){
+    set(this.order, {pickupAddress: address})
+  }
+
 
   @action
   resetOrder() {

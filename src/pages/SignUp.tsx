@@ -19,11 +19,16 @@ const SignUp: React.FC<RouteComponentProps> = ({
 
     return (
       <IonPage>
-          <Header />
-          <h2> Sign Up </h2>
-          <IonLabel>
-            Welcome to SupplyHound! Please enter your info below to get started.
-          </IonLabel>
+          <Header login/>
+          <div style={{
+              textAlign: 'center',
+              margin: '0.5rem',
+          }}>
+            <h2> Sign Up </h2>
+            <IonLabel>
+              Welcome to SupplyHound! Please enter your info below to get started.
+            </IonLabel>
+          </div>
           <SignUpForm user={userStore.user} onSubmit={handleSubmit} />
       </IonPage>
     )

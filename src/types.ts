@@ -47,4 +47,3 @@ export interface User {
 export type SignUpFormValues = Required<User>
 
 export type LogInFormValues = Partial<User>
-

@@ -32,14 +32,12 @@ const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({ is
           required
         /> 
 
-        <IonItemDivider>
-            <IonItem>
-                New to SupplyHound?
-                <IonItem routerLink="/new">
-                    <IonLabel> Sign Up </IonLabel>
-                </IonItem>
-            </IonItem>
-        </IonItemDivider>
+        <IonItem>
+          New to SupplyHound?
+          <IonItem routerLink="/new">
+            <IonLabel> Sign Up </IonLabel>
+          </IonItem>
+        </IonItem>
 
         <IonFooter className="ion-padding ion-no-border">
             <IonButton expand="block" disabled={!isValid} onClick={submitForm}>

@@ -18,11 +18,16 @@ const LogIn: React.FC<RouteComponentProps> = ({
 
     return (
       <IonPage>
-          <Header />
-            <h2> Log In </h2>
-             <IonLabel>
-             Welcome to SupplyHound! Log in with your info below.
-             </IonLabel>
+          <Header login/>
+            <div style={{
+              textAlign: 'center',
+              margin: '0.5rem',
+            }}>
+              <h2> Log In </h2>
+              <IonLabel >
+              Welcome to SupplyHound! Log in with your info below.
+              </IonLabel>
+            </div>
         <LogInForm user={userStore.user} onSubmit={handleSubmit} />
     </IonPage>
   )
