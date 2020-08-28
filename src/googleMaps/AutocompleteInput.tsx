@@ -2,6 +2,7 @@ import React from 'react'
 import PlacesAutocomplete from "react-places-autocomplete";
 import { Order } from 'types'
 import { observer } from "mobx-react"
+import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 
 interface AutocompleteInputProps {
     order: Order,
@@ -19,17 +20,12 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = observer(({ order, o
         > 
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
-            <input { ...getInputProps({ placeholder: "Type address", className: 'color' })}/>
-  
+            <input { ...getInputProps({ placeholder: "Type address", className: 'ion-item.sc-ion-input-ios-h:not(.item-label), ion-item:not(.item-label) .sc-ion-input-ios-h' })}/>
             <div>
               {loading ? <div> ...loading </div> : null}
   
               {suggestions.map( suggestion => {
                 const style = {
-                  listView: {
-                    position: "absolute",
-                    zIndex: "1000",
-                  },
                   backgroundColor: suggestion.active ? "yellow" : "black"
                 };
   
