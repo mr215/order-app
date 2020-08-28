@@ -75,12 +75,6 @@ const MainOrderForm: React.FC<
           ]}
         />
 
-        <AutocompleteInput 
-          order={order} 
-          onChange={onChange}
-          onSelect={onSelect}/>
-
-
         <Field
           name="pickupAddress"
           component={FormikInput}
@@ -89,6 +83,11 @@ const MainOrderForm: React.FC<
           placeholder="Enter pickup address"
           required
         />
+
+        <AutocompleteInput 
+          order={order} 
+          onChange={onChange}
+          onSelect={onSelect}/>
 
         <IonModal isOpen={openPickupNotes}>
           <Field 
@@ -115,6 +114,11 @@ const MainOrderForm: React.FC<
           placeholder="Enter delivery address"
           required
         />
+
+        <AutocompleteInput 
+          order={order} 
+          onChange={onChange}
+          onSelect={onSelect}/>
         
         <IonModal isOpen={openDeliveryNotes}>
           <IonContent>
