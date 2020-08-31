@@ -1,47 +1,66 @@
-import React from 'react'
-import PlacesAutocomplete from "react-places-autocomplete";
-import { Order } from 'types'
-import { observer } from "mobx-react"
-import { withFormik, FormikProps, FormikBag, Field } from 'formik'
+import React, { useState, useEffect, useRef } from "react";
+import { IonInput } from '@ionic/react'
 
-interface AutocompleteInputProps {
-    order: Order,
-    onChange: (value: string) => void
-    onSelect: (value: string) => void
+let autoComplete: any;
+
+function loadScript (url: string, callback: () => void) {
+  let script = document.createElement("script");
+  script.type = "text/javascript";
+  // if (script.readyState) { // only required for IE <9
+  //   script.onreadystatechange = function() { 
+  //     if (script.readyState === "loaded" || script.readyState === "complete") {
+  //       script.onreadystatechange = null
+  //       callback()
+  //     }
+  //   }
+  // } else { //others
+  //   script.onload = () => callback();
+  // }
+  script.onload = () => callback();
+
+  script.src = url;
+  document.getElementsByTagName("head")[0].appendChild(script);
 }
 
-const AutocompleteInput: React.FC<AutocompleteInputProps> = observer(({ order, onChange, onSelect }) => {
-    
-    return (
-      <PlacesAutocomplete
-        value={order.pickupAddress}
-        onChange={onChange}
-        onSelect={onSelect}
-        > 
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-          <div>
-            <input { ...getInputProps({ placeholder: "Type address", className: 'ion-item.sc-ion-input-ios-h:not(.item-label), ion-item:not(.item-label) .sc-ion-input-ios-h' })}/>
-            <div>
-              {loading ? <div> ...loading </div> : null}
-  
-              {suggestions.map( suggestion => {
-                const style = {
-                  backgroundColor: suggestion.active ? "yellow" : "black"
-                };
-  
-                return (
-                    <div
-                    {...getSuggestionItemProps(suggestion, {style})}
-                    key={suggestion.placeId}>
-                        {suggestion.description}
-                    </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </PlacesAutocomplete>
-    )
-})
+function handleScriptLoad(updateQuery: (value: string) => void, autoCompleteRef: any) {
+  autoComplete = new window.google.maps.places.Autocomplete(
+    autoCompleteRef.current,
+    { componentRestrictions: { country: "us" } }
+  );
+  autoComplete.setFields(["address_components", "formatted_address"]);
+  autoComplete.addListener("place_changed", () =>
+    handlePlaceSelect(updateQuery)
+  );
+}
 
-export default AutocompleteInput
+async function handlePlaceSelect(updateQuery: (value: string) => void ) {
+  const addressObject = autoComplete.getPlace();
+  const query = addressObject.formatted_address;
+  updateQuery(query);
+  console.log(addressObject);
+}
+
+function AutocompleteInput() {
+  const [query, setQuery] = useState("");
+  const autoCompleteRef = useRef(null);
+
+  useEffect(() => {
+    loadScript(
+      `https://maps.googleapis.com/maps/api/js?key=AIzaSyAPeATH8pRaEKdRvlyGo1LUF4zKDm0HBZU&libraries=places`,
+      () => handleScriptLoad(setQuery, autoCompleteRef)
+    );
+  }, []);
+
+  return (
+    <div className="search-location-input">
+      <input
+        ref={autoCompleteRef}
+        onChange={event => setQuery(event.target.value)}
+        placeholder="Enter a City"
+        value={query}
+      />
+    </div>
+  );
+}
+
+export default AutocompleteInput;

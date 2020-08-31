@@ -14,8 +14,8 @@ import FormikRadioGroup from './fields/FormikRadioGroup'
 import carImg from 'images/car.png'
 import truckImg from 'images/truck.png'
 
-import AutocompleteInput from 'googleMaps/AutocompleteInput'
 import FormikTextarea from './fields/FormikTextarea'
+import AutocompleteInput from 'googleMaps/AutocompleteInput'
 
 interface MainOrderFormProps {
   order: Order
@@ -84,11 +84,6 @@ const MainOrderForm: React.FC<
           required
         />
 
-        <AutocompleteInput 
-          order={order} 
-          onChange={onChange}
-          onSelect={onSelect}/>
-
         <IonModal isOpen={openPickupNotes}>
           <Field 
             name="pickupNote"
@@ -115,10 +110,7 @@ const MainOrderForm: React.FC<
           required
         />
 
-        <AutocompleteInput 
-          order={order} 
-          onChange={onChange}
-          onSelect={onSelect}/>
+        <AutocompleteInput/>
         
         <IonModal isOpen={openDeliveryNotes}>
           <IonContent>
