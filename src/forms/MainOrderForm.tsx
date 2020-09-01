@@ -15,7 +15,7 @@ import carImg from 'images/car.png'
 import truckImg from 'images/truck.png'
 
 import FormikTextarea from './fields/FormikTextarea'
-import AutocompleteInput from 'googleMaps/AutocompleteInput'
+import FormikAutocomplete from './fields/FormikAutocomplete'
 
 interface MainOrderFormProps {
   order: Order
@@ -77,7 +77,7 @@ const MainOrderForm: React.FC<
 
         <Field
           name="pickupAddress"
-          component={FormikInput}
+          component={FormikAutocomplete}
           type="text"
           label="Pick up From"
           placeholder="Enter pickup address"
@@ -103,14 +103,12 @@ const MainOrderForm: React.FC<
 
         <Field
           name="deliveryAddress"
-          component={FormikInput}
+          component={FormikAutocomplete}
           type="text"
           label="Deliver To"
           placeholder="Enter delivery address"
           required
         />
-
-        <AutocompleteInput/>
         
         <IonModal isOpen={openDeliveryNotes}>
           <IonContent>

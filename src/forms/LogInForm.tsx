@@ -1,6 +1,6 @@
 import React from 'react'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import { IonButton, IonContent, IonFooter, IonItem, IonLabel, IonItemDivider } from '@ionic/react'
+import { IonButton, IonContent, IonFooter, IonItem, IonLabel } from '@ionic/react'
 
 import * as Yup from 'yup'
 

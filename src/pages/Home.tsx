@@ -14,6 +14,7 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
 
   const handleSubmit = (values: MainOrderFormValues) => {
     orderStore.updateOrder(values)
+
     history.push({ pathname: '/order-items' })
   }
 
