@@ -14,7 +14,7 @@ const DEFAULT_ORDER = {
   deliveryNote: {
     contact: '',
     phone: '',
-    notes: ''
+    notes: '',
   },
   orderId: '',
   items: [DEFAULT_ORDER_ITEM],
@@ -30,8 +30,8 @@ export default class OrderStore {
   }
 
   @action
-  editPickup(address: string){
-    set(this.order, {pickupAddress: address})
+  editPickup(address: string) {
+    set(this.order, { pickupAddress: address })
   }
 
   @action
