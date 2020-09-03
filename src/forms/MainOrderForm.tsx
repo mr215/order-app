@@ -20,8 +20,6 @@ import FormikAddress from './fields/FormikAddress'
 interface MainOrderFormProps {
   order: Order
   onSubmit: (values: MainOrderFormValues) => void
-  onChange: (value: string) => void
-  onSelect: (value: string) => void
 }
 
 const VehicleImg = styled.img`
@@ -31,7 +29,7 @@ const VehicleImg = styled.img`
 
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
-> = ({ order, isValid, submitForm, onChange, onSelect }) => {
+> = ({ isValid, submitForm }) => {
   const today = formatISO(new Date(), { representation: 'date' })
 
   const [openPickupNotes, updateOpenPickupNotes] = React.useState(false)
