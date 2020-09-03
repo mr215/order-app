@@ -12,14 +12,14 @@ import {
 
 import ErrorLabel from '../components/ErrorLabel'
 
-const apiKey = process.env.REACT_APP_API_KEY
+const googleMapApiKey = process.env.REACT_APP_GOOGLE_MAP_API_KEY
 
 interface Props extends ComponentProps<typeof IonInput> {
     label: string
     required?: boolean
 }
 
-const FormikAutocomplete: React.FC<FieldProps & Props> = ({
+const FormikAddress: React.FC<FieldProps & Props> = ({
     field: { name, value },
     form,
     label,
@@ -34,7 +34,7 @@ const FormikAutocomplete: React.FC<FieldProps & Props> = ({
 
     useEffect(() => {
         loadScript(
-            `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`,
+            `https://maps.googleapis.com/maps/api/js?key=${googleMapApiKey}&libraries=places`,
             () => handleScriptLoad(updateQuery)
         );
     }, []);
@@ -121,4 +121,4 @@ const FormikAutocomplete: React.FC<FieldProps & Props> = ({
     )
 }
 
-export default FormikAutocomplete
+export default FormikAddress

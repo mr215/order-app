@@ -7,9 +7,6 @@ import Header from 'components/Header'
 const PaymentSummary: React.FC<RouteComponentProps> = ({ history }) => {
     const { orderStore } = useStores()
 
-    const handleClick = () => {
-        console.log('happy friday')
-    }
     return (
         <div>
             <Header />
