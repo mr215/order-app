@@ -30,6 +30,7 @@ const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({
           component={FormikInput}
           type="text"
           label="Email Address"
+          placeholder="Enter email here"
           required
         />
 
@@ -38,6 +39,7 @@ const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({
           component={FormikInput}
           type="text"
           label="Password"
+          placeholder="Enter password here"
           required
         />
 

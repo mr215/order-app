@@ -25,8 +25,6 @@ import FormikTextarea from './fields/FormikTextarea'
 interface MainOrderFormProps {
   order: Order
   onSubmit: (values: MainOrderFormValues) => void
-  onChange: (value: string) => void
-  onSelect: (value: string) => void
 }
 
 const TODAY = formatISO(new Date(), { representation: 'date' })
@@ -45,7 +43,7 @@ const ModalTitle = styled.h1`
 
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
-> = ({ isValid, submitForm, onChange, onSelect }) => {
+> = ({ isValid, submitForm }) => {
   const [openPickupNote, setOpenPickupNote] = React.useState(false)
   const [openDeliveryNote, setOpenDeliveryNote] = React.useState(false)
 
