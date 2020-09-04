@@ -26,11 +26,10 @@ const Header: React.FC<Props> = ({ home = false, login = false }) => {
     <IonHeader mode="ios">
       <IonToolbar>
         <IonButtons slot="start">
-          {home ? (
-            <IonMenuButton />
-          ) : !login ? (
-            <IonBackButton defaultHref="/home" />
-          ) : null}
+          {home ? <IonMenuButton /> : 
+            !login ? <IonBackButton defaultHref="/home" /> : 
+            null
+          }
         </IonButtons>
 
         <LogoImg src={logoImg} alt="logo" />

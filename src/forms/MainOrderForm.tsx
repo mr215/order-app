@@ -15,11 +15,12 @@ import carImg from 'images/car.png'
 import truckImg from 'images/truck.png'
 
 import FormikTextarea from './fields/FormikTextarea'
-import FormikAddress from './fields/FormikAddress'
 
 interface MainOrderFormProps {
   order: Order
   onSubmit: (values: MainOrderFormValues) => void
+  onChange: (value: string) => void
+  onSelect: (value: string) => void
 }
 
 const VehicleImg = styled.img`
@@ -29,7 +30,7 @@ const VehicleImg = styled.img`
 
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
-> = ({ isValid, submitForm }) => {
+> = ({ order, isValid, submitForm, onChange, onSelect }) => {
   const today = formatISO(new Date(), { representation: 'date' })
 
   const [openPickupNotes, updateOpenPickupNotes] = React.useState(false)
@@ -75,7 +76,7 @@ const MainOrderForm: React.FC<
 
         <Field
           name="pickupAddress"
-          component={FormikAddress}
+          component={FormikInput}
           type="text"
           label="Pick up From"
           placeholder="Enter pickup address"
@@ -97,7 +98,7 @@ const MainOrderForm: React.FC<
 
         <Field
           name="deliveryAddress"
-          component={FormikAddress}
+          component={FormikInput}
           type="text"
           label="Deliver To"
           placeholder="Enter delivery address"

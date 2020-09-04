@@ -7,8 +7,6 @@ import LogIn from 'pages/LogIn'
 import SignUp from 'pages/SignUp'
 import Home from 'pages/Home'
 import OrderItems from 'pages/OrderItems'
-import PaymentSummary from 'pages/PaymentSummary'
-
 import Page from 'pages/Page'
 
 import Menu from './Menu'
@@ -27,8 +25,6 @@ const App: React.FC = () => (
           <IonRouterOutlet id="main">
             <Route exact path="/home" component={Home} />
             <Route exact path="/order-items" component={OrderItems} />
-
-            <Route exact path="/payment-summary" component={PaymentSummary} />
 
             <Route exact path="/page/:name" component={Page} />
 

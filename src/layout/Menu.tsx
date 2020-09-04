@@ -17,7 +17,6 @@ import {
   homeOutline,
   listOutline,
   shareSocialOutline,
-  logInOutline,
 } from 'ionicons/icons'
 
 interface MenuItem {
@@ -52,11 +51,6 @@ const menuItems: MenuItem[] = [
     title: '+1 (415) 349-5085',
     icon: callOutline,
     href: 'tel:4153495085',
-  },
-  {
-    title: 'Login',
-    icon: logInOutline,
-    routerLink: '/login',
   },
 ]
 
