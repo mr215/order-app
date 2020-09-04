@@ -31,6 +31,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           component={FormikInput}
           type="text"
           label="First Name"
+          placeholder="Enter first name here"
           required
         />
 
@@ -39,6 +40,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           component={FormikInput}
           type="text"
           label="Last Name"
+          placeholder="Enter last name here"
           required
         />
 
@@ -47,6 +49,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           component={FormikInput}
           type="text"
           label="Email Address"
+          placeholder="Enter email address here"
           required
         />
 
@@ -55,6 +58,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           component={FormikInput}
           type="text"
           label="Phone Number"
+          placeholder="Enter your mobile number here"
           required
         />
 
@@ -63,6 +67,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           component={FormikInput}
           type="text"
           label="Company Name"
+          placeholder="Enter your company name here"
           required
         />
 
@@ -71,6 +76,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           component={FormikInput}
           type="text"
           label="Accounting Email"
+          placeholder="Enter where receipts should be sent"
           required
         />
 
@@ -79,6 +85,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           component={FormikInput}
           type="text"
           label="Password"
+          placeholder="Enter password here"
           required
         />
 
@@ -87,7 +94,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           value={false}
           component={FormikCheckbox}
           label="I authorize Supply Hound, Inc. to pickup and deliver the items specified by my use of this service. See Privacy and Terms"
-          slot="end"
+          slot="start"
           required
           item={{
             value: true,
