@@ -40,8 +40,6 @@ const FormikInput: React.FC<FieldProps & Props> = ({
   const error = getIn(form.errors, name)
   const touched = getIn(form.touched, name)
 
-  console.log('value', value)
-
   return (
     <IonItemGroup>
       <FieldHeader label={label} error={touched && error} required={required} />
