@@ -55,3 +55,5 @@ export interface User {
 export type SignUpFormValues = Required<User>
 
 export type LogInFormValues = Partial<User>
+
+export type LandingFormValues = Partial<User>
