@@ -1,19 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import { IonButton, IonContent, IonFooter, IonModal } from '@ionic/react'
+import {
+  IonButton,
+  IonContent,
+  IonFooter,
+  IonHeader,
+  IonModal,
+} from '@ionic/react'
 import { formatISO } from 'date-fns'
-
 import * as Yup from 'yup'
 
 import { OrderThrough, VehicleType, Order, MainOrderFormValues } from 'types'
-import FormikDatetime from './fields/FormikDatetime'
-import FormikInput from './fields/FormikInput'
-import FormikRadioGroup from './fields/FormikRadioGroup'
+import { titleCase } from 'utils/formatters'
 
 import carImg from 'images/car.png'
 import truckImg from 'images/truck.png'
 
+import FormikDatetime from './fields/FormikDatetime'
+import FormikInput from './fields/FormikInput'
+import FormikRadioGroup from './fields/FormikRadioGroup'
 import FormikTextarea from './fields/FormikTextarea'
 
 interface MainOrderFormProps {
@@ -23,26 +29,32 @@ interface MainOrderFormProps {
   onSelect: (value: string) => void
 }
 
-const VehicleImg = styled.img`
+const TODAY = formatISO(new Date(), { representation: 'date' })
+
+const VehicleImg = styled.img<{ small?: boolean }>`
   width: auto;
-  height: ${(props: { height?: string }) => props.height ?? '2rem'};
+  height: 3rem;
+  margin: 0.5rem 1rem 0.5rem 0;
+  ${props => (props.small ? `transform: scale(0.9);` : '')}
+`
+
+const ModalTitle = styled.h1`
+  text-align: center;
+  margin: 1rem 0;
 `
 
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
-> = ({ order, isValid, submitForm, onChange, onSelect }) => {
-  const today = formatISO(new Date(), { representation: 'date' })
+> = ({ isValid, submitForm, onChange, onSelect }) => {
+  const [openPickupNote, setOpenPickupNote] = React.useState(false)
+  const [openDeliveryNote, setOpenDeliveryNote] = React.useState(false)
 
-  const [openPickupNotes, updateOpenPickupNotes] = React.useState(false)
-
-  const [openDeliveryNotes, updateOpenDeliveryNotes] = React.useState(false)
-
-  const showPickupNotes = () => {
-    updateOpenPickupNotes(!openPickupNotes)
+  const togglePickupNote = () => {
+    setOpenPickupNote(!openPickupNote)
   }
 
-  const showDeliveryNotes = () => {
-    updateOpenDeliveryNotes(!openDeliveryNotes)
+  const toggleDeliveryNote = () => {
+    setOpenDeliveryNote(!openDeliveryNote)
   }
 
   return (
@@ -54,17 +66,18 @@ const MainOrderForm: React.FC<
           type="text"
           label="Job Name"
           placeholder="Enter job name"
+          formatter={titleCase}
           required
         />
 
         <Field
           name="orderThrough"
           component={FormikRadioGroup}
-          label="Submit a list to your supplier through SupplyHound?"
+          label="Submit a list of materials to your supplier through SupplyHound?"
           radioProps={{ slot: 'start', mode: 'md' }}
           items={[
             {
-              label: 'Yes',
+              label: 'Yes please -  help me save more time',
               value: OrderThrough.SupplyHound,
             },
             {
@@ -79,65 +92,34 @@ const MainOrderForm: React.FC<
           component={FormikInput}
           type="text"
           label="Pick up From"
-          placeholder="Enter pickup address"
+          placeholder="Search pickup address"
+          extraContent={
+            <IonButton slot="end" onClick={togglePickupNote}>
+              Note
+            </IonButton>
+          }
           required
         />
-
-        <IonModal isOpen={openPickupNotes}>
-          <Field
-            name="pickupNote"
-            component={FormikTextarea}
-            type="text"
-            label="Pickup Notes"
-            placeholder="Enter relevant pickup notes"
-          />
-          <IonButton onClick={showPickupNotes}>Close</IonButton>
-        </IonModal>
-
-        <IonButton onClick={showPickupNotes}>Enter Pickup Notes</IonButton>
 
         <Field
           name="deliveryAddress"
           component={FormikInput}
           type="text"
           label="Deliver To"
-          placeholder="Enter delivery address"
+          placeholder="Search delivery address"
+          extraContent={
+            <IonButton slot="end" onClick={toggleDeliveryNote}>
+              Note
+            </IonButton>
+          }
           required
         />
-
-        <IonModal isOpen={openDeliveryNotes}>
-          <IonContent>
-            <Field
-              name="deliveryNote.contact"
-              component={FormikInput}
-              type="text"
-              label="Contact Name"
-              placeholder="Enter contact's name"
-            />
-            <Field
-              name="deliveryNote.phone"
-              component={FormikInput}
-              type="text"
-              label="Contact Phone Number"
-              placeholder="Enter contact's phone number"
-            />
-            <Field
-              name="deliveryNote.notes"
-              component={FormikTextarea}
-              type="text"
-              label="Delivery Notes"
-              placeholder="Enter relevant delivery notes"
-            />
-          </IonContent>
-          <IonButton onClick={showDeliveryNotes}>Close</IonButton>
-        </IonModal>
-
-        <IonButton onClick={showDeliveryNotes}>Enter Delivery Notes</IonButton>
 
         <Field
           name="vehicleType"
           component={FormikRadioGroup}
           label="Vehicle Type"
+          horizontal
           radioProps={{ slot: 'start', mode: 'md' }}
           items={[
             {
@@ -145,7 +127,7 @@ const MainOrderForm: React.FC<
               value: VehicleType.Truck,
             },
             {
-              label: <VehicleImg src={carImg} alt="car" height="1.8rem" />,
+              label: <VehicleImg src={carImg} alt="car" small />,
               value: VehicleType.Car,
             },
           ]}
@@ -156,7 +138,7 @@ const MainOrderForm: React.FC<
           component={FormikDatetime}
           label="Latest Deliver By"
           required
-          min={today}
+          min={TODAY}
           displayFormat="DDD MMM D h:mm A"
           minuteValues={[0, 15, 30, 45]}
         />
@@ -167,6 +149,69 @@ const MainOrderForm: React.FC<
           Continue
         </IonButton>
       </IonFooter>
+
+      <IonModal isOpen={openPickupNote}>
+        <IonHeader>
+          <ModalTitle>Pickup Note</ModalTitle>
+        </IonHeader>
+
+        <IonContent>
+          <Field
+            name="pickupNote"
+            component={FormikTextarea}
+            label="Pickup Note"
+            placeholder="For example: Go to tool counter in back. Picking up compressor, replacement hose and 3 boxes of nails."
+            rows={4}
+          />
+        </IonContent>
+
+        <IonFooter>
+          <IonButton expand="block" onClick={togglePickupNote}>
+            Save
+          </IonButton>
+        </IonFooter>
+      </IonModal>
+
+      {/* Modals */}
+      <IonModal isOpen={openDeliveryNote}>
+        <IonHeader>
+          <ModalTitle>Delivery Note</ModalTitle>
+        </IonHeader>
+
+        <IonContent>
+          <Field
+            name="deliveryNote.contact"
+            component={FormikInput}
+            type="text"
+            label="Contact Name"
+            placeholder="Enter contact's name"
+            formatter={titleCase}
+          />
+
+          <Field
+            name="deliveryNote.phone"
+            component={FormikInput}
+            type="tel"
+            label="Contact Phone Number"
+            placeholder="Enter contact's phone number"
+            mask="(999)-999-9999"
+          />
+
+          <Field
+            name="deliveryNote.note"
+            component={FormikTextarea}
+            label="Delivery Note"
+            placeholder="For example: Call when 30 minutes out. Go to back of building."
+            rows={4}
+          />
+        </IonContent>
+
+        <IonFooter>
+          <IonButton expand="block" onClick={toggleDeliveryNote}>
+            Save
+          </IonButton>
+        </IonFooter>
+      </IonModal>
     </>
   )
 }

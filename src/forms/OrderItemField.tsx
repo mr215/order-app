@@ -15,6 +15,7 @@ interface Props {
 const OrderItemLabel = styled(IonLabel)`
   display: flex !important;
   align-items: center;
+  font-size: 1.25rem !important;
 `
 
 const QuantityText = styled(IonText)`
@@ -57,7 +58,7 @@ const OrderItemField: React.FC<Props> = ({
             </>
           ) : (
             <IonText color="medium">
-              Click to enter description and quantity
+              Tap to enter description and quantity
             </IonText>
           )}
         </OrderItemLabel>

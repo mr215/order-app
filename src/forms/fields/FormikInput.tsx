@@ -1,55 +1,76 @@
-import React, { ComponentProps } from 'react'
+import React, { useState, InputHTMLAttributes, ReactElement } from 'react'
+import styled from 'styled-components'
 import clsx from 'clsx'
 import { FieldProps, getIn } from 'formik'
-import {
-  IonInput,
-  IonItem,
-  IonItemDivider,
-  IonItemGroup,
-  IonLabel,
-  IonText,
-} from '@ionic/react'
+import { IonItem, IonItemGroup } from '@ionic/react'
+import InputMask from 'react-input-mask'
+import identity from 'lodash/identity'
 
-import ErrorLabel from '../components/ErrorLabel'
+import FieldHeader from '../components/FieldHeader'
 
-interface Props extends ComponentProps<typeof IonInput> {
+interface Props extends InputHTMLAttributes<Element> {
   label: string
+  mask: string | [string | RegExp]
   required?: boolean
+  formatter?: (str: string) => string
+  extraContent?: ReactElement
 }
 
+const StyledInputMask = styled(InputMask)`
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-size: 1.25rem;
+`
+
 const FormikInput: React.FC<FieldProps & Props> = ({
-  field: { name, value },
+  field: { name, value, onBlur },
   form,
   label,
-  required,
+  mask = '',
+  formatter = identity,
+  required = false,
+  extraContent = null,
   ...props
 }) => {
+  const [focused, setFocused] = useState(false)
+
   const error = getIn(form.errors, name)
   const touched = getIn(form.touched, name)
 
+  console.log('value', value)
+
   return (
     <IonItemGroup>
-      <IonItemDivider mode="ios">
-        <IonLabel className="ion-text-wrap">
-          {label}
-          {required && <IonText color="danger">*</IonText>}
-        </IonLabel>
-
-        {error && touched && <ErrorLabel>{error}</ErrorLabel>}
-      </IonItemDivider>
+      <FieldHeader label={label} error={touched && error} required={required} />
 
       <IonItem
         lines="full"
         mode="ios"
-        className={clsx({ 'ion-invalid': error && touched })}
+        className={clsx('item-interactive', {
+          'item-has-focus': focused,
+          'ion-invalid': error && touched,
+        })}
       >
-        <IonInput
-          {...props}
-          mode="ios"
+        <StyledInputMask
+          mask={mask}
+          name={name}
           value={value}
-          onIonBlur={e => form.setFieldTouched(name)}
-          onIonChange={e => form.setFieldValue(name, e.detail.value!)}
+          onChange={e => form.setFieldValue(name, formatter(e.target.value))}
+          onFocus={() => {
+            setFocused(true)
+          }}
+          onBlur={e => {
+            setFocused(false)
+
+            onBlur(e)
+          }}
+          {...props}
         />
+
+        {extraContent}
       </IonItem>
     </IonItemGroup>
   )

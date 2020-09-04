@@ -53,7 +53,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
         <Field
           name="phone"
           component={FormikInput}
-          type="text"
+          type="tel"
           label="Phone Number"
           required
         />

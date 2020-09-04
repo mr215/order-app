@@ -52,6 +52,7 @@ const OrderItemsForm: React.FC<
       component={FormikInput}
       type="text"
       label="Order/PO #"
+      placeholder="Enter order #, PO # or Will Call"
     />
   )
 
@@ -79,7 +80,7 @@ const OrderItemsForm: React.FC<
     <>
       <IonList mode="ios">
         <IonListHeader>
-          <IonLabel>Order Items</IonLabel>
+          <IonLabel>Create List</IonLabel>
         </IonListHeader>
 
         <FieldArray

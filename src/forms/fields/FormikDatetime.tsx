@@ -2,16 +2,9 @@ import React, { ComponentProps } from 'react'
 import styled from 'styled-components'
 import clsx from 'clsx'
 import { FieldProps, getIn } from 'formik'
-import {
-  IonDatetime,
-  IonItem,
-  IonItemDivider,
-  IonItemGroup,
-  IonLabel,
-  IonText,
-} from '@ionic/react'
+import { IonDatetime, IonItem, IonItemGroup } from '@ionic/react'
 
-import ErrorLabel from '../components/ErrorLabel'
+import FieldHeader from '../components/FieldHeader'
 
 interface Props extends ComponentProps<typeof IonDatetime> {
   label: string
@@ -20,6 +13,7 @@ interface Props extends ComponentProps<typeof IonDatetime> {
 
 const StyledDatetime = styled(IonDatetime)`
   --padding-start: 0;
+  font-size: 1.25rem;
 `
 
 const FormikDatetime: React.FC<FieldProps & Props> = ({
@@ -34,14 +28,7 @@ const FormikDatetime: React.FC<FieldProps & Props> = ({
 
   return (
     <IonItemGroup>
-      <IonItemDivider mode="ios">
-        <IonLabel className="ion-text-wrap">
-          {label}
-          {required && <IonText color="danger">*</IonText>}
-        </IonLabel>
-
-        {error && touched && <ErrorLabel>{error}</ErrorLabel>}
-      </IonItemDivider>
+      <FieldHeader label={label} error={touched && error} required={required} />
 
       <IonItem
         mode="ios"

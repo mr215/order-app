@@ -1,14 +1,9 @@
 import React, { ComponentProps, ReactElement } from 'react'
+import styled from 'styled-components'
 import { FieldProps, getIn } from 'formik'
-import {
-  IonItem,
-  IonItemDivider,
-  IonLabel,
-  IonRadio,
-  IonRadioGroup,
-} from '@ionic/react'
+import { IonItem, IonLabel, IonRadio, IonRadioGroup } from '@ionic/react'
 
-import ErrorLabel from '../components/ErrorLabel'
+import FieldHeader from '../components/FieldHeader'
 
 interface RadioItem {
   label: ReactElement
@@ -19,7 +14,13 @@ interface Props extends ComponentProps<typeof IonRadioGroup> {
   label: string
   radioProps: ComponentProps<typeof IonRadio>
   items: RadioItem[]
+  horizontal?: boolean
 }
+
+const RadioLabel = styled(IonLabel)`
+  font-size: 1.25rem !important;
+  white-space: normal !important;
+`
 
 const FormikRadioGroup: React.FC<FieldProps & Props> = ({
   field: { name, value },
@@ -27,10 +28,23 @@ const FormikRadioGroup: React.FC<FieldProps & Props> = ({
   label,
   radioProps,
   items,
+  horizontal = false,
   ...props
 }) => {
   const error = getIn(form.errors, name)
   const touched = getIn(form.touched, name)
+
+  const renderRadioItem = (item: RadioItem) => (
+    <>
+      <IonRadio
+        {...radioProps}
+        value={item.value}
+        onIonBlur={e => form.setFieldTouched(name)}
+      />
+
+      <RadioLabel>{item.label}</RadioLabel>
+    </>
+  )
 
   return (
     <IonRadioGroup
@@ -38,22 +52,23 @@ const FormikRadioGroup: React.FC<FieldProps & Props> = ({
       onIonChange={e => form.setFieldValue(name, e.detail.value!)}
       {...props}
     >
-      <IonItemDivider mode="ios">
-        <IonLabel className="ion-text-wrap">{label}</IonLabel>
+      <FieldHeader label={label} error={touched && error} />
 
-        {error && touched && <ErrorLabel>{error}</ErrorLabel>}
-      </IonItemDivider>
-
-      {items.map(item => (
-        <IonItem key={item.value} lines="full" mode="ios">
-          <IonLabel>{item.label}</IonLabel>
-          <IonRadio
-            {...radioProps}
-            value={item.value}
-            onIonBlur={e => form.setFieldTouched(name)}
-          />
+      {horizontal ? (
+        <IonItem lines="full" mode="ios">
+          {items.map(item => (
+            <IonItem key={item.value} lines="none" className="ion-no-padding">
+              {renderRadioItem(item)}
+            </IonItem>
+          ))}
         </IonItem>
-      ))}
+      ) : (
+        items.map(item => (
+          <IonItem key={item.value} lines="full" mode="ios">
+            {renderRadioItem(item)}
+          </IonItem>
+        ))
+      )}
     </IonRadioGroup>
   )
 }

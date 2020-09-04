@@ -25,57 +25,55 @@ interface Props {
 }
 
 const OrderItemModalForm: React.FC<Props & FormikProps<OrderItem>> = ({
-  orderItem,
   onCancel,
   submitForm,
-}) => {
-  return (
-    <IonModal isOpen mode="ios" onDidDismiss={onCancel}>
-      <IonContent>
-        <IonList>
-          <IonListHeader>
-            <IonLabel>{orderItem ? 'Edit' : 'Add'} Order Item</IonLabel>
-          </IonListHeader>
+}) => (
+  <IonModal isOpen mode="ios" onDidDismiss={onCancel}>
+    <IonContent>
+      <IonList>
+        <IonListHeader>
+          <IonLabel>Enter Item Information</IonLabel>
+        </IonListHeader>
 
-          <Field
-            name="description"
-            component={FormikTextarea}
-            type="text"
-            label="Description"
-            rows={4}
-            required
-          />
+        <Field
+          name="description"
+          component={FormikTextarea}
+          label="Description"
+          placeholder="Enter item description"
+          rows={4}
+          required
+        />
 
-          <Field
-            name="quantity"
-            component={FormikInput}
-            type="number"
-            label="Quantity"
-            required
-          />
-        </IonList>
-      </IonContent>
+        <Field
+          name="quantity"
+          component={FormikInput}
+          type="number"
+          label="Quantity"
+          placeholder="Enter quantity"
+          required
+        />
+      </IonList>
+    </IonContent>
 
-      <IonFooter mode="ios">
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <IonButton expand="block" fill="outline" onClick={onCancel}>
-                Cancel
-              </IonButton>
-            </IonCol>
+    <IonFooter mode="ios">
+      <IonGrid>
+        <IonRow>
+          <IonCol>
+            <IonButton expand="block" fill="outline" onClick={onCancel}>
+              Cancel
+            </IonButton>
+          </IonCol>
 
-            <IonCol>
-              <IonButton expand="block" onClick={submitForm}>
-                OK
-              </IonButton>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      </IonFooter>
-    </IonModal>
-  )
-}
+          <IonCol>
+            <IonButton expand="block" onClick={submitForm}>
+              OK
+            </IonButton>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    </IonFooter>
+  </IonModal>
+)
 
 export default withFormik<Props, OrderItem>({
   displayName: 'OrderItemModalForm',

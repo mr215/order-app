@@ -14,7 +14,7 @@ const DEFAULT_ORDER = {
   deliveryNote: {
     contact: '',
     phone: '',
-    notes: '',
+    note: '',
   },
   orderId: '',
   items: [DEFAULT_ORDER_ITEM],

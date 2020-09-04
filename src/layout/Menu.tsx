@@ -16,7 +16,7 @@ import {
   cardOutline,
   homeOutline,
   listOutline,
-  shareSocialOutline,
+  // shareSocialOutline,
 } from 'ionicons/icons'
 
 interface MenuItem {
@@ -38,15 +38,16 @@ const menuItems: MenuItem[] = [
     routerLink: '/page/Payment',
   },
   {
-    title: 'Tasks',
+    title: 'History',
     icon: listOutline,
-    routerLink: '/page/Tasks',
+    routerLink: '/page/History',
   },
-  {
-    title: 'Referrals',
-    icon: shareSocialOutline,
-    routerLink: '/page/Referrals',
-  },
+  // TODO: Add this back when we support this feature
+  // {
+  //   title: 'Referrals',
+  //   icon: shareSocialOutline,
+  //   routerLink: '/page/Referrals',
+  // },
   {
     title: '+1 (415) 349-5085',
     icon: callOutline,

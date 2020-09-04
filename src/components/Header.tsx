@@ -1,9 +1,7 @@
 import React from 'react'
 import {
   IonBackButton,
-  IonButtons,
   IonHeader,
-  IonImg,
   IonMenuButton,
   IonToolbar,
 } from '@ionic/react'
@@ -16,26 +14,41 @@ interface Props {
   login?: boolean
 }
 
-const LogoImg = styled(IonImg)`
-  height: 3rem;
-  margin: 0.5rem 0;
+const StyledToolbar = styled(IonToolbar)`
+  --padding-top: 0.5rem;
+  --padding-bottom: 0.5rem;
+  text-align: center;
 `
 
-const Header: React.FC<Props> = ({ home = false, login = false }) => {
-  return (
-    <IonHeader mode="ios">
-      <IonToolbar>
-        <IonButtons slot="start">
-          {home ? <IonMenuButton /> : 
-            !login ? <IonBackButton defaultHref="/home" /> : 
-            null
-          }
-        </IonButtons>
+const ButtonContainer = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0.25rem;
+  width: auto;
 
-        <LogoImg src={logoImg} alt="logo" />
-      </IonToolbar>
-    </IonHeader>
-  )
-}
+  display: flex;
+  align-items: center;
+`
+
+const LogoImg = styled.img`
+  height: 3rem;
+`
+
+const Header: React.FC<Props> = ({ home = false, login = false }) => (
+  <IonHeader mode="ios">
+    <StyledToolbar>
+      <ButtonContainer>
+        {home ? (
+          <IonMenuButton />
+        ) : (
+          !login && <IonBackButton defaultHref="/home" />
+        )}
+      </ButtonContainer>
+
+      <LogoImg src={logoImg} alt="logo" />
+    </StyledToolbar>
+  </IonHeader>
+)
 
 export default Header
