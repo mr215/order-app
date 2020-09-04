@@ -17,7 +17,7 @@ import {
   homeOutline,
   listOutline,
   shareSocialOutline,
-  logInOutline
+  logInOutline,
 } from 'ionicons/icons'
 
 interface MenuItem {
@@ -56,8 +56,8 @@ const menuItems: MenuItem[] = [
   {
     title: 'Login',
     icon: logInOutline,
-    routerLink: '/login'
-  }
+    routerLink: '/login',
+  },
 ]
 
 const Menu: React.FC = () => {

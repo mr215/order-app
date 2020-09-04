@@ -28,7 +28,7 @@ export interface Order {
   vehicleType: string
   lastestDeliverByTime: string
   pickupNote: string
-  deliveryNote: DeliveryNote 
+  deliveryNote: DeliveryNote
 
   items: OrderItem[]
   orderId: string
@@ -46,10 +46,10 @@ export interface User {
   firstName: string
   lastName: string
   email: string
-  phone: string,
-  companyName: string,
-  accountingEmail: string,
-  password: string,
+  phone: string
+  companyName: string
+  accountingEmail: string
+  password: string
 }
 
 export type SignUpFormValues = Required<User>
