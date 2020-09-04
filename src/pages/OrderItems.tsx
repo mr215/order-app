@@ -8,12 +8,16 @@ import Header from 'components/Header'
 import OrderItemsForm from 'forms/OrderItemsForm'
 
 const OrderItems: React.FC<RouteComponentProps> = ({ history }) => {
-  const { orderStore } = useStores()
+  const { orderStore, userStore } = useStores()
 
   const handleSubmit = (values: OrderItemsFormValues) => {
     orderStore.updateOrder(values)
 
-    history.push({ pathname: '/page/payment-summary' })
+    if (userStore.user.email !== '') {
+      history.push({ pathname: '/page/payment-summary' })
+    } else {
+      history.push({ pathname: '/landing' })
+    }
   }
 
   return (
