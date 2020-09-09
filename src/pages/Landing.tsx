@@ -23,10 +23,12 @@ const Landing: React.FC<RouteComponentProps> = ({ history }) => {
   const handleSubmit = (values: LandingFormValues) => {
     userStore.updateUser(values)
 
-    {
-      /* Need to check entered email and navigate to signup or login */
+    //if account exists, go to login; else redirect to signup
+    if (true) {
+      history.push({ pathname: '/login' })
+    } else {
+      history.push({ pathname: '/new' })
     }
-    history.push({ pathname: '/home' })
   }
 
   return (
