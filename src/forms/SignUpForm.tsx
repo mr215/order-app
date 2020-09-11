@@ -11,6 +11,8 @@ import {
 import * as Yup from 'yup'
 
 import { User, SignUpFormValues } from 'types'
+import { titleCase } from 'utils/formatters'
+
 import FormikInput from './fields/FormikInput'
 import FormikCheckbox from './fields/FormikCheckbox'
 
@@ -31,6 +33,8 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           component={FormikInput}
           type="text"
           label="First Name"
+          placeholder="Enter first name here"
+          formatter={titleCase}
           required
         />
 
@@ -39,6 +43,8 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           component={FormikInput}
           type="text"
           label="Last Name"
+          placeholder="Enter last name here"
+          formatter={titleCase}
           required
         />
 
@@ -47,6 +53,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           component={FormikInput}
           type="text"
           label="Email Address"
+          placeholder="Enter email address here"
           required
         />
 
@@ -55,6 +62,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           component={FormikInput}
           type="tel"
           label="Phone Number"
+          placeholder="Enter your mobile number here"
           required
         />
 
@@ -63,6 +71,8 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           component={FormikInput}
           type="text"
           label="Company Name"
+          placeholder="Enter your company name here"
+          formatter={titleCase}
           required
         />
 
@@ -71,6 +81,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           component={FormikInput}
           type="text"
           label="Accounting Email"
+          placeholder="Enter where receipts should be sent"
           required
         />
 
@@ -79,6 +90,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           component={FormikInput}
           type="text"
           label="Password"
+          placeholder="Enter password here"
           required
         />
 
@@ -87,7 +99,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           value={false}
           component={FormikCheckbox}
           label="I authorize Supply Hound, Inc. to pickup and deliver the items specified by my use of this service. See Privacy and Terms"
-          slot="end"
+          slot="start"
           required
           item={{
             value: true,

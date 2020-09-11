@@ -30,11 +30,6 @@ export default class OrderStore {
   }
 
   @action
-  editPickup(address: string) {
-    set(this.order, { pickupAddress: address })
-  }
-
-  @action
   resetOrder() {
     this.updateOrder(DEFAULT_ORDER)
   }
