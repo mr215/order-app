@@ -21,6 +21,7 @@ import FormikDatetime from './fields/FormikDatetime'
 import FormikInput from './fields/FormikInput'
 import FormikRadioGroup from './fields/FormikRadioGroup'
 import FormikTextarea from './fields/FormikTextarea'
+import FormikAddress from './fields/FormikAddress'
 
 interface MainOrderFormProps {
   order: Order
@@ -87,7 +88,7 @@ const MainOrderForm: React.FC<
 
         <Field
           name="pickupAddress"
-          component={FormikInput}
+          component={FormikAddress}
           type="text"
           label="Pick up From"
           placeholder="Search pickup address"
@@ -101,7 +102,7 @@ const MainOrderForm: React.FC<
 
         <Field
           name="deliveryAddress"
-          component={FormikInput}
+          component={FormikAddress}
           type="text"
           label="Deliver To"
           placeholder="Search delivery address"
@@ -163,7 +164,7 @@ const MainOrderForm: React.FC<
           />
         </IonContent>
 
-        <IonFooter>
+        <IonFooter mode="ios" className="ion-padding">
           <IonButton expand="block" onClick={togglePickupNote}>
             Save
           </IonButton>
@@ -204,7 +205,7 @@ const MainOrderForm: React.FC<
           />
         </IonContent>
 
-        <IonFooter>
+        <IonFooter mode="ios" className="ion-padding">
           <IonButton expand="block" onClick={toggleDeliveryNote}>
             Save
           </IonButton>
