@@ -35,7 +35,7 @@ const Landing: React.FC<RouteComponentProps> = ({ history }) => {
     <IonPage>
       <Header login />
       <TitleContainer>
-        <Title> Welcome to SupplyHound! </Title>
+        <Title> Welcome Back! </Title>
         <IonLabel>Enter your email to continue.</IonLabel>
       </TitleContainer>
       <LandingForm user={userStore.user} onSubmit={handleSubmit} />
