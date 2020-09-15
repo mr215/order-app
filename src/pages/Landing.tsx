@@ -33,7 +33,6 @@ const Landing: React.FC<RouteComponentProps> = ({ history }) => {
 
   return (
     <IonPage>
-      {console.log(userStore.user)}
       <Header login />
       <TitleContainer>
         <Title> Welcome to SupplyHound! </Title>
