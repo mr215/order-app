@@ -16,9 +16,12 @@ import {
   cardOutline,
   homeOutline,
   listOutline,
-  logInOutline,
+  logOutOutline,
   // shareSocialOutline,
 } from 'ionicons/icons'
+
+import useStores from 'hooks/useStores'
+import { DEFAULT_USER } from 'types'
 
 interface MenuItem {
   title: string
@@ -55,14 +58,20 @@ const menuItems: MenuItem[] = [
     href: 'tel:4153495085',
   },
   {
-    title: 'Login',
-    icon: logInOutline,
-    routerLink: '/login',
+    title: 'Logout',
+    icon: logOutOutline,
+    href: '/landing',
   },
 ]
 
 const Menu: React.FC = () => {
   const location = useLocation()
+
+  const { userStore } = useStores()
+
+  const handleClick = () => {
+    userStore.updateUser(DEFAULT_USER)
+  }
 
   return (
     <IonMenu contentId="main" type="overlay">
@@ -86,6 +95,7 @@ const Menu: React.FC = () => {
                   routerDirection="none"
                   lines="none"
                   detail={false}
+                  onClick={menuItem.title === 'Logout' ? handleClick : () => {}}
                 >
                   <IonIcon slot="start" icon={menuItem.icon} />
                   <IonLabel>{menuItem.title}</IonLabel>
