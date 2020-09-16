@@ -52,6 +52,16 @@ export interface User {
   password: string
 }
 
+export const DEFAULT_USER: User = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  companyName: '',
+  accountingEmail: '',
+  password: '',
+}
+
 export type SignUpFormValues = Required<User>
 
 export type LogInFormValues = Partial<User>

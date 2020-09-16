@@ -31,9 +31,7 @@ const LogIn: React.FC<RouteComponentProps> = ({ history }) => {
       <Header login />
       <TitleContainer>
         <Title> Log In </Title>
-        <IonLabel>
-          Welcome to SupplyHound! Log in with your info below.
-        </IonLabel>
+        <IonLabel>Welcome Back! Log in with your info below.</IonLabel>
       </TitleContainer>
       <LogInForm user={userStore.user} onSubmit={handleSubmit} />
     </IonPage>
