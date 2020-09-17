@@ -1,3 +1,5 @@
+import { string } from 'yup'
+
 export enum OrderThrough {
   SupplyHound = 'SupplyHound',
   Supplier = 'Supplier',
@@ -72,23 +74,22 @@ export interface Supplier {
   name: string
   address: string
   phone: string
-  type: string
+  type: string[]
+}
+
+export enum SupplierType {
+  All = '',
+  Lumber = 'Lumber',
+  Hardware = 'Hardware',
+  Plumbing = 'Plumbing',
+  Electric = 'Electric',
+  Landscape = 'Landscape',
+  Other = 'Other',
 }
 
 export const DEFAULT_SUPPLIER: Supplier = {
   name: '',
   address: '',
   phone: '',
-  type: '',
-}
-
-export enum SupplierType {
-  All = '',
-  General = 'general',
-  Lumber = 'lumber',
-  Hardware = 'hardware',
-  Plumbing = 'plumbing',
-  Electric = 'electric',
-  Landscape = 'landscape',
-  Other = 'other',
+  type: [''],
 }
