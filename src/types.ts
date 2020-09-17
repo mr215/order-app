@@ -1,5 +1,3 @@
-import { string } from 'yup'
-
 export enum OrderThrough {
   SupplyHound = 'SupplyHound',
   Supplier = 'Supplier',
@@ -74,7 +72,7 @@ export interface Supplier {
   name: string
   address: string
   phone: string
-  type: string[]
+  type: string
 }
 
 export enum SupplierType {
@@ -91,5 +89,5 @@ export const DEFAULT_SUPPLIER: Supplier = {
   name: '',
   address: '',
   phone: '',
-  type: [''],
+  type: '',
 }

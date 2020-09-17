@@ -11,13 +11,7 @@ import {
 import { formatISO } from 'date-fns'
 import * as Yup from 'yup'
 
-import {
-  OrderThrough,
-  VehicleType,
-  Order,
-  MainOrderFormValues,
-  Supplier,
-} from 'types'
+import { OrderThrough, VehicleType, Order, MainOrderFormValues } from 'types'
 import { titleCase } from 'utils/formatters'
 
 import carImg from 'images/car.png'

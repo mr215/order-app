@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import {
   IonButton,
   IonItem,
@@ -26,16 +25,12 @@ interface Props {
   onClick: (address: string) => void
 }
 
-const RadioLabel = styled(IonLabel)`
-  white-space: normal !important;
-`
-
 const mockSuppliers = [
   {
     name: 'Golden State',
     address: '123 Mock Street, San Francisco, CA',
     phone: '777-777-7777',
-    type: ['General'],
+    type: 'General',
     img:
       'https://d2sz1kgdtrlf1n.cloudfront.net/task_images/kcBH1582952495451-ScreenShot20200228at8.59.42PM.png',
   },
@@ -43,7 +38,7 @@ const mockSuppliers = [
     name: 'Silver City',
     address: '456 Fake Road, San Rafeo, CA',
     phone: '888-888-8888',
-    type: ['Lumber'],
+    type: 'Lumber',
     img:
       'https://d2sz1kgdtrlf1n.cloudfront.net/task_images/wlfm1582952104279-ScreenShot20200228at8.53.27PM.png',
   },
@@ -51,7 +46,7 @@ const mockSuppliers = [
     name: 'Bronze County',
     address: '789 Pretend Ave, Mill Valley, CA',
     phone: '666-666-6666',
-    type: ['Electric'],
+    type: 'Electric',
     img:
       'https://d2sz1kgdtrlf1n.cloudfront.net/task_images/dRE61582952283491-ScreenShot20200228at8.56.50PM.png',
   },
@@ -59,7 +54,7 @@ const mockSuppliers = [
     name: 'Platinum Place',
     address: '111 Imagine Ct, San Francisco, CA',
     phone: '222-222-2222',
-    type: ['Hardware', 'Electric'],
+    type: 'Hardware',
     img:
       'https://d2sz1kgdtrlf1n.cloudfront.net/task_images/diJs1582951691680-ScreenShot20200228at8.47.04PM.png',
   },
@@ -77,7 +72,7 @@ const SupplierSelectionModal: React.FC<Props> = ({ onCancel, onClick }) => {
   const filterSupplierTypes = () => {
     return supplierType === 'All'
       ? mockSuppliers
-      : mockSuppliers.filter(supplier => supplier.type.includes(supplierType))
+      : mockSuppliers.filter(supplier => supplier.type === supplierType)
   }
 
   return (
@@ -91,15 +86,15 @@ const SupplierSelectionModal: React.FC<Props> = ({ onCancel, onClick }) => {
           <IonRadioGroup>
             <IonGrid>
               <IonRow>
-                {Object.keys(SupplierType).map(type => (
-                  <IonCol size="6">
+                {Object.keys(SupplierType).map((type, index) => (
+                  <IonCol size="6" key={`s-${type}${index}`}>
                     <IonItem
                       lines="full"
                       mode="ios"
                       onClick={() => handleSelect(type)}
                     >
                       <IonRadio slot="start" mode="md" value={type} />
-                      <RadioLabel>{type}</RadioLabel>
+                      <IonLabel>{type}</IonLabel>
                     </IonItem>
                   </IonCol>
                 ))}
@@ -108,10 +103,13 @@ const SupplierSelectionModal: React.FC<Props> = ({ onCancel, onClick }) => {
           </IonRadioGroup>
 
           <IonGrid>
-            {filterSupplierTypes().map(supplier => {
+            {filterSupplierTypes().map((supplier, index) => {
               return (
-                <IonRow onClick={() => onClick(supplier.address)}>
-                  <IonCol size="3">
+                <IonRow
+                  key={`supplier${index}`}
+                  onClick={() => onClick(supplier.address)}
+                >
+                  <IonCol size="4">
                     <IonThumbnail>
                       <IonImg src={supplier.img} />
                     </IonThumbnail>
