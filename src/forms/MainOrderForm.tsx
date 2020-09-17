@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 import {
@@ -11,7 +11,13 @@ import {
 import { formatISO } from 'date-fns'
 import * as Yup from 'yup'
 
-import { OrderThrough, VehicleType, Order, MainOrderFormValues } from 'types'
+import {
+  OrderThrough,
+  VehicleType,
+  Order,
+  MainOrderFormValues,
+  Supplier,
+} from 'types'
 import { titleCase } from 'utils/formatters'
 
 import carImg from 'images/car.png'
@@ -22,6 +28,7 @@ import FormikInput from './fields/FormikInput'
 import FormikRadioGroup from './fields/FormikRadioGroup'
 import FormikTextarea from './fields/FormikTextarea'
 import FormikAddress from './fields/FormikAddress'
+import SupplierSelectionModal from './SupplierSelectionModal'
 
 interface MainOrderFormProps {
   order: Order
@@ -44,16 +51,29 @@ const ModalTitle = styled.h1`
 
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
-> = ({ isValid, submitForm }) => {
-  const [openPickupNote, setOpenPickupNote] = React.useState(false)
-  const [openDeliveryNote, setOpenDeliveryNote] = React.useState(false)
+> = ({ isValid, submitForm, setFieldValue }) => {
+  const [showPickupNote, setShowPickupNote] = useState<boolean>(false)
+  const [showDeliveryNote, setShowDeliveryNote] = useState<boolean>(false)
+  const [showSupplierSelection, setShowSupplierSelection] = useState<boolean>(
+    false
+  )
 
   const togglePickupNote = () => {
-    setOpenPickupNote(!openPickupNote)
+    setShowPickupNote(!showPickupNote)
   }
 
   const toggleDeliveryNote = () => {
-    setOpenDeliveryNote(!openDeliveryNote)
+    setShowDeliveryNote(!showDeliveryNote)
+  }
+
+  const toggleSelectionModal = () => {
+    setShowSupplierSelection(!showSupplierSelection)
+  }
+
+  const handleSupplierSelect = (address: string) => {
+    setFieldValue('pickupAddress', address)
+
+    setShowSupplierSelection(!showSupplierSelection)
   }
 
   return (
@@ -94,7 +114,12 @@ const MainOrderForm: React.FC<
           placeholder="Search pickup address"
           extraContent={
             <IonButton slot="end" onClick={togglePickupNote}>
-              Note
+              Add Pickup Note
+            </IonButton>
+          }
+          selectionContent={
+            <IonButton slot="start" onClick={toggleSelectionModal}>
+              Select
             </IonButton>
           }
           required
@@ -108,7 +133,7 @@ const MainOrderForm: React.FC<
           placeholder="Search delivery address"
           extraContent={
             <IonButton slot="end" onClick={toggleDeliveryNote}>
-              Note
+              Add Delivery Note
             </IonButton>
           }
           required
@@ -149,7 +174,8 @@ const MainOrderForm: React.FC<
         </IonButton>
       </IonFooter>
 
-      <IonModal isOpen={openPickupNote}>
+      {/* Modals */}
+      <IonModal isOpen={showPickupNote}>
         <IonHeader>
           <ModalTitle>Pickup Note</ModalTitle>
         </IonHeader>
@@ -171,8 +197,7 @@ const MainOrderForm: React.FC<
         </IonFooter>
       </IonModal>
 
-      {/* Modals */}
-      <IonModal isOpen={openDeliveryNote}>
+      <IonModal isOpen={showDeliveryNote}>
         <IonHeader>
           <ModalTitle>Delivery Note</ModalTitle>
         </IonHeader>
@@ -211,6 +236,13 @@ const MainOrderForm: React.FC<
           </IonButton>
         </IonFooter>
       </IonModal>
+
+      {showSupplierSelection && (
+        <SupplierSelectionModal
+          onCancel={toggleSelectionModal}
+          onClick={handleSupplierSelect}
+        />
+      )}
     </>
   )
 }

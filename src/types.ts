@@ -67,3 +67,28 @@ export type SignUpFormValues = Required<User>
 export type LogInFormValues = Partial<User>
 
 export type LandingFormValues = Partial<User>
+
+export interface Supplier {
+  name: string
+  address: string
+  phone: string
+  type: string
+}
+
+export const DEFAULT_SUPPLIER: Supplier = {
+  name: '',
+  address: '',
+  phone: '',
+  type: '',
+}
+
+export enum SupplierType {
+  All = '',
+  General = 'general',
+  Lumber = 'lumber',
+  Hardware = 'hardware',
+  Plumbing = 'plumbing',
+  Electric = 'electric',
+  Landscape = 'landscape',
+  Other = 'other',
+}

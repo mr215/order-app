@@ -20,3 +20,11 @@
 ion-item {
   --highlight-height: 2px;
 }
+
+ion-thumbnail {
+  width: auto !important;
+}
+
+ion-img {
+  object-fit: fill !important;
+}

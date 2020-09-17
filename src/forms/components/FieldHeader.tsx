@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import styled from 'styled-components'
 import { IonItemDivider, IonLabel, IonText } from '@ionic/react'
 
@@ -6,6 +6,7 @@ interface Props {
   label: string
   required?: boolean
   error?: string
+  extraContent?: ReactElement
 }
 
 const StyledItemDivider = styled(IonItemDivider)`
@@ -29,6 +30,7 @@ const FieldHeader: React.FC<Props> = ({
   label,
   required = false,
   error = '',
+  extraContent,
 }: Props) => {
   return (
     <StyledItemDivider mode="ios">
@@ -36,6 +38,7 @@ const FieldHeader: React.FC<Props> = ({
         {label}
         {required && <IonText color="danger">*</IonText>}
       </FieldLabel>
+      {extraContent}
 
       {error && <ErrorLabel>{error}</ErrorLabel>}
     </StyledItemDivider>
