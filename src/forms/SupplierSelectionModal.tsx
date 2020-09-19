@@ -15,10 +15,15 @@ import {
   IonImg,
   IonRadio,
   IonRadioGroup,
+  IonIcon,
 } from '@ionic/react'
+import { search, close } from 'ionicons/icons'
+import { titleCase } from 'utils/formatters'
 
 import { SupplierType } from 'types'
 import useStores from 'hooks/useStores'
+import { Field } from 'formik'
+import FormikInput from './fields/FormikInput'
 
 interface Props {
   onCancel: () => void
@@ -64,9 +69,15 @@ const SupplierSelectionModal: React.FC<Props> = ({ onCancel, onClick }) => {
   const { supplierStore } = useStores()
 
   const [supplierType, setSupplierType] = useState('All')
+  const [supplierName, setSupplierName] = useState('')
+  const [showSearch, setShowSearch] = useState<boolean>(false)
 
   const handleSelect = (supplierType: string) => {
     setSupplierType(supplierType)
+  }
+
+  const handleChange = (event: any) => {
+    setSupplierName(event.target.value)
   }
 
   const filterSupplierTypes = () => {
@@ -75,54 +86,78 @@ const SupplierSelectionModal: React.FC<Props> = ({ onCancel, onClick }) => {
       : mockSuppliers.filter(supplier => supplier.type === supplierType)
   }
 
+  const filterSupplierNames = () => {
+    return supplierName === ''
+      ? []
+      : mockSuppliers.filter(supplier =>
+          supplier.name.includes(titleCase(supplierName))
+        )
+  }
+
   return (
     <IonModal isOpen mode="ios" onDidDismiss={onCancel}>
       <IonContent>
         <IonList>
           <IonListHeader>
             <IonLabel>Select Your Supplier</IonLabel>
+            <IonItem lines="none" onClick={() => setShowSearch(!showSearch)}>
+              <IonIcon icon={showSearch ? close : search} />
+            </IonItem>
           </IonListHeader>
-
-          <IonRadioGroup>
-            <IonGrid>
-              <IonRow>
-                {Object.keys(SupplierType).map((type, index) => (
-                  <IonCol size="6" key={`s-${type}${index}`}>
-                    <IonItem
-                      lines="full"
-                      mode="ios"
-                      onClick={() => handleSelect(type)}
-                    >
-                      <IonRadio slot="start" mode="md" value={type} />
-                      <IonLabel>{type}</IonLabel>
-                    </IonItem>
-                  </IonCol>
-                ))}
-              </IonRow>
-            </IonGrid>
-          </IonRadioGroup>
+          {showSearch ? (
+            <Field
+              name="supplierName"
+              component={FormikInput}
+              label="Supplier Name"
+              type="text"
+              placeholder="Enter a Supplier Name"
+              onChange={handleChange}
+              formatter={titleCase}
+            />
+          ) : (
+            <IonRadioGroup>
+              <IonGrid>
+                <IonRow>
+                  {Object.keys(SupplierType).map((type, index) => (
+                    <IonCol size="6" key={`s-${type}${index}`}>
+                      <IonItem
+                        lines="none"
+                        mode="ios"
+                        onClick={() => handleSelect(type)}
+                      >
+                        <IonRadio slot="start" mode="md" value={type} />
+                        <IonLabel>{type}</IonLabel>
+                      </IonItem>
+                    </IonCol>
+                  ))}
+                </IonRow>
+              </IonGrid>
+            </IonRadioGroup>
+          )}
 
           <IonGrid>
-            {filterSupplierTypes().map((supplier, index) => {
-              return (
-                <IonRow
-                  key={`supplier${index}`}
-                  onClick={() => onClick(supplier.address)}
-                >
-                  <IonCol size="4">
-                    <IonThumbnail>
-                      <IonImg src={supplier.img} />
-                    </IonThumbnail>
-                  </IonCol>
+            {(showSearch ? filterSupplierNames() : filterSupplierTypes()).map(
+              (supplier, index) => {
+                return (
+                  <IonRow
+                    key={`supplier${index}`}
+                    onClick={() => onClick(supplier.address)}
+                  >
+                    <IonCol size="4">
+                      <IonThumbnail>
+                        <IonImg src={supplier.img} />
+                      </IonThumbnail>
+                    </IonCol>
 
-                  <IonCol>
-                    <IonRow>{supplier.name}</IonRow>
-                    <IonRow>{supplier.address}</IonRow>
-                    <IonRow>{supplier.phone}</IonRow>
-                  </IonCol>
-                </IonRow>
-              )
-            })}
+                    <IonCol>
+                      <IonRow>{supplier.name}</IonRow>
+                      <IonRow>{supplier.address}</IonRow>
+                      <IonRow>{supplier.phone}</IonRow>
+                    </IonCol>
+                  </IonRow>
+                )
+              }
+            )}
           </IonGrid>
         </IonList>
       </IonContent>

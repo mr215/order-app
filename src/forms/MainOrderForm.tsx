@@ -1,13 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import {
-  IonButton,
-  IonContent,
-  IonFooter,
-  IonHeader,
-  IonModal,
-} from '@ionic/react'
+import { IonButton, IonContent, IonFooter } from '@ionic/react'
 import { formatISO } from 'date-fns'
 import * as Yup from 'yup'
 
@@ -20,9 +14,10 @@ import truckImg from 'images/truck.png'
 import FormikDatetime from './fields/FormikDatetime'
 import FormikInput from './fields/FormikInput'
 import FormikRadioGroup from './fields/FormikRadioGroup'
-import FormikTextarea from './fields/FormikTextarea'
 import FormikAddress from './fields/FormikAddress'
 import SupplierSelectionModal from './SupplierSelectionModal'
+import PickupNoteModalForm from './PickupNoteModalForm'
+import DeliveryNoteModalForm from './DeliveryNoteModalForm'
 
 interface MainOrderFormProps {
   order: Order
@@ -38,11 +33,6 @@ const VehicleImg = styled.img<{ small?: boolean }>`
   ${props => (props.small ? `transform: scale(0.9);` : '')}
 `
 
-const ModalTitle = styled.h1`
-  text-align: center;
-  margin: 1rem 0;
-`
-
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
 > = ({ isValid, submitForm, setFieldValue }) => {
@@ -52,22 +42,22 @@ const MainOrderForm: React.FC<
     false
   )
 
-  const togglePickupNote = () => {
-    setShowPickupNote(!showPickupNote)
+  const handleClosePickupNote = () => {
+    setShowPickupNote(false)
   }
 
-  const toggleDeliveryNote = () => {
-    setShowDeliveryNote(!showDeliveryNote)
+  const handleCloseDeliveryNote = () => {
+    setShowDeliveryNote(false)
   }
 
-  const toggleSelectionModal = () => {
-    setShowSupplierSelection(!showSupplierSelection)
+  const handleCloseSupplierSelect = () => {
+    setShowSupplierSelection(false)
   }
 
   const handleSupplierSelect = (address: string) => {
     setFieldValue('pickupAddress', address)
 
-    setShowSupplierSelection(!showSupplierSelection)
+    setShowSupplierSelection(false)
   }
 
   return (
@@ -107,12 +97,15 @@ const MainOrderForm: React.FC<
           label="Pick up From"
           placeholder="Search pickup address"
           extraContent={
-            <IonButton slot="end" onClick={togglePickupNote}>
+            <IonButton slot="end" onClick={() => setShowPickupNote(true)}>
               Add Pickup Note
             </IonButton>
           }
           selectionContent={
-            <IonButton slot="start" onClick={toggleSelectionModal}>
+            <IonButton
+              slot="start"
+              onClick={() => setShowSupplierSelection(true)}
+            >
               Select
             </IonButton>
           }
@@ -126,7 +119,7 @@ const MainOrderForm: React.FC<
           label="Deliver To"
           placeholder="Search delivery address"
           extraContent={
-            <IonButton slot="end" onClick={toggleDeliveryNote}>
+            <IonButton slot="end" onClick={() => setShowDeliveryNote(true)}>
               Add Delivery Note
             </IonButton>
           }
@@ -169,71 +162,17 @@ const MainOrderForm: React.FC<
       </IonFooter>
 
       {/* Modals */}
-      <IonModal isOpen={showPickupNote}>
-        <IonHeader>
-          <ModalTitle>Pickup Note</ModalTitle>
-        </IonHeader>
+      {showPickupNote && (
+        <PickupNoteModalForm onCancel={handleClosePickupNote} />
+      )}
 
-        <IonContent>
-          <Field
-            name="pickupNote"
-            component={FormikTextarea}
-            label="Pickup Note"
-            placeholder="For example: Go to tool counter in back. Picking up compressor, replacement hose and 3 boxes of nails."
-            rows={4}
-          />
-        </IonContent>
-
-        <IonFooter mode="ios" className="ion-padding">
-          <IonButton expand="block" onClick={togglePickupNote}>
-            Save
-          </IonButton>
-        </IonFooter>
-      </IonModal>
-
-      <IonModal isOpen={showDeliveryNote}>
-        <IonHeader>
-          <ModalTitle>Delivery Note</ModalTitle>
-        </IonHeader>
-
-        <IonContent>
-          <Field
-            name="deliveryNote.contact"
-            component={FormikInput}
-            type="text"
-            label="Contact Name"
-            placeholder="Enter contact's name"
-            formatter={titleCase}
-          />
-
-          <Field
-            name="deliveryNote.phone"
-            component={FormikInput}
-            type="tel"
-            label="Contact Phone Number"
-            placeholder="Enter contact's phone number"
-            mask="(999)-999-9999"
-          />
-
-          <Field
-            name="deliveryNote.note"
-            component={FormikTextarea}
-            label="Delivery Note"
-            placeholder="For example: Call when 30 minutes out. Go to back of building."
-            rows={4}
-          />
-        </IonContent>
-
-        <IonFooter mode="ios" className="ion-padding">
-          <IonButton expand="block" onClick={toggleDeliveryNote}>
-            Save
-          </IonButton>
-        </IonFooter>
-      </IonModal>
+      {showDeliveryNote && (
+        <DeliveryNoteModalForm onCancel={handleCloseDeliveryNote} />
+      )}
 
       {showSupplierSelection && (
         <SupplierSelectionModal
-          onCancel={toggleSelectionModal}
+          onCancel={handleCloseSupplierSelect}
           onClick={handleSupplierSelect}
         />
       )}

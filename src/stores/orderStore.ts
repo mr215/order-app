@@ -10,7 +10,10 @@ const DEFAULT_ORDER = {
   lastestDeliverByTime: formatISO(new Date()),
   jobName: '',
   orderThrough: OrderThrough.SupplyHound,
-  pickupNote: '',
+  pickupNote: {
+    note: '',
+    readyForPickupTime: '',
+  },
   deliveryNote: {
     contact: '',
     phone: '',

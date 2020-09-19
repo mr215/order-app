@@ -14,6 +14,11 @@ export interface OrderItem {
   image?: string
 }
 
+export interface PickupNote {
+  note: string
+  readyForPickupTime: string
+}
+
 export interface DeliveryNote {
   contact: string
   phone: string
@@ -27,7 +32,7 @@ export interface Order {
   deliveryAddress: string
   vehicleType: string
   lastestDeliverByTime: string
-  pickupNote: string
+  pickupNote: PickupNote
   deliveryNote: DeliveryNote
 
   items: OrderItem[]
