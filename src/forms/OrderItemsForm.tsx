@@ -18,9 +18,6 @@ import {
 } from '@ionic/react'
 import * as Yup from 'yup'
 
-import OrderItemField from './OrderItemField'
-import OrderItemModalForm from './OrderItemModalForm'
-
 import {
   DEFAULT_ORDER_ITEM,
   OrderThrough,
@@ -28,7 +25,11 @@ import {
   OrderItem,
   OrderItemsFormValues,
 } from 'types'
+
 import FormikInput from './fields/FormikInput'
+import OrderItemRow from './components/OrderItemRow'
+
+import OrderItemModalForm from './OrderItemModalForm'
 
 interface OrderItemsFormProps {
   order: Order
@@ -93,7 +94,7 @@ const OrderItemsForm: React.FC<
                   const itemErrors = getIn(errors, name) || {}
 
                   return (
-                    <OrderItemField
+                    <OrderItemRow
                       key={index}
                       orderItem={orderItem}
                       errors={itemErrors}

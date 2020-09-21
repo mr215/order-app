@@ -28,7 +28,7 @@ const ErrorLabel = styled(IonLabel)`
   margin: 0.25rem 1.25rem;
 `
 
-const OrderItemField: React.FC<Props> = ({
+const OrderItemRow: React.FC<Props> = ({
   orderItem,
   errors = {},
   onEdit,
@@ -75,4 +75,4 @@ const OrderItemField: React.FC<Props> = ({
   )
 }
 
-export default OrderItemField
+export default OrderItemRow
