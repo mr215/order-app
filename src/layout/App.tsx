@@ -8,18 +8,16 @@ import SignUp from 'pages/SignUp'
 import Landing from 'pages/Landing'
 import Home from 'pages/Home'
 import OrderItems from 'pages/OrderItems'
+import OrderSummary from 'pages/OrderSummary'
+
 import Page from 'pages/Page'
 
 import Menu from './Menu'
-
-import useStores from 'hooks/useStores'
 
 /* Theme */
 import 'theme/app.scss'
 
 const App: React.FC = () => {
-  const { userStore } = useStores()
-
   return (
     <IonApp>
       <IonReactRouter>
@@ -29,10 +27,11 @@ const App: React.FC = () => {
             <Menu />
 
             <IonRouterOutlet id="main">
+              <Route exact path="/page/:name" component={Page} />
+
               <Route exact path="/home" component={Home} />
               <Route exact path="/order-items" component={OrderItems} />
-
-              <Route exact path="/page/:name" component={Page} />
+              <Route exact path="/order-summary" component={OrderSummary} />
 
               <Route exact path="/landing" component={Landing} />
               <Route exact path="/signup" component={SignUp} />

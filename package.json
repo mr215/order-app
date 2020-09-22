@@ -7,6 +7,7 @@
     "@ionic/pwa-elements": "^3.0.1",
     "@ionic/react": "^5.0.7",
     "@ionic/react-router": "^5.0.7",
+    "@react-google-maps/api": "^1.10.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^8.0.3",
@@ -31,6 +32,7 @@
     "mobx-react": "^6.2.5",
     "mobx-react-lite": "^2.0.7",
     "node-sass": "^4.14.1",
+    "numeral": "^2.0.6",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-input-mask": "^2.0.4",
@@ -63,7 +65,8 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "2.4.0"
+    "@capacitor/cli": "2.4.0",
+    "@types/numeral": "0.0.28"
   },
   "description": "SupplyHound Order App"
 }
