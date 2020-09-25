@@ -135,8 +135,8 @@ const SupplierSelectionModal: React.FC<Props> = ({ onCancel, onClick }) => {
           ) : (
             <ScrollDiv>
               <IonRadioGroup>
-                {Object.keys(SupplierType).map(type => (
-                  <ScrollItem>
+                {Object.keys(SupplierType).map((type, index) => (
+                  <ScrollItem key={`${type}-${index}`}>
                     <IonRadio
                       slot="start"
                       mode="md"

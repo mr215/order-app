@@ -18,6 +18,7 @@ import FormikAddress from './fields/FormikAddress'
 import SupplierSelectionModal from './SupplierSelectionModal'
 import PickupNoteModalForm from './PickupNoteModalForm'
 import DeliveryNoteModalForm from './DeliveryNoteModalForm'
+import FavoriteLocationsModal from './FavoriteLocationsModal'
 
 interface MainOrderFormProps {
   order: Order
@@ -41,17 +42,14 @@ const MainOrderForm: React.FC<
   const [showSupplierSelection, setShowSupplierSelection] = useState<boolean>(
     false
   )
+  const [showFavoriteLocations, setShowFavoriteLocations] = useState<boolean>(
+    false
+  )
 
-  const handleClosePickupNote = () => {
-    setShowPickupNote(false)
-  }
+  const handleLocationSelect = (address: string) => {
+    setFieldValue('deliveryAddress', address)
 
-  const handleCloseDeliveryNote = () => {
-    setShowDeliveryNote(false)
-  }
-
-  const handleCloseSupplierSelect = () => {
-    setShowSupplierSelection(false)
+    setShowFavoriteLocations(false)
   }
 
   const handleSupplierSelect = (address: string) => {
@@ -123,6 +121,14 @@ const MainOrderForm: React.FC<
               Add Delivery Note
             </IonButton>
           }
+          selectionContent={
+            <IonButton
+              slot="start"
+              onClick={() => setShowFavoriteLocations(true)}
+            >
+              Favorites
+            </IonButton>
+          }
           required
         />
 
@@ -163,17 +169,24 @@ const MainOrderForm: React.FC<
 
       {/* Modals */}
       {showPickupNote && (
-        <PickupNoteModalForm onCancel={handleClosePickupNote} />
+        <PickupNoteModalForm onCancel={() => setShowPickupNote(false)} />
       )}
 
       {showDeliveryNote && (
-        <DeliveryNoteModalForm onCancel={handleCloseDeliveryNote} />
+        <DeliveryNoteModalForm onCancel={() => setShowDeliveryNote(false)} />
       )}
 
       {showSupplierSelection && (
         <SupplierSelectionModal
-          onCancel={handleCloseSupplierSelect}
+          onCancel={() => setShowSupplierSelection(false)}
           onClick={handleSupplierSelect}
+        />
+      )}
+
+      {showFavoriteLocations && (
+        <FavoriteLocationsModal
+          onCancel={() => setShowFavoriteLocations(false)}
+          onClick={handleLocationSelect}
         />
       )}
     </>
