@@ -13,7 +13,7 @@ const OrderItems: React.FC<RouteComponentProps> = ({ history }) => {
   const handleSubmit = (values: OrderItemsFormValues) => {
     orderStore.updateOrder(values)
 
-    history.push({ pathname: '/page/payment-summary' })
+    history.push({ pathname: '/order-summary' })
   }
 
   return (

@@ -1,3 +1,23 @@
+export interface User {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  companyName: string
+  accountingEmail: string
+  password: string
+  favoriteLocations: Location[]
+}
+
+export interface Location {
+  name: string
+  address: string
+}
+
+export type SignUpFormValues = User
+export type LogInFormValues = Pick<User, 'email' | 'password'>
+export type LandingFormValues = Pick<User, 'email'>
+
 export enum OrderThrough {
   SupplyHound = 'SupplyHound',
   Supplier = 'Supplier',
@@ -10,7 +30,7 @@ export enum VehicleType {
 
 export interface OrderItem {
   description: string
-  quantity?: number
+  quantity: number
   image?: string
 }
 
@@ -40,21 +60,11 @@ export interface Order {
 }
 
 export type MainOrderFormValues = Omit<Order, 'items' | 'orderId'>
-
 export type OrderItemsFormValues = Pick<Order, 'items' | 'orderId'>
 
-export const DEFAULT_ORDER_ITEM: OrderItem = {
-  description: '',
-}
-
-export interface User {
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
-  companyName: string
-  accountingEmail: string
-  password: string
+export const DEFAULT_LOCATION: Location = {
+  name: '',
+  address: '',
 }
 
 export const DEFAULT_USER: User = {
@@ -65,13 +75,8 @@ export const DEFAULT_USER: User = {
   companyName: '',
   accountingEmail: '',
   password: '',
+  favoriteLocations: [DEFAULT_LOCATION],
 }
-
-export type SignUpFormValues = Required<User>
-
-export type LogInFormValues = Partial<User>
-
-export type LandingFormValues = Partial<User>
 
 export interface Supplier {
   name: string
@@ -95,4 +100,9 @@ export const DEFAULT_SUPPLIER: Supplier = {
   address: '',
   phone: '',
   type: '',
+}
+
+export const DEFAULT_ORDER_ITEM: OrderItem = {
+  description: '',
+  quantity: 0.0,
 }
