@@ -17,6 +17,7 @@ import {
   IonRadioGroup,
   IonIcon,
 } from '@ionic/react'
+import styled from 'styled-components'
 import { search, close } from 'ionicons/icons'
 import { titleCase } from 'utils/formatters'
 
@@ -29,6 +30,23 @@ interface Props {
   onCancel: () => void
   onClick: (address: string) => void
 }
+
+const ScrollDiv = styled.div`
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+`
+
+const ScrollItem = styled.div`
+  display: inline-block;
+  margin: 1rem;
+`
+
+const ItemLabel = styled.div`
+  display: inline-block;
+  margin: 0.5rem;
+  font-size: 1.25rem;
+`
 
 const mockSuppliers = [
   {
@@ -115,24 +133,21 @@ const SupplierSelectionModal: React.FC<Props> = ({ onCancel, onClick }) => {
               formatter={titleCase}
             />
           ) : (
-            <IonRadioGroup>
-              <IonGrid>
-                <IonRow>
-                  {Object.keys(SupplierType).map((type, index) => (
-                    <IonCol size="6" key={`s-${type}${index}`}>
-                      <IonItem
-                        lines="none"
-                        mode="ios"
-                        onClick={() => handleSelect(type)}
-                      >
-                        <IonRadio slot="start" mode="md" value={type} />
-                        <IonLabel>{type}</IonLabel>
-                      </IonItem>
-                    </IonCol>
-                  ))}
-                </IonRow>
-              </IonGrid>
-            </IonRadioGroup>
+            <ScrollDiv>
+              <IonRadioGroup>
+                {Object.keys(SupplierType).map(type => (
+                  <ScrollItem>
+                    <IonRadio
+                      slot="start"
+                      mode="md"
+                      value={type}
+                      onClick={() => handleSelect(type)}
+                    />
+                    <ItemLabel>{type}</ItemLabel>
+                  </ScrollItem>
+                ))}
+              </IonRadioGroup>
+            </ScrollDiv>
           )}
 
           <IonGrid>
