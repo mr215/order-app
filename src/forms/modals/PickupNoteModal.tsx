@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import styled from 'styled-components'
 import { Field } from 'formik'
 import {
@@ -10,11 +10,12 @@ import {
 } from '@ionic/react'
 import { formatISO } from 'date-fns'
 
-import FormikTextarea from './fields/FormikTextarea'
-import FormikDatetime from './fields/FormikDatetime'
+import FormikTextarea from '../fields/FormikTextarea'
+import FormikDatetime from '../fields/FormikDatetime'
 
 interface Props {
-  onCancel: () => void
+  isOpen: boolean
+  onClose: () => void
 }
 
 const ModalTitle = styled.h1`
@@ -24,8 +25,8 @@ const ModalTitle = styled.h1`
 
 const TODAY = formatISO(new Date(), { representation: 'date' })
 
-const PickupNoteModalForm: React.FC<Props> = ({ onCancel }) => (
-  <IonModal isOpen mode="ios" onDidDismiss={onCancel}>
+const PickupNoteModal: React.FC<Props> = ({ isOpen, onClose }) => (
+  <IonModal isOpen={isOpen} mode="ios" onDidDismiss={onClose}>
     <IonHeader>
       <ModalTitle>Pickup Note</ModalTitle>
     </IonHeader>
@@ -51,11 +52,14 @@ const PickupNoteModalForm: React.FC<Props> = ({ onCancel }) => (
     </IonContent>
 
     <IonFooter mode="ios" className="ion-padding">
-      <IonButton expand="block" onClick={onCancel}>
+      <IonButton expand="block" onClick={onClose}>
         Save
       </IonButton>
     </IonFooter>
   </IonModal>
 )
 
-export default PickupNoteModalForm
+export default memo<Props>(
+  PickupNoteModal,
+  (prevProps, nextProps) => prevProps.isOpen === nextProps.isOpen
+)

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import styled from 'styled-components'
 import { Field } from 'formik'
 import {
@@ -10,11 +10,12 @@ import {
 } from '@ionic/react'
 import { titleCase } from 'utils/formatters'
 
-import FormikTextarea from './fields/FormikTextarea'
-import FormikInput from './fields/FormikInput'
+import FormikTextarea from '../fields/FormikTextarea'
+import FormikInput from '../fields/FormikInput'
 
 interface Props {
-  onCancel: () => void
+  isOpen: boolean
+  onClose: () => void
 }
 
 const ModalTitle = styled.h1`
@@ -22,8 +23,8 @@ const ModalTitle = styled.h1`
   margin: 1rem 0;
 `
 
-const DeliveryNoteModalForm: React.FC<Props> = ({ onCancel }) => (
-  <IonModal isOpen mode="ios" onDidDismiss={onCancel}>
+const DeliveryNoteModal: React.FC<Props> = ({ isOpen, onClose }) => (
+  <IonModal isOpen={isOpen} mode="ios" onDidDismiss={onClose}>
     <IonHeader>
       <ModalTitle>Delivery Note</ModalTitle>
     </IonHeader>
@@ -57,11 +58,14 @@ const DeliveryNoteModalForm: React.FC<Props> = ({ onCancel }) => (
     </IonContent>
 
     <IonFooter mode="ios" className="ion-padding">
-      <IonButton expand="block" onClick={onCancel}>
+      <IonButton expand="block" onClick={onClose}>
         Save
       </IonButton>
     </IonFooter>
   </IonModal>
 )
 
-export default DeliveryNoteModalForm
+export default memo<Props>(
+  DeliveryNoteModal,
+  (prevProps, nextProps) => prevProps.isOpen === nextProps.isOpen
+)

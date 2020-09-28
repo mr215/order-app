@@ -22,9 +22,11 @@ import FormikDatetime from './fields/FormikDatetime'
 import FormikInput from './fields/FormikInput'
 import FormikRadioGroup from './fields/FormikRadioGroup'
 import FormikAddress from './fields/FormikAddress'
+
+import PickupNoteModal from './modals/PickupNoteModal'
+import DeliveryNoteModal from './modals/DeliveryNoteModal'
+
 import SupplierSelectionModal from './SupplierSelectionModal'
-import PickupNoteModalForm from './PickupNoteModalForm'
-import DeliveryNoteModalForm from './DeliveryNoteModalForm'
 import FavoriteLocationsModal from './FavoriteLocationsModal'
 
 interface MainOrderFormProps {
@@ -177,13 +179,15 @@ const MainOrderForm: React.FC<
       </IonFooter>
 
       {/* Modals */}
-      {showPickupNote && (
-        <PickupNoteModalForm onCancel={() => setShowPickupNote(false)} />
-      )}
+      <PickupNoteModal
+        isOpen={showPickupNote}
+        onClose={() => setShowPickupNote(false)}
+      />
 
-      {showDeliveryNote && (
-        <DeliveryNoteModalForm onCancel={() => setShowDeliveryNote(false)} />
-      )}
+      <DeliveryNoteModal
+        isOpen={showDeliveryNote}
+        onClose={() => setShowDeliveryNote(false)}
+      />
 
       {showSupplierSelection && (
         <SupplierSelectionModal
