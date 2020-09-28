@@ -8,8 +8,8 @@ interface Props extends ComponentProps<typeof IonInput> {
   label: string
   mask: string | [string | RegExp]
   required?: boolean
+  extraHeader?: ReactElement
   extraContent?: ReactElement
-  selectionContent?: ReactElement
 }
 
 const FormikAddress: React.FC<FieldProps & Props> = ({
@@ -17,8 +17,8 @@ const FormikAddress: React.FC<FieldProps & Props> = ({
   form,
   label,
   required = false,
+  extraHeader,
   extraContent,
-  selectionContent,
   ...props
 }) => {
   const ionInputRef = useRef<HTMLIonInputElement>(null)
@@ -69,7 +69,7 @@ const FormikAddress: React.FC<FieldProps & Props> = ({
           label={label}
           error={touched && error}
           required={required}
-          extraContent={extraContent}
+          extraHeader={extraHeader}
         />
 
         <IonItem lines="full">
@@ -81,7 +81,8 @@ const FormikAddress: React.FC<FieldProps & Props> = ({
             onIonBlur={onBlur}
             {...props}
           />
-          {selectionContent}
+
+          {extraContent}
         </IonItem>
       </IonItemGroup>
     </div>

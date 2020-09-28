@@ -103,12 +103,13 @@ const MainOrderForm: React.FC<
           type="text"
           label="Pick up From"
           placeholder="Search pickup address"
-          extraContent={
+          required
+          extraHeader={
             <IonButton slot="end" onClick={() => setShowPickupNote(true)}>
               Add Pickup Note
             </IonButton>
           }
-          selectionContent={
+          extraContent={
             <IonButton
               slot="start"
               onClick={() => setShowSupplierSelection(true)}
@@ -116,7 +117,6 @@ const MainOrderForm: React.FC<
               Select
             </IonButton>
           }
-          required
         />
 
         <Field
@@ -125,12 +125,13 @@ const MainOrderForm: React.FC<
           type="text"
           label="Deliver To"
           placeholder="Search delivery address"
-          extraContent={
+          required
+          extraHeader={
             <IonButton slot="end" onClick={() => setShowDeliveryNote(true)}>
               Add Delivery Note
             </IonButton>
           }
-          selectionContent={
+          extraContent={
             <IonButton
               slot="start"
               onClick={() => setShowFavoriteLocations(true)}
@@ -138,7 +139,6 @@ const MainOrderForm: React.FC<
               Favorites
             </IonButton>
           }
-          required
         />
 
         <Field

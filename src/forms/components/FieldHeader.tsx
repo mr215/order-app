@@ -6,7 +6,7 @@ interface Props {
   label: string
   required?: boolean
   error?: string
-  extraContent?: ReactElement
+  extraHeader?: ReactElement
 }
 
 const StyledItemDivider = styled(IonItemDivider)`
@@ -30,7 +30,7 @@ const FieldHeader: React.FC<Props> = ({
   label,
   required = false,
   error = '',
-  extraContent,
+  extraHeader,
 }: Props) => {
   return (
     <StyledItemDivider mode="ios">
@@ -38,7 +38,8 @@ const FieldHeader: React.FC<Props> = ({
         {label}
         {required && <IonText color="danger">*</IonText>}
       </FieldLabel>
-      {extraContent}
+
+      {extraHeader}
 
       {error && <ErrorLabel>{error}</ErrorLabel>}
     </StyledItemDivider>
