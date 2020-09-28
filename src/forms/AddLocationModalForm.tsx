@@ -8,6 +8,8 @@ import {
   IonContent,
   IonFooter,
   IonModal,
+  IonLabel,
+  IonListHeader,
 } from '@ionic/react'
 
 import * as Yup from 'yup'
@@ -30,6 +32,9 @@ const AddLocationModalForm: React.FC<Props & FormikProps<Location>> = ({
   return (
     <IonModal isOpen mode="ios" onDidDismiss={onCancel}>
       <IonContent>
+        <IonListHeader>
+          <IonLabel>Add Favorite </IonLabel>
+        </IonListHeader>
         <Field
           name="name"
           component={FormikInput}

@@ -86,7 +86,7 @@ const FavoriteLocationsModal: React.FC<
           name="favoriteLocations"
           render={helpers => (
             <>
-              {(values.favoriteLocations || []).map(
+              {values.favoriteLocations.map(
                 (location: Location, index: number) => (
                   <IonRow key={`${location}-${index}`}>
                     <IonItem lines="inset">
