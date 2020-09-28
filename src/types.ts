@@ -87,16 +87,6 @@ export interface Supplier {
   img: string
 }
 
-export enum SupplierType {
-  All = '',
-  Lumber = 'Lumber',
-  Hardware = 'Hardware',
-  Plumbing = 'Plumbing',
-  Electric = 'Electric',
-  Landscape = 'Landscape',
-  Other = 'Other',
-}
-
 export const DEFAULT_ORDER_ITEM: OrderItem = {
   description: '',
   quantity: 0.0,

@@ -22,7 +22,7 @@ import styled from 'styled-components'
 import { search, close } from 'ionicons/icons'
 import { titleCase } from 'utils/formatters'
 
-import { SupplierType, User, LocationFormValues } from 'types'
+import { User, LocationFormValues } from 'types'
 import useStores from 'hooks/useStores'
 import { Field } from 'formik'
 import FormikInput from './fields/FormikInput'
@@ -33,6 +33,16 @@ interface Props {
   onSubmit: (values: LocationFormValues) => void
   onCancel: () => void
   onClick: (address: string) => void
+}
+
+const SUPPLIER_TYPES = {
+  All: '',
+  Lumber: 'Lumber',
+  Hardware: 'Hardware',
+  Plumbing: 'Plumbing',
+  Electric: 'Electric',
+  Landscape: 'Landscape',
+  Other: 'Other',
 }
 
 const ScrollDiv = styled.div`
@@ -60,7 +70,7 @@ const SupplierSelectionModal: React.FC<Props> = ({
 }) => {
   const { supplierStore } = useStores()
 
-  const [supplierType, setSupplierType] = useState('All')
+  const [supplierType, setSupplierType] = useState('')
   const [supplierName, setSupplierName] = useState('')
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [showFavorites, setShowFavorites] = useState<boolean>(false)
@@ -74,7 +84,7 @@ const SupplierSelectionModal: React.FC<Props> = ({
   }
 
   const filterSupplierTypes = () => {
-    return supplierType === 'All'
+    return supplierType === ''
       ? supplierStore.suppliers
       : supplierStore.suppliers.filter(
           supplier => supplier.type === supplierType
@@ -152,7 +162,7 @@ const SupplierSelectionModal: React.FC<Props> = ({
           ) : (
             <ScrollDiv>
               <IonRadioGroup>
-                {Object.keys(SupplierType).map((type, index) => (
+                {Object.keys(SUPPLIER_TYPES).map((type, index) => (
                   <ScrollItem key={`${type}-${index}`}>
                     <IonRadio
                       slot="start"
