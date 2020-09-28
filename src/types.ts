@@ -17,6 +17,7 @@ export interface Location {
 export type SignUpFormValues = User
 export type LogInFormValues = Pick<User, 'email' | 'password'>
 export type LandingFormValues = Pick<User, 'email'>
+export type LocationFormValues = Pick<User, 'favoriteLocations'>
 
 export enum OrderThrough {
   SupplyHound = 'SupplyHound',
@@ -75,7 +76,7 @@ export const DEFAULT_USER: User = {
   companyName: '',
   accountingEmail: '',
   password: '',
-  favoriteLocations: [DEFAULT_LOCATION],
+  favoriteLocations: [],
 }
 
 export interface Supplier {
@@ -83,6 +84,7 @@ export interface Supplier {
   address: string
   phone: string
   type: string
+  img: string
 }
 
 export enum SupplierType {
@@ -93,13 +95,6 @@ export enum SupplierType {
   Electric = 'Electric',
   Landscape = 'Landscape',
   Other = 'Other',
-}
-
-export const DEFAULT_SUPPLIER: Supplier = {
-  name: '',
-  address: '',
-  phone: '',
-  type: '',
 }
 
 export const DEFAULT_ORDER_ITEM: OrderItem = {

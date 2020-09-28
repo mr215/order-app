@@ -1,10 +1,10 @@
 import { observable, action, set } from 'mobx'
 
-import { Supplier, DEFAULT_SUPPLIER } from 'types'
+import { Supplier } from 'types'
 
 export default class SupplierStore {
   @observable
-  suppliers: Supplier[] = [DEFAULT_SUPPLIER]
+  suppliers: Supplier[] = []
 
   @action
   updateSuppliers(suppliers: Supplier[]) {

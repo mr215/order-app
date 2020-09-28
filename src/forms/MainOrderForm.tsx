@@ -5,7 +5,14 @@ import { IonButton, IonContent, IonFooter } from '@ionic/react'
 import { formatISO } from 'date-fns'
 import * as Yup from 'yup'
 
-import { OrderThrough, VehicleType, Order, MainOrderFormValues } from 'types'
+import {
+  OrderThrough,
+  VehicleType,
+  User,
+  Order,
+  MainOrderFormValues,
+  LocationFormValues,
+} from 'types'
 import { titleCase } from 'utils/formatters'
 
 import carImg from 'images/car.png'
@@ -22,6 +29,8 @@ import FavoriteLocationsModal from './FavoriteLocationsModal'
 
 interface MainOrderFormProps {
   order: Order
+  user: User
+  handleSubmitLocations: (values: LocationFormValues) => void
   onSubmit: (values: MainOrderFormValues) => void
 }
 
@@ -36,7 +45,7 @@ const VehicleImg = styled.img<{ small?: boolean }>`
 
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
-> = ({ isValid, submitForm, setFieldValue }) => {
+> = ({ user, isValid, submitForm, setFieldValue, handleSubmitLocations }) => {
   const [showPickupNote, setShowPickupNote] = useState<boolean>(false)
   const [showDeliveryNote, setShowDeliveryNote] = useState<boolean>(false)
   const [showSupplierSelection, setShowSupplierSelection] = useState<boolean>(
@@ -178,6 +187,8 @@ const MainOrderForm: React.FC<
 
       {showSupplierSelection && (
         <SupplierSelectionModal
+          user={user}
+          onSubmit={handleSubmitLocations}
           onCancel={() => setShowSupplierSelection(false)}
           onClick={handleSupplierSelect}
         />
@@ -185,6 +196,8 @@ const MainOrderForm: React.FC<
 
       {showFavoriteLocations && (
         <FavoriteLocationsModal
+          user={user}
+          onSubmit={handleSubmitLocations}
           onCancel={() => setShowFavoriteLocations(false)}
           onClick={handleLocationSelect}
         />

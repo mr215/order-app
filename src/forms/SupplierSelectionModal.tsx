@@ -16,17 +16,21 @@ import {
   IonRadio,
   IonRadioGroup,
   IonIcon,
+  IonRouterLink,
 } from '@ionic/react'
 import styled from 'styled-components'
 import { search, close } from 'ionicons/icons'
 import { titleCase } from 'utils/formatters'
 
-import { SupplierType } from 'types'
+import { SupplierType, User, LocationFormValues } from 'types'
 import useStores from 'hooks/useStores'
 import { Field } from 'formik'
 import FormikInput from './fields/FormikInput'
+import FavoriteLocationsModal from './FavoriteLocationsModal'
 
 interface Props {
+  user: User
+  onSubmit: (values: LocationFormValues) => void
   onCancel: () => void
   onClick: (address: string) => void
 }
@@ -48,47 +52,18 @@ const ItemLabel = styled.div`
   font-size: 1.25rem;
 `
 
-const mockSuppliers = [
-  {
-    name: 'Golden State',
-    address: '123 Mock Street, San Francisco, CA',
-    phone: '777-777-7777',
-    type: 'General',
-    img:
-      'https://d2sz1kgdtrlf1n.cloudfront.net/task_images/kcBH1582952495451-ScreenShot20200228at8.59.42PM.png',
-  },
-  {
-    name: 'Silver City',
-    address: '456 Fake Road, San Rafeo, CA',
-    phone: '888-888-8888',
-    type: 'Lumber',
-    img:
-      'https://d2sz1kgdtrlf1n.cloudfront.net/task_images/wlfm1582952104279-ScreenShot20200228at8.53.27PM.png',
-  },
-  {
-    name: 'Bronze County',
-    address: '789 Pretend Ave, Mill Valley, CA',
-    phone: '666-666-6666',
-    type: 'Electric',
-    img:
-      'https://d2sz1kgdtrlf1n.cloudfront.net/task_images/dRE61582952283491-ScreenShot20200228at8.56.50PM.png',
-  },
-  {
-    name: 'Platinum Place',
-    address: '111 Imagine Ct, San Francisco, CA',
-    phone: '222-222-2222',
-    type: 'Hardware',
-    img:
-      'https://d2sz1kgdtrlf1n.cloudfront.net/task_images/diJs1582951691680-ScreenShot20200228at8.47.04PM.png',
-  },
-]
-
-const SupplierSelectionModal: React.FC<Props> = ({ onCancel, onClick }) => {
+const SupplierSelectionModal: React.FC<Props> = ({
+  onCancel,
+  onClick,
+  onSubmit,
+  user,
+}) => {
   const { supplierStore } = useStores()
 
   const [supplierType, setSupplierType] = useState('All')
   const [supplierName, setSupplierName] = useState('')
   const [showSearch, setShowSearch] = useState<boolean>(false)
+  const [showFavorites, setShowFavorites] = useState<boolean>(false)
 
   const handleSelect = (supplierType: string) => {
     setSupplierType(supplierType)
@@ -100,16 +75,43 @@ const SupplierSelectionModal: React.FC<Props> = ({ onCancel, onClick }) => {
 
   const filterSupplierTypes = () => {
     return supplierType === 'All'
-      ? mockSuppliers
-      : mockSuppliers.filter(supplier => supplier.type === supplierType)
+      ? supplierStore.suppliers
+      : supplierStore.suppliers.filter(
+          supplier => supplier.type === supplierType
+        )
   }
 
   const filterSupplierNames = () => {
     return supplierName === ''
       ? []
-      : mockSuppliers.filter(supplier =>
+      : supplierStore.suppliers.filter(supplier =>
           supplier.name.includes(titleCase(supplierName))
         )
+  }
+
+  const renderSuppliers = () => {
+    return (!showSearch ? filterSupplierTypes() : filterSupplierNames()).map(
+      (supplier, index) => {
+        return (
+          <IonRow
+            key={`supplier${index}`}
+            onClick={() => onClick(supplier.address)}
+          >
+            <IonCol size="4">
+              <IonThumbnail>
+                <IonImg src={supplier.img} />
+              </IonThumbnail>
+            </IonCol>
+
+            <IonCol>
+              <IonRow>{supplier.name}</IonRow>
+              <IonRow>{supplier.address}</IonRow>
+              <IonRow>{supplier.phone}</IonRow>
+            </IonCol>
+          </IonRow>
+        )
+      }
+    )
   }
 
   return (
@@ -118,10 +120,25 @@ const SupplierSelectionModal: React.FC<Props> = ({ onCancel, onClick }) => {
         <IonList>
           <IonListHeader>
             <IonLabel>Select Your Supplier</IonLabel>
-            <IonItem lines="none" onClick={() => setShowSearch(!showSearch)}>
-              <IonIcon icon={showSearch ? close : search} />
+
+            <IonItem lines="none">
+              <IonItem lines="none">
+                <IonIcon
+                  onClick={() => {
+                    setShowSearch(!showSearch)
+                  }}
+                  icon={showSearch ? close : search}
+                />
+              </IonItem>
             </IonItem>
           </IonListHeader>
+
+          <IonItem lines="none">
+            <IonRouterLink onClick={() => setShowFavorites(true)}>
+              View Favorites
+            </IonRouterLink>
+          </IonItem>
+
           {showSearch ? (
             <Field
               name="supplierName"
@@ -151,27 +168,15 @@ const SupplierSelectionModal: React.FC<Props> = ({ onCancel, onClick }) => {
           )}
 
           <IonGrid>
-            {(showSearch ? filterSupplierNames() : filterSupplierTypes()).map(
-              (supplier, index) => {
-                return (
-                  <IonRow
-                    key={`supplier${index}`}
-                    onClick={() => onClick(supplier.address)}
-                  >
-                    <IonCol size="4">
-                      <IonThumbnail>
-                        <IonImg src={supplier.img} />
-                      </IonThumbnail>
-                    </IonCol>
-
-                    <IonCol>
-                      <IonRow>{supplier.name}</IonRow>
-                      <IonRow>{supplier.address}</IonRow>
-                      <IonRow>{supplier.phone}</IonRow>
-                    </IonCol>
-                  </IonRow>
-                )
-              }
+            {!showFavorites ? (
+              renderSuppliers()
+            ) : (
+              <FavoriteLocationsModal
+                user={user}
+                onSubmit={onSubmit}
+                onCancel={onCancel}
+                onClick={onClick}
+              />
             )}
           </IonGrid>
         </IonList>
