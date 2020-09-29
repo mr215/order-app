@@ -1,11 +1,13 @@
 import { createContext } from 'react'
 
-import OrderStore from 'stores/orderStore'
 import UserStore from 'stores/userStore'
+import OrderStore from 'stores/orderStore'
+import SuppliersStore from 'stores/suppliersStore'
 
 const StoresContext = createContext({
-  orderStore: new OrderStore(),
   userStore: new UserStore(),
+  orderStore: new OrderStore(),
+  suppliersStore: new SuppliersStore(),
 })
 
 export default StoresContext

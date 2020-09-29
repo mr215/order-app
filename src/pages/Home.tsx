@@ -1,6 +1,8 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { IonPage } from '@ionic/react'
+import { toJS } from 'mobx'
+import { observer } from 'mobx-react'
 
 import { MainOrderFormValues } from 'types'
 import useStores from 'hooks/useStores'
@@ -9,7 +11,15 @@ import Header from 'components/Header'
 import MainOrderForm from 'forms/MainOrderForm'
 
 const Home: React.FC<RouteComponentProps> = ({ history }) => {
-  const { orderStore } = useStores()
+  const { userStore, orderStore, suppliersStore } = useStores()
+
+  const handleFavoriteAddress = (address: string) => {
+    userStore.favoriteAddress(address)
+  }
+
+  const handleUnfavoriteAddress = (address: string) => {
+    userStore.unfavoriteAddress(address)
+  }
 
   const handleSubmit = (values: MainOrderFormValues) => {
     orderStore.updateOrder(values)
@@ -21,9 +31,16 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
     <IonPage>
       <Header home />
 
-      <MainOrderForm order={orderStore.order} onSubmit={handleSubmit} />
+      <MainOrderForm
+        favoriteAddresses={toJS(userStore.user.favoriteAddresses)}
+        suppliers={toJS(suppliersStore.suppliers)}
+        order={toJS(orderStore.order)}
+        onFavoriteAddress={handleFavoriteAddress}
+        onUnfavoriteAddress={handleUnfavoriteAddress}
+        onSubmit={handleSubmit}
+      />
     </IonPage>
   )
 }
 
-export default Home
+export default observer(Home)

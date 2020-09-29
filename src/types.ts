@@ -6,6 +6,7 @@ export interface User {
   companyName: string
   accountingEmail: string
   password: string
+  favoriteAddresses: string[]
 }
 
 export type SignUpFormValues = User
@@ -28,10 +29,24 @@ export interface OrderItem {
   image?: string
 }
 
+export interface PickupNote {
+  note: string
+  readyForPickupTime: string
+}
+
 export interface DeliveryNote {
   contact: string
   phone: string
   note: string
+}
+
+export interface Supplier {
+  id: number
+  name: string
+  address: string
+  phone: string
+  type: string
+  logo: string
 }
 
 export interface Order {
@@ -41,7 +56,7 @@ export interface Order {
   deliveryAddress: string
   vehicleType: string
   lastestDeliverByTime: string
-  pickupNote: string
+  pickupNote: PickupNote
   deliveryNote: DeliveryNote
 
   items: OrderItem[]
@@ -59,6 +74,7 @@ export const DEFAULT_USER: User = {
   companyName: '',
   accountingEmail: '',
   password: '',
+  favoriteAddresses: [],
 }
 
 export const DEFAULT_ORDER_ITEM: OrderItem = {

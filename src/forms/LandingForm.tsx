@@ -1,10 +1,12 @@
 import React from 'react'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import { IonButton, IonContent, IonFooter } from '@ionic/react'
+import { IonContent } from '@ionic/react'
 
 import * as Yup from 'yup'
 
 import { User, LandingFormValues } from 'types'
+import FooterWithButton from 'components/FooterWithButton'
+
 import FormikInput from './fields/FormikInput'
 
 interface LandingFormProps {
@@ -16,24 +18,20 @@ const LandingForm: React.FC<
   LandingFormProps & FormikProps<LandingFormValues>
 > = ({ isValid, submitForm }) => {
   return (
-    <>
-      <IonContent>
-        <Field
-          name="email"
-          component={FormikInput}
-          type="text"
-          label="Email Address"
-          placeholder="Enter email here"
-          required
-        />
+    <IonContent>
+      <Field
+        name="email"
+        component={FormikInput}
+        type="text"
+        label="Email Address"
+        placeholder="Enter email here"
+        required
+      />
 
-        <IonFooter className="ion-padding ion-no-border">
-          <IonButton expand="block" disabled={!isValid} onClick={submitForm}>
-            Continue
-          </IonButton>
-        </IonFooter>
-      </IonContent>
-    </>
+      <FooterWithButton disabled={!isValid} onClick={submitForm}>
+        Continue
+      </FooterWithButton>
+    </IonContent>
   )
 }
 

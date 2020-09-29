@@ -1,18 +1,19 @@
-import React from 'react'
+import React, { useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import {
-  IonButton,
-  IonContent,
-  IonFooter,
-  IonHeader,
-  IonModal,
-} from '@ionic/react'
+import { IonButton, IonContent } from '@ionic/react'
 import { formatISO } from 'date-fns'
 import * as Yup from 'yup'
 
-import { OrderThrough, VehicleType, Order, MainOrderFormValues } from 'types'
+import {
+  OrderThrough,
+  VehicleType,
+  Order,
+  Supplier,
+  MainOrderFormValues,
+} from 'types'
 import { titleCase } from 'utils/formatters'
+import FooterWithButton from 'components/FooterWithButton'
 
 import carImg from 'images/car.png'
 import truckImg from 'images/truck.png'
@@ -20,11 +21,20 @@ import truckImg from 'images/truck.png'
 import FormikDatetime from './fields/FormikDatetime'
 import FormikInput from './fields/FormikInput'
 import FormikRadioGroup from './fields/FormikRadioGroup'
-import FormikTextarea from './fields/FormikTextarea'
 import FormikAddress from './fields/FormikAddress'
 
+import PickupNoteModal from './modals/PickupNoteModal'
+import DeliveryNoteModal from './modals/DeliveryNoteModal'
+import SuppliersModal from './modals/SuppliersModal'
+
+import FavoriteAddresssModal from './modals/FavoriteAddressesModal'
+
 interface MainOrderFormProps {
+  favoriteAddresses: string[]
+  suppliers: Supplier[]
   order: Order
+  onFavoriteAddress: (address: string) => void
+  onUnfavoriteAddress: (address: string) => void
   onSubmit: (values: MainOrderFormValues) => void
 }
 
@@ -37,23 +47,72 @@ const VehicleImg = styled.img<{ small?: boolean }>`
   ${props => (props.small ? `transform: scale(0.9);` : '')}
 `
 
-const ModalTitle = styled.h1`
-  text-align: center;
-  margin: 1rem 0;
-`
-
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
-> = ({ isValid, submitForm }) => {
-  const [openPickupNote, setOpenPickupNote] = React.useState(false)
-  const [openDeliveryNote, setOpenDeliveryNote] = React.useState(false)
+> = ({
+  favoriteAddresses,
+  suppliers,
+  onFavoriteAddress,
+  onUnfavoriteAddress,
 
-  const togglePickupNote = () => {
-    setOpenPickupNote(!openPickupNote)
+  // Formik
+  isValid,
+  values,
+  submitForm,
+  setFieldValue,
+}) => {
+  const [showPickupNoteModal, setShowPickupNoteModal] = useState<boolean>(false)
+  const [showDeliveryNoteModal, setShowDeliveryNoteModal] = useState<boolean>(
+    false
+  )
+  const [showSuppliersModal, setShowSuppliersModal] = useState<boolean>(false)
+  const [showFavoriteAddressesModal, setShowFavoriteAddresses] = useState<
+    boolean
+  >(false)
+
+  const isDeliveryAddressFavorite = useMemo(
+    () =>
+      !!favoriteAddresses.find(
+        (address: string) =>
+          address.toLowerCase() === values.deliveryAddress.toLowerCase()
+      ),
+    [favoriteAddresses, values.deliveryAddress]
+  )
+
+  const favoriteAddressButton = useMemo(() => {
+    if (!values.deliveryAddress || isDeliveryAddressFavorite) {
+      return (
+        <IonButton
+          slot="start"
+          size="default"
+          onClick={() => setShowFavoriteAddresses(true)}
+        >
+          Favorites
+        </IonButton>
+      )
+    }
+
+    return (
+      <IonButton
+        slot="start"
+        size="default"
+        onClick={() => onFavoriteAddress(values.deliveryAddress)}
+      >
+        Save
+      </IonButton>
+    )
+  }, [isDeliveryAddressFavorite, values.deliveryAddress, onFavoriteAddress])
+
+  const handleFavoriteAddressSelect = (address: string) => {
+    setFieldValue('deliveryAddress', address)
+
+    setShowFavoriteAddresses(false)
   }
 
-  const toggleDeliveryNote = () => {
-    setOpenDeliveryNote(!openDeliveryNote)
+  const handleSupplierSelect = (address: string) => {
+    setFieldValue('pickupAddress', address)
+
+    setShowSuppliersModal(false)
   }
 
   return (
@@ -92,12 +151,25 @@ const MainOrderForm: React.FC<
           type="text"
           label="Pick up From"
           placeholder="Search pickup address"
-          extraContent={
-            <IonButton slot="end" onClick={togglePickupNote}>
-              Note
+          required
+          extraHeader={
+            <IonButton
+              slot="end"
+              size="default"
+              onClick={() => setShowPickupNoteModal(true)}
+            >
+              Pickup Note
             </IonButton>
           }
-          required
+          extraContent={
+            <IonButton
+              slot="start"
+              size="default"
+              onClick={() => setShowSuppliersModal(true)}
+            >
+              Select
+            </IonButton>
+          }
         />
 
         <Field
@@ -106,12 +178,17 @@ const MainOrderForm: React.FC<
           type="text"
           label="Deliver To"
           placeholder="Search delivery address"
-          extraContent={
-            <IonButton slot="end" onClick={toggleDeliveryNote}>
-              Note
+          required
+          extraHeader={
+            <IonButton
+              slot="end"
+              size="default"
+              onClick={() => setShowDeliveryNoteModal(true)}
+            >
+              Delivery Note
             </IonButton>
           }
-          required
+          extraContent={favoriteAddressButton}
         />
 
         <Field
@@ -143,74 +220,35 @@ const MainOrderForm: React.FC<
         />
       </IonContent>
 
-      <IonFooter mode="ios" className="ion-padding ion-no-border">
-        <IonButton expand="block" disabled={!isValid} onClick={submitForm}>
-          Continue
-        </IonButton>
-      </IonFooter>
-
-      <IonModal isOpen={openPickupNote}>
-        <IonHeader>
-          <ModalTitle>Pickup Note</ModalTitle>
-        </IonHeader>
-
-        <IonContent>
-          <Field
-            name="pickupNote"
-            component={FormikTextarea}
-            label="Pickup Note"
-            placeholder="For example: Go to tool counter in back. Picking up compressor, replacement hose and 3 boxes of nails."
-            rows={4}
-          />
-        </IonContent>
-
-        <IonFooter mode="ios" className="ion-padding">
-          <IonButton expand="block" onClick={togglePickupNote}>
-            Save
-          </IonButton>
-        </IonFooter>
-      </IonModal>
+      <FooterWithButton disabled={!isValid} onClick={submitForm}>
+        Continue
+      </FooterWithButton>
 
       {/* Modals */}
-      <IonModal isOpen={openDeliveryNote}>
-        <IonHeader>
-          <ModalTitle>Delivery Note</ModalTitle>
-        </IonHeader>
+      <PickupNoteModal
+        isOpen={showPickupNoteModal}
+        onClose={() => setShowPickupNoteModal(false)}
+      />
 
-        <IonContent>
-          <Field
-            name="deliveryNote.contact"
-            component={FormikInput}
-            type="text"
-            label="Contact Name"
-            placeholder="Enter contact's name"
-            formatter={titleCase}
-          />
+      <DeliveryNoteModal
+        isOpen={showDeliveryNoteModal}
+        onClose={() => setShowDeliveryNoteModal(false)}
+      />
 
-          <Field
-            name="deliveryNote.phone"
-            component={FormikInput}
-            type="tel"
-            label="Contact Phone Number"
-            placeholder="Enter contact's phone number"
-            mask="(999)-999-9999"
-          />
+      <SuppliersModal
+        isOpen={showSuppliersModal}
+        suppliers={suppliers}
+        onSelect={handleSupplierSelect}
+        onClose={() => setShowSuppliersModal(false)}
+      />
 
-          <Field
-            name="deliveryNote.note"
-            component={FormikTextarea}
-            label="Delivery Note"
-            placeholder="For example: Call when 30 minutes out. Go to back of building."
-            rows={4}
-          />
-        </IonContent>
-
-        <IonFooter mode="ios" className="ion-padding">
-          <IonButton expand="block" onClick={toggleDeliveryNote}>
-            Save
-          </IonButton>
-        </IonFooter>
-      </IonModal>
+      <FavoriteAddresssModal
+        isOpen={showFavoriteAddressesModal}
+        favoriteAddresses={favoriteAddresses}
+        onRemove={onUnfavoriteAddress}
+        onSelect={handleFavoriteAddressSelect}
+        onClose={() => setShowFavoriteAddresses(false)}
+      />
     </>
   )
 }
@@ -220,16 +258,16 @@ export default withFormik<MainOrderFormProps, MainOrderFormValues>({
   enableReinitialize: true,
 
   validationSchema: Yup.object().shape({
-    jobName: Yup.string().required('Job name is required'),
+    jobName: Yup.string().required('Required'),
     orderThrough: Yup.mixed()
       .required()
       .oneOf([OrderThrough.SupplyHound, OrderThrough.Supplier] as const),
-    pickupAddress: Yup.string().required('Pickup address is required'),
-    deliveryAddress: Yup.string().required('Delivery address is required'),
+    pickupAddress: Yup.string().required('Required'),
+    deliveryAddress: Yup.string().required('Required'),
     vehicleType: Yup.mixed()
       .required()
       .oneOf([VehicleType.Car, VehicleType.Truck] as const),
-    lastestDeliverByTime: Yup.string().required('Delivery time is required'),
+    lastestDeliverByTime: Yup.string().required('Required'),
   }),
 
   mapPropsToValues({ order }: MainOrderFormProps): MainOrderFormValues {

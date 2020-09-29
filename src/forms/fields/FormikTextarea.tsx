@@ -1,5 +1,4 @@
 import React, { ComponentProps } from 'react'
-import styled from 'styled-components'
 import clsx from 'clsx'
 import { FieldProps, getIn } from 'formik'
 import { IonItem, IonItemGroup, IonTextarea } from '@ionic/react'
@@ -10,10 +9,6 @@ interface Props extends ComponentProps<typeof IonTextarea> {
   label: string
   required?: boolean
 }
-
-const StyledTextarea = styled(IonTextarea)`
-  font-size: 1.25rem;
-`
 
 const FormikTextarea: React.FC<FieldProps & Props> = ({
   field: { name, value },
@@ -33,7 +28,7 @@ const FormikTextarea: React.FC<FieldProps & Props> = ({
         lines="full"
         className={clsx({ 'ion-invalid': error && touched })}
       >
-        <StyledTextarea
+        <IonTextarea
           {...props}
           value={value}
           onIonBlur={e => form.setFieldTouched(name)}

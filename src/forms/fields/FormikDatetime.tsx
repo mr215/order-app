@@ -13,7 +13,6 @@ interface Props extends ComponentProps<typeof IonDatetime> {
 
 const StyledDatetime = styled(IonDatetime)`
   --padding-start: 0;
-  font-size: 1.25rem;
 `
 
 const FormikDatetime: React.FC<FieldProps & Props> = ({

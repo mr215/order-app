@@ -8,6 +8,7 @@ interface Props extends ComponentProps<typeof IonInput> {
   label: string
   mask: string | [string | RegExp]
   required?: boolean
+  extraHeader?: ReactElement
   extraContent?: ReactElement
 }
 
@@ -16,7 +17,8 @@ const FormikAddress: React.FC<FieldProps & Props> = ({
   form,
   label,
   required = false,
-  extraContent = null,
+  extraHeader,
+  extraContent,
   ...props
 }) => {
   const ionInputRef = useRef<HTMLIonInputElement>(null)
@@ -61,28 +63,27 @@ const FormikAddress: React.FC<FieldProps & Props> = ({
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="search-location-input">
-      <IonItemGroup>
-        <FieldHeader
-          label={label}
-          error={touched && error}
-          required={required}
+    <IonItemGroup>
+      <FieldHeader
+        label={label}
+        error={touched && error}
+        required={required}
+        extraHeader={extraHeader}
+      />
+
+      <IonItem lines="full" mode="ios">
+        <IonInput
+          ref={ionInputRef}
+          name={name}
+          value={value}
+          onIonChange={e => form.setFieldValue(name, e.detail.value!)}
+          onIonBlur={onBlur}
+          {...props}
         />
 
-        <IonItem lines="full">
-          <IonInput
-            ref={ionInputRef}
-            name={name}
-            value={value}
-            onIonChange={e => form.setFieldValue(name, e.detail.value!)}
-            onIonBlur={onBlur}
-            {...props}
-          />
-
-          {extraContent}
-        </IonItem>
-      </IonItemGroup>
-    </div>
+        {extraContent}
+      </IonItem>
+    </IonItemGroup>
   )
 }
 
