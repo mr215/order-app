@@ -15,6 +15,7 @@ import { closeCircle } from 'ionicons/icons'
 interface Props {
   isOpen: boolean
   favoriteAddresses: string[]
+  onRemove: (address: string) => void
   onSelect: (address: string) => void
   onClose: () => void
 }
@@ -22,14 +23,10 @@ interface Props {
 const FavoriteAddresssModal: React.FC<Props> = ({
   isOpen,
   favoriteAddresses,
+  onRemove,
   onSelect,
   onClose,
 }) => {
-  const handleRemove = (index: number) => () => {
-    // TODO
-    console.log('handleRemove', index)
-  }
-
   return (
     <IonModal isOpen={isOpen} mode="ios" onDidDismiss={onClose}>
       <IonContent>
@@ -39,13 +36,13 @@ const FavoriteAddresssModal: React.FC<Props> = ({
           </IonListHeader>
 
           {favoriteAddresses.map((address: string, index: number) => (
-            <IonItem key={`${address}-${index}`}>
+            <IonItem key={index}>
               <IonLabel onClick={() => onSelect(address)}>{address}</IonLabel>
 
               <IonIcon
                 slot="end"
                 icon={closeCircle}
-                onClick={handleRemove(index)}
+                onClick={() => onRemove(address)}
               />
             </IonItem>
           ))}

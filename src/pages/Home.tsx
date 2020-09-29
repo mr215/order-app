@@ -17,6 +17,10 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
     userStore.favoriteAddress(address)
   }
 
+  const handleUnfavoriteAddress = (address: string) => {
+    userStore.unfavoriteAddress(address)
+  }
+
   const handleSubmit = (values: MainOrderFormValues) => {
     orderStore.updateOrder(values)
 
@@ -32,6 +36,7 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
         suppliers={toJS(suppliersStore.suppliers)}
         order={toJS(orderStore.order)}
         onFavoriteAddress={handleFavoriteAddress}
+        onUnfavoriteAddress={handleUnfavoriteAddress}
         onSubmit={handleSubmit}
       />
     </IonPage>

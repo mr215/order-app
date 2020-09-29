@@ -20,4 +20,11 @@ export default class UserStore {
   favoriteAddress(address: string) {
     this.user.favoriteAddresses.push(address)
   }
+
+  @action
+  unfavoriteAddress(address: string) {
+    this.user.favoriteAddresses = this.user.favoriteAddresses.filter(
+      fa => fa.toLowerCase() !== address.toLowerCase()
+    )
+  }
 }

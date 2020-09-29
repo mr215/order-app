@@ -33,6 +33,7 @@ interface MainOrderFormProps {
   suppliers: Supplier[]
   order: Order
   onFavoriteAddress: (address: string) => void
+  onUnfavoriteAddress: (address: string) => void
   onSubmit: (values: MainOrderFormValues) => void
 }
 
@@ -51,6 +52,9 @@ const MainOrderForm: React.FC<
   favoriteAddresses,
   suppliers,
   onFavoriteAddress,
+  onUnfavoriteAddress,
+
+  // Formik
   isValid,
   values,
   submitForm,
@@ -228,6 +232,7 @@ const MainOrderForm: React.FC<
       <FavoriteAddresssModal
         isOpen={showFavoriteAddressesModal}
         favoriteAddresses={favoriteAddresses}
+        onRemove={onUnfavoriteAddress}
         onSelect={handleFavoriteAddressSelect}
         onClose={() => setShowFavoriteAddresses(false)}
       />
