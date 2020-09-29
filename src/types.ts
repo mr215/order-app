@@ -74,10 +74,7 @@ export const DEFAULT_USER: User = {
   companyName: '',
   accountingEmail: '',
   password: '',
-  favoriteAddresses: [
-    '123 ABC Tacoma WA 98765',
-    '678 DEF Los Angeles CA 56789',
-  ],
+  favoriteAddresses: [],
 }
 
 export const DEFAULT_ORDER_ITEM: OrderItem = {

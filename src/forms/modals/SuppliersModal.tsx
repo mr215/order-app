@@ -12,7 +12,6 @@ import {
   IonModal,
   IonRadio,
   IonRadioGroup,
-  IonThumbnail,
 } from '@ionic/react'
 import styled from 'styled-components'
 import { search, close } from 'ionicons/icons'
@@ -91,26 +90,6 @@ const SuppliersModal: React.FC<Props> = ({
     setSupplierType(supplierType)
   }
 
-  const renderSuppliers = () => {
-    return filteredSuppliers.map(supplier => (
-      <IonItem
-        key={supplier.id}
-        button
-        onClick={() => onSelect(supplier.address)}
-      >
-        <IonThumbnail slot="start">
-          <LogoImg src={supplier.logo} alt={supplier.name} width={150} />
-        </IonThumbnail>
-
-        <IonLabel className="ion-text-wrap">
-          <h2>{supplier.name}</h2>
-          <p>{supplier.address}</p>
-          <h2>{supplier.phone}</h2>
-        </IonLabel>
-      </IonItem>
-    ))
-  }
-
   return (
     <IonModal isOpen={isOpen} mode="ios" onDidDismiss={onClose}>
       <IonContent>
@@ -152,12 +131,32 @@ const SuppliersModal: React.FC<Props> = ({
             </ScrollDiv>
           )}
 
-          {renderSuppliers()}
+          {filteredSuppliers.map(supplier => (
+            <IonItem
+              key={supplier.id}
+              button
+              lines="full"
+              onClick={() => onSelect(supplier.address)}
+            >
+              <LogoImg
+                slot="start"
+                src={supplier.logo}
+                alt={supplier.name}
+                width={150}
+              />
+
+              <IonLabel className="ion-text-wrap">
+                <h2>{supplier.name}</h2>
+                <p>{supplier.address}</p>
+                <h2>{supplier.phone}</h2>
+              </IonLabel>
+            </IonItem>
+          ))}
         </IonList>
       </IonContent>
 
       <IonFooter mode="ios" className="ion-padding ion-no-border">
-        <IonButton expand="block" onClick={onClose}>
+        <IonButton expand="block" size="large" onClick={onClose}>
           Close
         </IonButton>
       </IonFooter>

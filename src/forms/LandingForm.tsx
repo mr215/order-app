@@ -28,7 +28,12 @@ const LandingForm: React.FC<
         />
 
         <IonFooter className="ion-padding ion-no-border">
-          <IonButton expand="block" disabled={!isValid} onClick={submitForm}>
+          <IonButton
+            expand="block"
+            size="large"
+            disabled={!isValid}
+            onClick={submitForm}
+          >
             Continue
           </IonButton>
         </IonFooter>

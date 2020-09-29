@@ -81,7 +81,11 @@ const MainOrderForm: React.FC<
   const favoriteAddressButton = useMemo(() => {
     if (!values.deliveryAddress || isDeliveryAddressFavorite) {
       return (
-        <IonButton slot="start" onClick={() => setShowFavoriteAddresses(true)}>
+        <IonButton
+          slot="start"
+          size="default"
+          onClick={() => setShowFavoriteAddresses(true)}
+        >
           Favorites
         </IonButton>
       )
@@ -90,6 +94,7 @@ const MainOrderForm: React.FC<
     return (
       <IonButton
         slot="start"
+        size="default"
         onClick={() => onFavoriteAddress(values.deliveryAddress)}
       >
         Save
@@ -147,12 +152,20 @@ const MainOrderForm: React.FC<
           placeholder="Search pickup address"
           required
           extraHeader={
-            <IonButton slot="end" onClick={() => setShowPickupNoteModal(true)}>
-              Add Pickup Note
+            <IonButton
+              slot="end"
+              size="default"
+              onClick={() => setShowPickupNoteModal(true)}
+            >
+              Pickup Note
             </IonButton>
           }
           extraContent={
-            <IonButton slot="start" onClick={() => setShowSuppliersModal(true)}>
+            <IonButton
+              slot="start"
+              size="default"
+              onClick={() => setShowSuppliersModal(true)}
+            >
               Select
             </IonButton>
           }
@@ -168,9 +181,10 @@ const MainOrderForm: React.FC<
           extraHeader={
             <IonButton
               slot="end"
+              size="default"
               onClick={() => setShowDeliveryNoteModal(true)}
             >
-              Add Delivery Note
+              Delivery Note
             </IonButton>
           }
           extraContent={favoriteAddressButton}
@@ -206,7 +220,12 @@ const MainOrderForm: React.FC<
       </IonContent>
 
       <IonFooter mode="ios" className="ion-padding ion-no-border">
-        <IonButton expand="block" disabled={!isValid} onClick={submitForm}>
+        <IonButton
+          expand="block"
+          size="large"
+          disabled={!isValid}
+          onClick={submitForm}
+        >
           Continue
         </IonButton>
       </IonFooter>
@@ -245,16 +264,16 @@ export default withFormik<MainOrderFormProps, MainOrderFormValues>({
   enableReinitialize: true,
 
   validationSchema: Yup.object().shape({
-    jobName: Yup.string().required('Job name is required'),
+    jobName: Yup.string().required('Required'),
     orderThrough: Yup.mixed()
       .required()
       .oneOf([OrderThrough.SupplyHound, OrderThrough.Supplier] as const),
-    pickupAddress: Yup.string().required('Pickup address is required'),
-    deliveryAddress: Yup.string().required('Delivery address is required'),
+    pickupAddress: Yup.string().required('Required'),
+    deliveryAddress: Yup.string().required('Required'),
     vehicleType: Yup.mixed()
       .required()
       .oneOf([VehicleType.Car, VehicleType.Truck] as const),
-    lastestDeliverByTime: Yup.string().required('Delivery time is required'),
+    lastestDeliverByTime: Yup.string().required('Required'),
   }),
 
   mapPropsToValues({ order }: MainOrderFormProps): MainOrderFormValues {

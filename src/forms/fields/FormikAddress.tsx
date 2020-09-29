@@ -71,7 +71,7 @@ const FormikAddress: React.FC<FieldProps & Props> = ({
         extraHeader={extraHeader}
       />
 
-      <IonItem lines="full">
+      <IonItem lines="full" mode="ios">
         <IonInput
           ref={ionInputRef}
           name={name}

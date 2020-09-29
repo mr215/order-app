@@ -50,7 +50,7 @@ const FavoriteAddresssModal: React.FC<Props> = ({
       </IonContent>
 
       <IonFooter mode="ios" className="ion-padding ion-no-border">
-        <IonButton expand="block" onClick={onClose}>
+        <IonButton expand="block" size="large" onClick={onClose}>
           Close
         </IonButton>
       </IonFooter>
