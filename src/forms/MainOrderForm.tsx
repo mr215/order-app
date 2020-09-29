@@ -20,7 +20,7 @@ import PickupNoteModal from './modals/PickupNoteModal'
 import DeliveryNoteModal from './modals/DeliveryNoteModal'
 import SuppliersModal from './modals/SuppliersModal'
 
-import FavoriteAddresssModal from './FavoriteAddressesModal'
+import FavoriteAddresssModal from './modals/FavoriteAddressesModal'
 
 interface MainOrderFormProps {
   order: Order
@@ -186,12 +186,11 @@ const MainOrderForm: React.FC<
         onClose={() => setShowSuppliersModal(false)}
       />
 
-      {showFavoriteAddressesModal && (
-        <FavoriteAddresssModal
-          onSelect={handleFavoriteAddressSelect}
-          onClose={() => setShowFavoriteAddresses(false)}
-        />
-      )}
+      <FavoriteAddresssModal
+        isOpen={showFavoriteAddressesModal}
+        onSelect={handleFavoriteAddressSelect}
+        onClose={() => setShowFavoriteAddresses(false)}
+      />
     </>
   )
 }
