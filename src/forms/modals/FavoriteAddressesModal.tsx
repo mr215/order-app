@@ -1,16 +1,16 @@
 import React from 'react'
 import {
-  IonButton,
   IonContent,
-  IonFooter,
   IonIcon,
+  IonItem,
   IonLabel,
   IonList,
   IonListHeader,
   IonModal,
-  IonItem,
 } from '@ionic/react'
 import { closeCircle } from 'ionicons/icons'
+
+import FooterWithButton from 'components/FooterWithButton'
 
 interface Props {
   isOpen: boolean
@@ -49,11 +49,7 @@ const FavoriteAddresssModal: React.FC<Props> = ({
         </IonList>
       </IonContent>
 
-      <IonFooter mode="ios" className="ion-padding ion-no-border">
-        <IonButton expand="block" size="large" onClick={onClose}>
-          Close
-        </IonButton>
-      </IonFooter>
+      <FooterWithButton onClick={onClose}>Close</FooterWithButton>
     </IonModal>
   )
 }

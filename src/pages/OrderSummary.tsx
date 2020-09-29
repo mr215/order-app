@@ -1,9 +1,7 @@
 import React, { useMemo } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import {
-  IonButton,
   IonContent,
-  IonFooter,
   IonIcon,
   IonItem,
   IonItemGroup,
@@ -19,6 +17,7 @@ import { OrderThrough } from 'types'
 import useStores from 'hooks/useStores'
 import { formatCurrency } from 'utils/formatters'
 import Header from 'components/Header'
+import FooterWithButton from 'components/FooterWithButton'
 import DirectionsMap from 'components/DirectionsMap'
 
 const Title = styled.h2`
@@ -104,11 +103,7 @@ const OrderSummary: React.FC<RouteComponentProps> = () => {
         />
       </IonContent>
 
-      <IonFooter mode="ios" className="ion-padding">
-        <IonButton expand="block" onClick={handleSubmit}>
-          Place Order
-        </IonButton>
-      </IonFooter>
+      <FooterWithButton onClick={handleSubmit}>Place Order</FooterWithButton>
     </IonPage>
   )
 }

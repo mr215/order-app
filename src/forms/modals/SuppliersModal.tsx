@@ -1,8 +1,6 @@
 import React, { useState, useMemo } from 'react'
 import {
-  IonButton,
   IonContent,
-  IonFooter,
   IonIcon,
   IonInput,
   IonItem,
@@ -17,6 +15,7 @@ import styled from 'styled-components'
 import { search, close } from 'ionicons/icons'
 
 import { Supplier } from 'types'
+import FooterWithButton from 'components/FooterWithButton'
 
 interface Props {
   isOpen: boolean
@@ -155,11 +154,7 @@ const SuppliersModal: React.FC<Props> = ({
         </IonList>
       </IonContent>
 
-      <IonFooter mode="ios" className="ion-padding ion-no-border">
-        <IonButton expand="block" size="large" onClick={onClose}>
-          Close
-        </IonButton>
-      </IonFooter>
+      <FooterWithButton onClick={onClose}>Close</FooterWithButton>
     </IonModal>
   )
 }

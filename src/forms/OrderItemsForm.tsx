@@ -10,7 +10,6 @@ import {
 import {
   IonButton,
   IonContent,
-  IonFooter,
   IonItem,
   IonLabel,
   IonList,
@@ -25,6 +24,8 @@ import {
   OrderItem,
   OrderItemsFormValues,
 } from 'types'
+
+import FooterWithButton from 'components/FooterWithButton'
 
 import FormikInput from './fields/FormikInput'
 import OrderItemRow from './components/OrderItemRow'
@@ -139,16 +140,9 @@ const OrderItemsForm: React.FC<
           : renderOrderItems()}
       </IonContent>
 
-      <IonFooter mode="ios" className="ion-padding ion-no-border">
-        <IonButton
-          expand="block"
-          size="large"
-          disabled={!isValid}
-          onClick={submitForm}
-        >
-          Continue
-        </IonButton>
-      </IonFooter>
+      <FooterWithButton disabled={!isValid} onClick={submitForm}>
+        Continue
+      </FooterWithButton>
     </>
   )
 }

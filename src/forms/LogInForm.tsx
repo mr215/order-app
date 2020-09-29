@@ -1,16 +1,12 @@
 import React from 'react'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import {
-  IonButton,
-  IonContent,
-  IonFooter,
-  IonItem,
-  IonLabel,
-} from '@ionic/react'
+import { IonContent, IonItem, IonLabel } from '@ionic/react'
 
 import * as Yup from 'yup'
 
 import { User, LogInFormValues } from 'types'
+import FooterWithButton from 'components/FooterWithButton'
+
 import FormikInput from './fields/FormikInput'
 
 interface LogInFormProps {
@@ -50,16 +46,9 @@ const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({
           </IonItem>
         </IonItem>
 
-        <IonFooter className="ion-padding ion-no-border">
-          <IonButton
-            expand="block"
-            size="large"
-            disabled={!isValid}
-            onClick={submitForm}
-          >
-            Log In
-          </IonButton>
-        </IonFooter>
+        <FooterWithButton disabled={!isValid} onClick={submitForm}>
+          Log In
+        </FooterWithButton>
       </IonContent>
     </>
   )

@@ -1,14 +1,10 @@
 import React, { memo } from 'react'
 import styled from 'styled-components'
 import { Field } from 'formik'
-import {
-  IonButton,
-  IonContent,
-  IonFooter,
-  IonHeader,
-  IonModal,
-} from '@ionic/react'
+import { IonContent, IonHeader, IonModal } from '@ionic/react'
 import { formatISO } from 'date-fns'
+
+import FooterWithButton from 'components/FooterWithButton'
 
 import FormikTextarea from '../fields/FormikTextarea'
 import FormikDatetime from '../fields/FormikDatetime'
@@ -51,11 +47,7 @@ const PickupNoteModal: React.FC<Props> = ({ isOpen, onClose }) => (
       />
     </IonContent>
 
-    <IonFooter mode="ios" className="ion-padding">
-      <IonButton expand="block" onClick={onClose}>
-        Save
-      </IonButton>
-    </IonFooter>
+    <FooterWithButton onClick={onClose}>Save</FooterWithButton>
   </IonModal>
 )
 

@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import { IonButton, IonContent, IonFooter } from '@ionic/react'
+import { IonButton, IonContent } from '@ionic/react'
 import { formatISO } from 'date-fns'
 import * as Yup from 'yup'
 
@@ -13,6 +13,7 @@ import {
   MainOrderFormValues,
 } from 'types'
 import { titleCase } from 'utils/formatters'
+import FooterWithButton from 'components/FooterWithButton'
 
 import carImg from 'images/car.png'
 import truckImg from 'images/truck.png'
@@ -219,16 +220,9 @@ const MainOrderForm: React.FC<
         />
       </IonContent>
 
-      <IonFooter mode="ios" className="ion-padding ion-no-border">
-        <IonButton
-          expand="block"
-          size="large"
-          disabled={!isValid}
-          onClick={submitForm}
-        >
-          Continue
-        </IonButton>
-      </IonFooter>
+      <FooterWithButton disabled={!isValid} onClick={submitForm}>
+        Continue
+      </FooterWithButton>
 
       {/* Modals */}
       <PickupNoteModal
