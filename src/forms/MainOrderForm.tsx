@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 import { IonButton, IonContent, IonFooter } from '@ionic/react'
@@ -32,6 +32,7 @@ interface MainOrderFormProps {
   favoriteAddresses: string[]
   suppliers: Supplier[]
   order: Order
+  onFavoriteAddress: (address: string) => void
   onSubmit: (values: MainOrderFormValues) => void
 }
 
@@ -46,7 +47,15 @@ const VehicleImg = styled.img<{ small?: boolean }>`
 
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
-> = ({ favoriteAddresses, suppliers, isValid, submitForm, setFieldValue }) => {
+> = ({
+  favoriteAddresses,
+  suppliers,
+  onFavoriteAddress,
+  isValid,
+  values,
+  submitForm,
+  setFieldValue,
+}) => {
   const [showPickupNoteModal, setShowPickupNoteModal] = useState<boolean>(false)
   const [showDeliveryNoteModal, setShowDeliveryNoteModal] = useState<boolean>(
     false
@@ -55,6 +64,34 @@ const MainOrderForm: React.FC<
   const [showFavoriteAddressesModal, setShowFavoriteAddresses] = useState<
     boolean
   >(false)
+
+  const isDeliveryAddressFavorite = useMemo(
+    () =>
+      !!favoriteAddresses.find(
+        (address: string) =>
+          address.toLowerCase() === values.deliveryAddress.toLowerCase()
+      ),
+    [favoriteAddresses, values.deliveryAddress]
+  )
+
+  const favoriteAddressButton = useMemo(() => {
+    if (!values.deliveryAddress || isDeliveryAddressFavorite) {
+      return (
+        <IonButton slot="start" onClick={() => setShowFavoriteAddresses(true)}>
+          Favorites
+        </IonButton>
+      )
+    }
+
+    return (
+      <IonButton
+        slot="start"
+        onClick={() => onFavoriteAddress(values.deliveryAddress)}
+      >
+        Save
+      </IonButton>
+    )
+  }, [isDeliveryAddressFavorite, values.deliveryAddress, onFavoriteAddress])
 
   const handleFavoriteAddressSelect = (address: string) => {
     setFieldValue('deliveryAddress', address)
@@ -132,14 +169,7 @@ const MainOrderForm: React.FC<
               Add Delivery Note
             </IonButton>
           }
-          extraContent={
-            <IonButton
-              slot="start"
-              onClick={() => setShowFavoriteAddresses(true)}
-            >
-              Favorites
-            </IonButton>
-          }
+          extraContent={favoriteAddressButton}
         />
 
         <Field

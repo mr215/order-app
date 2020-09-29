@@ -15,4 +15,9 @@ export default class UserStore {
   resetUser() {
     this.updateUser(DEFAULT_USER)
   }
+
+  @action
+  favoriteAddress(address: string) {
+    this.user.favoriteAddresses.push(address)
+  }
 }
