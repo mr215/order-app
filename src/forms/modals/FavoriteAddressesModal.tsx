@@ -12,22 +12,19 @@ import {
 } from '@ionic/react'
 import { closeCircle } from 'ionicons/icons'
 
-import useStores from 'hooks/useStores'
-
 interface Props {
   isOpen: boolean
+  favoriteAddresses: string[]
   onSelect: (address: string) => void
   onClose: () => void
 }
 
 const FavoriteAddresssModal: React.FC<Props> = ({
   isOpen,
+  favoriteAddresses,
   onSelect,
   onClose,
 }) => {
-  const { userStore } = useStores()
-  const { favoriteAddresses } = userStore.user
-
   const handleRemove = (index: number) => () => {
     // TODO
     console.log('handleRemove', index)
@@ -41,9 +38,9 @@ const FavoriteAddresssModal: React.FC<Props> = ({
             <IonLabel>Favorite Addresses</IonLabel>
           </IonListHeader>
 
-          {favoriteAddresses.map((location: string, index: number) => (
-            <IonItem key={`${location}-${index}`}>
-              <IonLabel onClick={() => onSelect(location)}>{location}</IonLabel>
+          {favoriteAddresses.map((address: string, index: number) => (
+            <IonItem key={`${address}-${index}`}>
+              <IonLabel onClick={() => onSelect(address)}>{address}</IonLabel>
 
               <IonIcon
                 slot="end"

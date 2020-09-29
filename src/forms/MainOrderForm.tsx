@@ -5,7 +5,13 @@ import { IonButton, IonContent, IonFooter } from '@ionic/react'
 import { formatISO } from 'date-fns'
 import * as Yup from 'yup'
 
-import { OrderThrough, VehicleType, Order, MainOrderFormValues } from 'types'
+import {
+  OrderThrough,
+  VehicleType,
+  Order,
+  Supplier,
+  MainOrderFormValues,
+} from 'types'
 import { titleCase } from 'utils/formatters'
 
 import carImg from 'images/car.png'
@@ -23,6 +29,8 @@ import SuppliersModal from './modals/SuppliersModal'
 import FavoriteAddresssModal from './modals/FavoriteAddressesModal'
 
 interface MainOrderFormProps {
+  favoriteAddresses: string[]
+  suppliers: Supplier[]
   order: Order
   onSubmit: (values: MainOrderFormValues) => void
 }
@@ -38,7 +46,7 @@ const VehicleImg = styled.img<{ small?: boolean }>`
 
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
-> = ({ isValid, submitForm, setFieldValue }) => {
+> = ({ favoriteAddresses, suppliers, isValid, submitForm, setFieldValue }) => {
   const [showPickupNoteModal, setShowPickupNoteModal] = useState<boolean>(false)
   const [showDeliveryNoteModal, setShowDeliveryNoteModal] = useState<boolean>(
     false
@@ -182,12 +190,14 @@ const MainOrderForm: React.FC<
 
       <SuppliersModal
         isOpen={showSuppliersModal}
+        suppliers={suppliers}
         onSelect={handleSupplierSelect}
         onClose={() => setShowSuppliersModal(false)}
       />
 
       <FavoriteAddresssModal
         isOpen={showFavoriteAddressesModal}
+        favoriteAddresses={favoriteAddresses}
         onSelect={handleFavoriteAddressSelect}
         onClose={() => setShowFavoriteAddresses(false)}
       />

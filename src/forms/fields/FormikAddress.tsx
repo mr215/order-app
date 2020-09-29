@@ -63,7 +63,7 @@ const FormikAddress: React.FC<FieldProps & Props> = ({
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="search-location-input">
+    <div className="search-address-input">
       <IonItemGroup>
         <FieldHeader
           label={label}

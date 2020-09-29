@@ -9,7 +9,7 @@ import Header from 'components/Header'
 import MainOrderForm from 'forms/MainOrderForm'
 
 const Home: React.FC<RouteComponentProps> = ({ history }) => {
-  const { orderStore } = useStores()
+  const { userStore, orderStore, suppliersStore } = useStores()
 
   const handleSubmit = (values: MainOrderFormValues) => {
     orderStore.updateOrder(values)
@@ -21,7 +21,12 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
     <IonPage>
       <Header home />
 
-      <MainOrderForm order={orderStore.order} onSubmit={handleSubmit} />
+      <MainOrderForm
+        favoriteAddresses={userStore.user.favoriteAddresses}
+        suppliers={suppliersStore.suppliers}
+        order={orderStore.order}
+        onSubmit={handleSubmit}
+      />
     </IonPage>
   )
 }

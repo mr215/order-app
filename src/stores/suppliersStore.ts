@@ -2,7 +2,7 @@ import { observable, action, set } from 'mobx'
 
 import { Supplier } from 'types'
 
-export default class SupplierStore {
+export default class SuppliersStore {
   @observable
   suppliers: Supplier[] = [
     {

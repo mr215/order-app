@@ -17,10 +17,11 @@ import {
 import styled from 'styled-components'
 import { search, close } from 'ionicons/icons'
 
-import useStores from 'hooks/useStores'
+import { Supplier } from 'types'
 
 interface Props {
   isOpen: boolean
+  suppliers: Supplier[]
   onClose: () => void
   onSelect: (address: string) => void
 }
@@ -57,10 +58,12 @@ const LogoImg = styled.img`
   height: auto;
 `
 
-const SuppliersModal: React.FC<Props> = ({ isOpen, onSelect, onClose }) => {
-  const { supplierStore } = useStores()
-  const { suppliers } = supplierStore
-
+const SuppliersModal: React.FC<Props> = ({
+  isOpen,
+  suppliers,
+  onSelect,
+  onClose,
+}) => {
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [supplierType, setSupplierType] = useState('All')
   const [query, setQuery] = useState('')
