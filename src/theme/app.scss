@@ -19,12 +19,8 @@
 
 ion-item {
   --highlight-height: 2px;
-}
+  --padding-top: 0.5rem;
+  --padding-bottom: 0.5rem;
 
-ion-thumbnail {
-  width: auto !important;
-}
-
-ion-img {
-  object-fit: fill !important;
+  font-size: 1.25rem;
 }

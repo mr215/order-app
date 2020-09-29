@@ -63,29 +63,27 @@ const FormikAddress: React.FC<FieldProps & Props> = ({
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="search-address-input">
-      <IonItemGroup>
-        <FieldHeader
-          label={label}
-          error={touched && error}
-          required={required}
-          extraHeader={extraHeader}
+    <IonItemGroup>
+      <FieldHeader
+        label={label}
+        error={touched && error}
+        required={required}
+        extraHeader={extraHeader}
+      />
+
+      <IonItem lines="full">
+        <IonInput
+          ref={ionInputRef}
+          name={name}
+          value={value}
+          onIonChange={e => form.setFieldValue(name, e.detail.value!)}
+          onIonBlur={onBlur}
+          {...props}
         />
 
-        <IonItem lines="full">
-          <IonInput
-            ref={ionInputRef}
-            name={name}
-            value={value}
-            onIonChange={e => form.setFieldValue(name, e.detail.value!)}
-            onIonBlur={onBlur}
-            {...props}
-          />
-
-          {extraContent}
-        </IonItem>
-      </IonItemGroup>
-    </div>
+        {extraContent}
+      </IonItem>
+    </IonItemGroup>
   )
 }
 
