@@ -5,13 +5,7 @@ import { IonButton, IonContent, IonFooter } from '@ionic/react'
 import { formatISO } from 'date-fns'
 import * as Yup from 'yup'
 
-import {
-  OrderThrough,
-  VehicleType,
-  User,
-  Order,
-  MainOrderFormValues,
-} from 'types'
+import { OrderThrough, VehicleType, Order, MainOrderFormValues } from 'types'
 import { titleCase } from 'utils/formatters'
 
 import carImg from 'images/car.png'
@@ -26,7 +20,7 @@ import PickupNoteModal from './modals/PickupNoteModal'
 import DeliveryNoteModal from './modals/DeliveryNoteModal'
 import SuppliersModal from './modals/SuppliersModal'
 
-import FavoriteLocationsModal from './FavoriteLocationsModal'
+import FavoriteAddresssModal from './FavoriteAddressesModal'
 
 interface MainOrderFormProps {
   order: Order
@@ -50,14 +44,14 @@ const MainOrderForm: React.FC<
     false
   )
   const [showSuppliersModal, setShowSuppliersModal] = useState<boolean>(false)
-  const [showFavoriteLocations, setShowFavoriteLocations] = useState<boolean>(
-    false
-  )
+  const [showFavoriteAddressesModal, setShowFavoriteAddresses] = useState<
+    boolean
+  >(false)
 
-  const handleLocationSelect = (address: string) => {
+  const handleFavoriteAddressSelect = (address: string) => {
     setFieldValue('deliveryAddress', address)
 
-    setShowFavoriteLocations(false)
+    setShowFavoriteAddresses(false)
   }
 
   const handleSupplierSelect = (address: string) => {
@@ -133,7 +127,7 @@ const MainOrderForm: React.FC<
           extraContent={
             <IonButton
               slot="start"
-              onClick={() => setShowFavoriteLocations(true)}
+              onClick={() => setShowFavoriteAddresses(true)}
             >
               Favorites
             </IonButton>
@@ -192,10 +186,10 @@ const MainOrderForm: React.FC<
         onClose={() => setShowSuppliersModal(false)}
       />
 
-      {showFavoriteLocations && (
-        <FavoriteLocationsModal
-          onSelect={handleLocationSelect}
-          onClose={() => setShowFavoriteLocations(false)}
+      {showFavoriteAddressesModal && (
+        <FavoriteAddresssModal
+          onSelect={handleFavoriteAddressSelect}
+          onClose={() => setShowFavoriteAddresses(false)}
         />
       )}
     </>

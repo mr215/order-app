@@ -6,7 +6,7 @@ export interface User {
   companyName: string
   accountingEmail: string
   password: string
-  favoriteLocations: string[]
+  favoriteAddresses: string[]
 }
 
 export type SignUpFormValues = User
@@ -74,7 +74,7 @@ export const DEFAULT_USER: User = {
   companyName: '',
   accountingEmail: '',
   password: '',
-  favoriteLocations: [
+  favoriteAddresses: [
     '123 ABC Tacoma WA 98765',
     '678 DEF Los Angeles CA 56789',
   ],

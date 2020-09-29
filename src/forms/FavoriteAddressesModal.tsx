@@ -19,9 +19,9 @@ interface Props {
   onSelect: (address: string) => void
 }
 
-const FavoriteLocationsModal: React.FC<Props> = ({ onClose, onSelect }) => {
+const FavoriteAddresssModal: React.FC<Props> = ({ onClose, onSelect }) => {
   const { userStore } = useStores()
-  const { favoriteLocations } = userStore.user
+  const { favoriteAddresses } = userStore.user
 
   const handleRemove = (index: number) => () => {
     console.log('handleRemove', index)
@@ -32,10 +32,10 @@ const FavoriteLocationsModal: React.FC<Props> = ({ onClose, onSelect }) => {
       <IonContent>
         <IonList>
           <IonListHeader>
-            <IonLabel>Favorite Locations</IonLabel>
+            <IonLabel>Favorite Addresses</IonLabel>
           </IonListHeader>
 
-          {favoriteLocations.map((location: string, index: number) => (
+          {favoriteAddresses.map((location: string, index: number) => (
             <IonItem key={`${location}-${index}`}>
               <IonLabel onClick={() => onSelect(location)}>{location}</IonLabel>
 
@@ -58,4 +58,4 @@ const FavoriteLocationsModal: React.FC<Props> = ({ onClose, onSelect }) => {
   )
 }
 
-export default FavoriteLocationsModal
+export default FavoriteAddresssModal
