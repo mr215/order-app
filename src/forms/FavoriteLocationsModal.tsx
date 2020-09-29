@@ -3,12 +3,14 @@ import {
   IonButton,
   IonContent,
   IonFooter,
+  IonIcon,
   IonLabel,
   IonList,
   IonListHeader,
   IonModal,
   IonItem,
 } from '@ionic/react'
+import { closeCircle } from 'ionicons/icons'
 
 import useStores from 'hooks/useStores'
 
@@ -21,6 +23,10 @@ const FavoriteLocationsModal: React.FC<Props> = ({ onClose, onSelect }) => {
   const { userStore } = useStores()
   const { favoriteLocations } = userStore.user
 
+  const handleRemove = (index: number) => () => {
+    console.log('handleRemove', index)
+  }
+
   return (
     <IonModal isOpen mode="ios" onDidDismiss={onClose}>
       <IonContent>
@@ -30,13 +36,14 @@ const FavoriteLocationsModal: React.FC<Props> = ({ onClose, onSelect }) => {
           </IonListHeader>
 
           {favoriteLocations.map((location: string, index: number) => (
-            <IonItem
-              key={`${location}-${index}`}
-              button
-              detail={false}
-              onClick={() => onSelect(location)}
-            >
-              <IonLabel>{location}</IonLabel>
+            <IonItem key={`${location}-${index}`}>
+              <IonLabel onClick={() => onSelect(location)}>{location}</IonLabel>
+
+              <IonIcon
+                slot="end"
+                icon={closeCircle}
+                onClick={handleRemove(index)}
+              />
             </IonItem>
           ))}
         </IonList>

@@ -1,32 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import {
   IonButton,
-  IonItem,
-  IonCol,
   IonContent,
   IonFooter,
-  IonGrid,
+  IonIcon,
+  IonInput,
+  IonItem,
   IonLabel,
   IonList,
   IonListHeader,
   IonModal,
-  IonRow,
-  IonThumbnail,
-  IonImg,
   IonRadio,
   IonRadioGroup,
-  IonIcon,
-  IonRouterLink,
+  IonThumbnail,
 } from '@ionic/react'
 import styled from 'styled-components'
 import { search, close } from 'ionicons/icons'
-import { titleCase } from 'utils/formatters'
 
 import { User } from 'types'
 import useStores from 'hooks/useStores'
-import { Field } from 'formik'
-import FormikInput from './fields/FormikInput'
-import FavoriteLocationsModal from './FavoriteLocationsModal'
 
 interface Props {
   user: User
@@ -34,8 +26,8 @@ interface Props {
   onSelect: (address: string) => void
 }
 
-const SUPPLIER_TYPES = {
-  All: '',
+const SUPPLIER_TYPES: Record<string, string> = {
+  All: 'All',
   Lumber: 'Lumber',
   Hardware: 'Hardware',
   Plumbing: 'Plumbing',
@@ -61,61 +53,60 @@ const ItemLabel = styled.div`
   font-size: 1.25rem;
 `
 
+const LogoImg = styled.img`
+  width: 150px;
+  height: auto;
+`
+
 const SupplierSelectionModal: React.FC<Props> = ({ onClose, onSelect }) => {
   const { supplierStore } = useStores()
+  const { suppliers } = supplierStore
 
-  const [supplierType, setSupplierType] = useState('')
-  const [supplierName, setSupplierName] = useState('')
   const [showSearch, setShowSearch] = useState<boolean>(false)
-  const [showFavorites, setShowFavorites] = useState<boolean>(false)
+  const [supplierType, setSupplierType] = useState('All')
+  const [query, setQuery] = useState('')
+
+  const filteredSuppliersByType = useMemo(
+    () =>
+      supplierType === 'All'
+        ? suppliers
+        : suppliers.filter(supplier => supplier.type === supplierType),
+    [suppliers, supplierType]
+  )
+  const filteredSuppliersByQuery = useMemo(
+    () =>
+      suppliers.filter(supplier =>
+        supplier.name.toLowerCase().includes(query.toLowerCase())
+      ),
+    [suppliers, query]
+  )
+  const filteredSuppliers = useMemo(
+    () => (showSearch ? filteredSuppliersByQuery : filteredSuppliersByType),
+    [showSearch, filteredSuppliersByType, filteredSuppliersByQuery]
+  )
 
   const handleSelect = (supplierType: string) => {
     setSupplierType(supplierType)
   }
 
-  const handleChange = (event: any) => {
-    setSupplierName(event.target.value)
-  }
-
-  const filterSupplierTypes = () => {
-    return supplierType === ''
-      ? supplierStore.suppliers
-      : supplierStore.suppliers.filter(
-          supplier => supplier.type === supplierType
-        )
-  }
-
-  const filterSupplierNames = () => {
-    return supplierName === ''
-      ? []
-      : supplierStore.suppliers.filter(supplier =>
-          supplier.name.includes(titleCase(supplierName))
-        )
-  }
-
   const renderSuppliers = () => {
-    return (!showSearch ? filterSupplierTypes() : filterSupplierNames()).map(
-      (supplier, index) => {
-        return (
-          <IonRow
-            key={`supplier${index}`}
-            onClick={() => onSelect(supplier.address)}
-          >
-            <IonCol size="4">
-              <IonThumbnail>
-                <IonImg src={supplier.img} />
-              </IonThumbnail>
-            </IonCol>
+    return filteredSuppliers.map(supplier => (
+      <IonItem
+        key={supplier.id}
+        button
+        onClick={() => onSelect(supplier.address)}
+      >
+        <IonThumbnail slot="start">
+          <LogoImg src={supplier.logo} alt={supplier.name} width={150} />
+        </IonThumbnail>
 
-            <IonCol>
-              <IonRow>{supplier.name}</IonRow>
-              <IonRow>{supplier.address}</IonRow>
-              <IonRow>{supplier.phone}</IonRow>
-            </IonCol>
-          </IonRow>
-        )
-      }
-    )
+        <IonLabel className="ion-text-wrap">
+          <h2>{supplier.name}</h2>
+          <p>{supplier.address}</p>
+          <h2>{supplier.phone}</h2>
+        </IonLabel>
+      </IonItem>
+    ))
   }
 
   return (
@@ -128,41 +119,29 @@ const SupplierSelectionModal: React.FC<Props> = ({ onClose, onSelect }) => {
             <IonItem lines="none">
               <IonItem lines="none">
                 <IonIcon
-                  onClick={() => {
-                    setShowSearch(!showSearch)
-                  }}
                   icon={showSearch ? close : search}
+                  onClick={() => setShowSearch(!showSearch)}
                 />
               </IonItem>
             </IonItem>
           </IonListHeader>
 
-          <IonItem lines="none">
-            <IonRouterLink onClick={() => setShowFavorites(true)}>
-              View Favorites
-            </IonRouterLink>
-          </IonItem>
-
           {showSearch ? (
-            <Field
-              name="supplierName"
-              component={FormikInput}
-              label="Supplier Name"
+            <IonInput
               type="text"
-              placeholder="Enter a Supplier Name"
-              onChange={handleChange}
-              formatter={titleCase}
+              placeholder="Enter Supplier Name"
+              onIonChange={e => setQuery(e.detail.value!)}
             />
           ) : (
             <ScrollDiv>
-              <IonRadioGroup>
+              <IonRadioGroup value={supplierType}>
                 {Object.keys(SUPPLIER_TYPES).map((type, index) => (
                   <ScrollItem key={`${type}-${index}`}>
                     <IonRadio
                       slot="start"
                       mode="md"
-                      value={type}
-                      onClick={() => handleSelect(type)}
+                      value={SUPPLIER_TYPES[type]}
+                      onClick={() => handleSelect(SUPPLIER_TYPES[type])}
                     />
                     <ItemLabel>{type}</ItemLabel>
                   </ScrollItem>
@@ -171,13 +150,7 @@ const SupplierSelectionModal: React.FC<Props> = ({ onClose, onSelect }) => {
             </ScrollDiv>
           )}
 
-          <IonGrid>
-            {!showFavorites ? (
-              renderSuppliers()
-            ) : (
-              <FavoriteLocationsModal onClose={onClose} onSelect={onSelect} />
-            )}
-          </IonGrid>
+          {renderSuppliers()}
         </IonList>
       </IonContent>
 

@@ -41,11 +41,12 @@ export interface DeliveryNote {
 }
 
 export interface Supplier {
+  id: number
   name: string
   address: string
   phone: string
   type: string
-  img: string
+  logo: string
 }
 
 export interface Order {
