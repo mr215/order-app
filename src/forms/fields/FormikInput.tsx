@@ -22,7 +22,6 @@ const StyledInputMask = styled(InputMask)`
   height: 100%;
   border: none;
   outline: none;
-  font-size: 1.25rem;
 `
 
 const FormikInput: React.FC<FieldProps & Props> = ({

@@ -18,7 +18,6 @@ interface Props extends ComponentProps<typeof IonRadioGroup> {
 }
 
 const RadioLabel = styled(IonLabel)`
-  font-size: 1.25rem !important;
   white-space: normal !important;
 `
 

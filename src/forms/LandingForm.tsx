@@ -16,29 +16,27 @@ const LandingForm: React.FC<
   LandingFormProps & FormikProps<LandingFormValues>
 > = ({ isValid, submitForm }) => {
   return (
-    <>
-      <IonContent>
-        <Field
-          name="email"
-          component={FormikInput}
-          type="text"
-          label="Email Address"
-          placeholder="Enter email here"
-          required
-        />
+    <IonContent>
+      <Field
+        name="email"
+        component={FormikInput}
+        type="text"
+        label="Email Address"
+        placeholder="Enter email here"
+        required
+      />
 
-        <IonFooter className="ion-padding ion-no-border">
-          <IonButton
-            expand="block"
-            size="large"
-            disabled={!isValid}
-            onClick={submitForm}
-          >
-            Continue
-          </IonButton>
-        </IonFooter>
-      </IonContent>
-    </>
+      <IonFooter className="ion-padding ion-no-border">
+        <IonButton
+          expand="block"
+          size="large"
+          disabled={!isValid}
+          onClick={submitForm}
+        >
+          Continue
+        </IonButton>
+      </IonFooter>
+    </IonContent>
   )
 }
 
