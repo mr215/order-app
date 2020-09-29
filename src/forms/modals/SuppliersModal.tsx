@@ -8,21 +8,14 @@ import {
   IonList,
   IonListHeader,
   IonModal,
-  IonRadio,
-  IonRadioGroup,
+  IonSegment,
+  IonSegmentButton,
 } from '@ionic/react'
 import styled from 'styled-components'
 import { search, close } from 'ionicons/icons'
 
 import { Supplier } from 'types'
 import FooterWithButton from 'components/FooterWithButton'
-
-interface Props {
-  isOpen: boolean
-  suppliers: Supplier[]
-  onClose: () => void
-  onSelect: (address: string) => void
-}
 
 const SUPPLIER_TYPES: Record<string, string> = {
   All: 'All',
@@ -34,21 +27,20 @@ const SUPPLIER_TYPES: Record<string, string> = {
   Other: 'Other',
 }
 
-const ScrollDiv = styled.div`
-  overflow-x: scroll;
-  overflow-y: hidden;
-  white-space: nowrap;
-`
+interface Props {
+  isOpen: boolean
+  suppliers: Supplier[]
+  onClose: () => void
+  onSelect: (address: string) => void
+}
 
-const ScrollItem = styled.div`
-  display: inline-block;
-  margin: 1rem;
-`
+const StyledIonSegmentButton = styled(IonSegmentButton)`
+  --padding-top: 0.5rem;
+  --padding-bottom: 0.5rem;
+  --padding-start: 0.5rem;
+  --padding-end: 0.5rem;
 
-const ItemLabel = styled.div`
-  display: inline-block;
-  margin: 0.5rem;
-  font-size: 1.25rem;
+  min-width: 100px;
 `
 
 const LogoImg = styled.img`
@@ -85,10 +77,6 @@ const SuppliersModal: React.FC<Props> = ({
     [showSearch, filteredSuppliersByType, filteredSuppliersByQuery]
   )
 
-  const handleSelect = (supplierType: string) => {
-    setSupplierType(supplierType)
-  }
-
   return (
     <IonModal isOpen={isOpen} mode="ios" onDidDismiss={onClose}>
       <IonContent>
@@ -107,27 +95,26 @@ const SuppliersModal: React.FC<Props> = ({
           </IonListHeader>
 
           {showSearch ? (
-            <IonInput
-              type="text"
-              placeholder="Enter Supplier Name"
-              onIonChange={e => setQuery(e.detail.value!)}
-            />
+            <IonItem>
+              <IonInput
+                type="text"
+                placeholder="Enter Supplier Name"
+                onIonChange={e => setQuery(e.detail.value!)}
+              />
+            </IonItem>
           ) : (
-            <ScrollDiv>
-              <IonRadioGroup value={supplierType}>
-                {Object.keys(SUPPLIER_TYPES).map((type, index) => (
-                  <ScrollItem key={`${type}-${index}`}>
-                    <IonRadio
-                      slot="start"
-                      mode="md"
-                      value={SUPPLIER_TYPES[type]}
-                      onClick={() => handleSelect(SUPPLIER_TYPES[type])}
-                    />
-                    <ItemLabel>{type}</ItemLabel>
-                  </ScrollItem>
-                ))}
-              </IonRadioGroup>
-            </ScrollDiv>
+            <IonSegment
+              scrollable
+              mode="ios"
+              value={supplierType}
+              onIonChange={e => setSupplierType(e.detail.value!)}
+            >
+              {Object.keys(SUPPLIER_TYPES).map(type => (
+                <StyledIonSegmentButton key={type} value={type}>
+                  <IonLabel>{SUPPLIER_TYPES[type]}</IonLabel>
+                </StyledIonSegmentButton>
+              ))}
+            </IonSegment>
           )}
 
           {filteredSuppliers.map(supplier => (
