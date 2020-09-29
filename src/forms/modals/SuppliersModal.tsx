@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { memo, useState, useMemo } from 'react'
 import {
   IonContent,
   IonIcon,
@@ -159,4 +159,7 @@ const SuppliersModal: React.FC<Props> = ({
   )
 }
 
-export default SuppliersModal
+export default memo<Props>(
+  SuppliersModal,
+  (prevProps, nextProps) => prevProps.isOpen === nextProps.isOpen
+)

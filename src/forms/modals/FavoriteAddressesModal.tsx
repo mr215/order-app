@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import {
   IonContent,
   IonIcon,
@@ -54,4 +54,7 @@ const FavoriteAddresssModal: React.FC<Props> = ({
   )
 }
 
-export default FavoriteAddresssModal
+export default memo<Props>(
+  FavoriteAddresssModal,
+  (prevProps, nextProps) => prevProps.isOpen === nextProps.isOpen
+)
