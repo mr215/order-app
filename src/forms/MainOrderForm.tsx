@@ -24,13 +24,12 @@ import FormikAddress from './fields/FormikAddress'
 
 import PickupNoteModal from './modals/PickupNoteModal'
 import DeliveryNoteModal from './modals/DeliveryNoteModal'
+import SuppliersModal from './modals/SuppliersModal'
 
-import SupplierSelectionModal from './SupplierSelectionModal'
 import FavoriteLocationsModal from './FavoriteLocationsModal'
 
 interface MainOrderFormProps {
   order: Order
-  user: User
   onSubmit: (values: MainOrderFormValues) => void
 }
 
@@ -45,12 +44,12 @@ const VehicleImg = styled.img<{ small?: boolean }>`
 
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
-> = ({ user, isValid, submitForm, setFieldValue }) => {
-  const [showPickupNote, setShowPickupNote] = useState<boolean>(false)
-  const [showDeliveryNote, setShowDeliveryNote] = useState<boolean>(false)
-  const [showSupplierSelection, setShowSupplierSelection] = useState<boolean>(
+> = ({ isValid, submitForm, setFieldValue }) => {
+  const [showPickupNoteModal, setShowPickupNoteModal] = useState<boolean>(false)
+  const [showDeliveryNoteModal, setShowDeliveryNoteModal] = useState<boolean>(
     false
   )
+  const [showSuppliersModal, setShowSuppliersModal] = useState<boolean>(false)
   const [showFavoriteLocations, setShowFavoriteLocations] = useState<boolean>(
     false
   )
@@ -64,7 +63,7 @@ const MainOrderForm: React.FC<
   const handleSupplierSelect = (address: string) => {
     setFieldValue('pickupAddress', address)
 
-    setShowSupplierSelection(false)
+    setShowSuppliersModal(false)
   }
 
   return (
@@ -105,15 +104,12 @@ const MainOrderForm: React.FC<
           placeholder="Search pickup address"
           required
           extraHeader={
-            <IonButton slot="end" onClick={() => setShowPickupNote(true)}>
+            <IonButton slot="end" onClick={() => setShowPickupNoteModal(true)}>
               Add Pickup Note
             </IonButton>
           }
           extraContent={
-            <IonButton
-              slot="start"
-              onClick={() => setShowSupplierSelection(true)}
-            >
+            <IonButton slot="start" onClick={() => setShowSuppliersModal(true)}>
               Select
             </IonButton>
           }
@@ -127,7 +123,10 @@ const MainOrderForm: React.FC<
           placeholder="Search delivery address"
           required
           extraHeader={
-            <IonButton slot="end" onClick={() => setShowDeliveryNote(true)}>
+            <IonButton
+              slot="end"
+              onClick={() => setShowDeliveryNoteModal(true)}
+            >
               Add Delivery Note
             </IonButton>
           }
@@ -178,22 +177,20 @@ const MainOrderForm: React.FC<
 
       {/* Modals */}
       <PickupNoteModal
-        isOpen={showPickupNote}
-        onClose={() => setShowPickupNote(false)}
+        isOpen={showPickupNoteModal}
+        onClose={() => setShowPickupNoteModal(false)}
       />
 
       <DeliveryNoteModal
-        isOpen={showDeliveryNote}
-        onClose={() => setShowDeliveryNote(false)}
+        isOpen={showDeliveryNoteModal}
+        onClose={() => setShowDeliveryNoteModal(false)}
       />
 
-      {showSupplierSelection && (
-        <SupplierSelectionModal
-          user={user}
-          onSelect={handleSupplierSelect}
-          onClose={() => setShowSupplierSelection(false)}
-        />
-      )}
+      <SuppliersModal
+        isOpen={showSuppliersModal}
+        onSelect={handleSupplierSelect}
+        onClose={() => setShowSuppliersModal(false)}
+      />
 
       {showFavoriteLocations && (
         <FavoriteLocationsModal

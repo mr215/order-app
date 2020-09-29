@@ -10,7 +10,6 @@ import MainOrderForm from 'forms/MainOrderForm'
 
 const Home: React.FC<RouteComponentProps> = ({ history }) => {
   const { orderStore } = useStores()
-  const { userStore } = useStores()
 
   const handleSubmit = (values: MainOrderFormValues) => {
     orderStore.updateOrder(values)
@@ -22,11 +21,7 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
     <IonPage>
       <Header home />
 
-      <MainOrderForm
-        user={userStore.user}
-        order={orderStore.order}
-        onSubmit={handleSubmit}
-      />
+      <MainOrderForm order={orderStore.order} onSubmit={handleSubmit} />
     </IonPage>
   )
 }

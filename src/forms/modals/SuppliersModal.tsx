@@ -17,11 +17,10 @@ import {
 import styled from 'styled-components'
 import { search, close } from 'ionicons/icons'
 
-import { User } from 'types'
 import useStores from 'hooks/useStores'
 
 interface Props {
-  user: User
+  isOpen: boolean
   onClose: () => void
   onSelect: (address: string) => void
 }
@@ -58,7 +57,7 @@ const LogoImg = styled.img`
   height: auto;
 `
 
-const SupplierSelectionModal: React.FC<Props> = ({ onClose, onSelect }) => {
+const SuppliersModal: React.FC<Props> = ({ isOpen, onSelect, onClose }) => {
   const { supplierStore } = useStores()
   const { suppliers } = supplierStore
 
@@ -110,7 +109,7 @@ const SupplierSelectionModal: React.FC<Props> = ({ onClose, onSelect }) => {
   }
 
   return (
-    <IonModal isOpen mode="ios" onDidDismiss={onClose}>
+    <IonModal isOpen={isOpen} mode="ios" onDidDismiss={onClose}>
       <IonContent>
         <IonList>
           <IonListHeader>
@@ -163,4 +162,4 @@ const SupplierSelectionModal: React.FC<Props> = ({ onClose, onSelect }) => {
   )
 }
 
-export default SupplierSelectionModal
+export default SuppliersModal
