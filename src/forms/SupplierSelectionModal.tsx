@@ -22,7 +22,7 @@ import styled from 'styled-components'
 import { search, close } from 'ionicons/icons'
 import { titleCase } from 'utils/formatters'
 
-import { User, LocationFormValues } from 'types'
+import { User } from 'types'
 import useStores from 'hooks/useStores'
 import { Field } from 'formik'
 import FormikInput from './fields/FormikInput'
@@ -30,9 +30,8 @@ import FavoriteLocationsModal from './FavoriteLocationsModal'
 
 interface Props {
   user: User
-  onSubmit: (values: LocationFormValues) => void
-  onCancel: () => void
-  onClick: (address: string) => void
+  onClose: () => void
+  onSelect: (address: string) => void
 }
 
 const SUPPLIER_TYPES = {
@@ -62,12 +61,7 @@ const ItemLabel = styled.div`
   font-size: 1.25rem;
 `
 
-const SupplierSelectionModal: React.FC<Props> = ({
-  onCancel,
-  onClick,
-  onSubmit,
-  user,
-}) => {
+const SupplierSelectionModal: React.FC<Props> = ({ onClose, onSelect }) => {
   const { supplierStore } = useStores()
 
   const [supplierType, setSupplierType] = useState('')
@@ -105,7 +99,7 @@ const SupplierSelectionModal: React.FC<Props> = ({
         return (
           <IonRow
             key={`supplier${index}`}
-            onClick={() => onClick(supplier.address)}
+            onClick={() => onSelect(supplier.address)}
           >
             <IonCol size="4">
               <IonThumbnail>
@@ -125,7 +119,7 @@ const SupplierSelectionModal: React.FC<Props> = ({
   }
 
   return (
-    <IonModal isOpen mode="ios" onDidDismiss={onCancel}>
+    <IonModal isOpen mode="ios" onDidDismiss={onClose}>
       <IonContent>
         <IonList>
           <IonListHeader>
@@ -181,19 +175,14 @@ const SupplierSelectionModal: React.FC<Props> = ({
             {!showFavorites ? (
               renderSuppliers()
             ) : (
-              <FavoriteLocationsModal
-                user={user}
-                onSubmit={onSubmit}
-                onCancel={onCancel}
-                onClick={onClick}
-              />
+              <FavoriteLocationsModal onClose={onClose} onSelect={onSelect} />
             )}
           </IonGrid>
         </IonList>
       </IonContent>
 
       <IonFooter mode="ios" className="ion-padding ion-no-border">
-        <IonButton expand="block" onClick={onCancel}>
+        <IonButton expand="block" onClick={onClose}>
           Close
         </IonButton>
       </IonFooter>

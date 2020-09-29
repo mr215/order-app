@@ -11,7 +11,6 @@ import {
   User,
   Order,
   MainOrderFormValues,
-  LocationFormValues,
 } from 'types'
 import { titleCase } from 'utils/formatters'
 
@@ -32,7 +31,6 @@ import FavoriteLocationsModal from './FavoriteLocationsModal'
 interface MainOrderFormProps {
   order: Order
   user: User
-  handleSubmitLocations: (values: LocationFormValues) => void
   onSubmit: (values: MainOrderFormValues) => void
 }
 
@@ -47,7 +45,7 @@ const VehicleImg = styled.img<{ small?: boolean }>`
 
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
-> = ({ user, isValid, submitForm, setFieldValue, handleSubmitLocations }) => {
+> = ({ user, isValid, submitForm, setFieldValue }) => {
   const [showPickupNote, setShowPickupNote] = useState<boolean>(false)
   const [showDeliveryNote, setShowDeliveryNote] = useState<boolean>(false)
   const [showSupplierSelection, setShowSupplierSelection] = useState<boolean>(
@@ -192,18 +190,15 @@ const MainOrderForm: React.FC<
       {showSupplierSelection && (
         <SupplierSelectionModal
           user={user}
-          onSubmit={handleSubmitLocations}
-          onCancel={() => setShowSupplierSelection(false)}
-          onClick={handleSupplierSelect}
+          onSelect={handleSupplierSelect}
+          onClose={() => setShowSupplierSelection(false)}
         />
       )}
 
       {showFavoriteLocations && (
         <FavoriteLocationsModal
-          user={user}
-          onSubmit={handleSubmitLocations}
-          onCancel={() => setShowFavoriteLocations(false)}
-          onClick={handleLocationSelect}
+          onSelect={handleLocationSelect}
+          onClose={() => setShowFavoriteLocations(false)}
         />
       )}
     </>

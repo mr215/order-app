@@ -6,18 +6,12 @@ export interface User {
   companyName: string
   accountingEmail: string
   password: string
-  favoriteLocations: Location[]
-}
-
-export interface Location {
-  name: string
-  address: string
+  favoriteLocations: string[]
 }
 
 export type SignUpFormValues = User
 export type LogInFormValues = Pick<User, 'email' | 'password'>
 export type LandingFormValues = Pick<User, 'email'>
-export type LocationFormValues = Pick<User, 'favoriteLocations'>
 
 export enum OrderThrough {
   SupplyHound = 'SupplyHound',
@@ -46,6 +40,14 @@ export interface DeliveryNote {
   note: string
 }
 
+export interface Supplier {
+  name: string
+  address: string
+  phone: string
+  type: string
+  img: string
+}
+
 export interface Order {
   jobName: string
   orderThrough: OrderThrough
@@ -63,11 +65,6 @@ export interface Order {
 export type MainOrderFormValues = Omit<Order, 'items' | 'orderId'>
 export type OrderItemsFormValues = Pick<Order, 'items' | 'orderId'>
 
-export const DEFAULT_LOCATION: Location = {
-  name: '',
-  address: '',
-}
-
 export const DEFAULT_USER: User = {
   firstName: '',
   lastName: '',
@@ -76,15 +73,10 @@ export const DEFAULT_USER: User = {
   companyName: '',
   accountingEmail: '',
   password: '',
-  favoriteLocations: [],
-}
-
-export interface Supplier {
-  name: string
-  address: string
-  phone: string
-  type: string
-  img: string
+  favoriteLocations: [
+    '123 ABC Tacoma WA 98765',
+    '678 DEF Los Angeles CA 56789',
+  ],
 }
 
 export const DEFAULT_ORDER_ITEM: OrderItem = {
