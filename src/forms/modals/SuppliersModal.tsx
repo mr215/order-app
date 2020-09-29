@@ -1,5 +1,6 @@
 import React, { memo, useState, useMemo } from 'react'
 import {
+  IonButton,
   IonContent,
   IonIcon,
   IonInput,
@@ -82,16 +83,11 @@ const SuppliersModal: React.FC<Props> = ({
       <IonContent>
         <IonList>
           <IonListHeader>
-            <IonLabel>Select Your Supplier</IonLabel>
+            <IonLabel>Select Supplier</IonLabel>
 
-            <IonItem lines="none">
-              <IonItem lines="none">
-                <IonIcon
-                  icon={showSearch ? close : search}
-                  onClick={() => setShowSearch(!showSearch)}
-                />
-              </IonItem>
-            </IonItem>
+            <IonButton onClick={() => setShowSearch(!showSearch)}>
+              <IonIcon icon={showSearch ? close : search} />
+            </IonButton>
           </IonListHeader>
 
           {showSearch ? (
