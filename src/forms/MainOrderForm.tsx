@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import { IonButton, IonContent } from '@ionic/react'
+import { IonButton, IonContent, IonIcon, IonLabel } from '@ionic/react'
+import { pencilSharp } from 'ionicons/icons'
 import { formatISO } from 'date-fns'
 import * as Yup from 'yup'
 
@@ -49,6 +50,13 @@ const VehicleImg = styled.img<{ small?: boolean }>`
 
 const AddressButton = styled(IonButton)`
   width: 5rem;
+`
+
+const NotesButton = styled(IonLabel)`
+  --color: var(--ion-color-primary) !important;
+
+  cursor: pointer;
+  border-bottom: 1px dotted;
 `
 
 const MainOrderForm: React.FC<
@@ -157,13 +165,12 @@ const MainOrderForm: React.FC<
           placeholder="Search pickup address"
           required
           extraHeader={
-            <IonButton
+            <NotesButton
               slot="end"
-              size="default"
               onClick={() => setShowPickupNoteModal(true)}
             >
-              Pickup Note
-            </IonButton>
+              Pickup Notes <IonIcon icon={pencilSharp} />
+            </NotesButton>
           }
           extraContent={
             <AddressButton
@@ -184,13 +191,12 @@ const MainOrderForm: React.FC<
           placeholder="Search delivery address"
           required
           extraHeader={
-            <IonButton
+            <NotesButton
               slot="end"
-              size="default"
               onClick={() => setShowDeliveryNoteModal(true)}
             >
-              Delivery Note
-            </IonButton>
+              Delivery Notes <IonIcon icon={pencilSharp} />
+            </NotesButton>
           }
           extraContent={favoriteAddressButton}
         />

@@ -14,12 +14,6 @@ const StyledItemDivider = styled(IonItemDivider)`
   --padding-bottom: 0.75rem;
 `
 
-const FieldLabel = styled(IonLabel)`
-  font-size: 1rem;
-  line-height: 1.25;
-  white-space: normal !important;
-`
-
 const ErrorLabel = styled(IonLabel)`
   --color: var(--ion-color-danger) !important;
 
@@ -34,10 +28,10 @@ const FieldHeader: React.FC<Props> = ({
 }: Props) => {
   return (
     <StyledItemDivider mode="ios">
-      <FieldLabel>
+      <IonLabel>
         {label}
         {required && <IonText color="danger">*</IonText>}
-      </FieldLabel>
+      </IonLabel>
 
       {extraHeader}
 
