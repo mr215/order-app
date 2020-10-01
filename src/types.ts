@@ -25,7 +25,7 @@ export enum VehicleType {
 
 export interface OrderItem {
   description: string
-  quantity: number
+  quantity: number | ''
   image?: string
 }
 
@@ -79,5 +79,5 @@ export const DEFAULT_USER: User = {
 
 export const DEFAULT_ORDER_ITEM: OrderItem = {
   description: '',
-  quantity: 0.0,
+  quantity: '',
 }
