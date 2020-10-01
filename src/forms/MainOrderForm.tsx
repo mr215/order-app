@@ -38,7 +38,7 @@ interface MainOrderFormProps {
   onSubmit: (values: MainOrderFormValues) => void
 }
 
-const TODAY = formatISO(new Date(), { representation: 'date' })
+const NOW = formatISO(new Date())
 
 const VehicleImg = styled.img<{ small?: boolean }>`
   width: auto;
@@ -214,7 +214,7 @@ const MainOrderForm: React.FC<
           component={FormikDatetime}
           label="Latest Deliver By"
           required
-          min={TODAY}
+          min={NOW}
           displayFormat="DDD MMM D h:mm A"
           minuteValues={[0, 15, 30, 45]}
         />

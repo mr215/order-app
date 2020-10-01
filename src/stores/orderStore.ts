@@ -1,5 +1,5 @@
 import { observable, action, set } from 'mobx'
-import { formatISO } from 'date-fns'
+import { add, formatISO } from 'date-fns'
 
 import { Order, VehicleType, OrderThrough, DEFAULT_ORDER_ITEM } from 'types'
 
@@ -7,7 +7,7 @@ const DEFAULT_ORDER = {
   pickupAddress: '',
   deliveryAddress: '',
   vehicleType: VehicleType.Truck,
-  lastestDeliverBy: formatISO(new Date()),
+  lastestDeliverBy: formatISO(add(new Date(), { hours: 4 })),
   jobName: '',
   orderThrough: OrderThrough.SupplyHound,
   pickupNote: {
