@@ -7,12 +7,12 @@ const DEFAULT_ORDER = {
   pickupAddress: '',
   deliveryAddress: '',
   vehicleType: VehicleType.Truck,
-  lastestDeliverByTime: formatISO(new Date()),
+  lastestDeliverBy: formatISO(new Date()),
   jobName: '',
   orderThrough: OrderThrough.SupplyHound,
   pickupNote: {
     note: '',
-    readyForPickupTime: '',
+    readyForPickupBy: '',
   },
   deliveryNote: {
     contact: '',

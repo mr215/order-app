@@ -37,9 +37,9 @@ const PickupNoteModal: React.FC<Props> = ({ isOpen, onClose }) => (
       />
 
       <Field
-        name="pickupNote.readyForPickupTime"
+        name="pickupNote.readyForPickupBy"
         component={FormikDatetime}
-        label="Ready For Pickup At"
+        label="Ready For Pickup By"
         placeholder="Enter ready for pickup time"
         min={TODAY}
         displayFormat="DDD MMM D h:mm A"

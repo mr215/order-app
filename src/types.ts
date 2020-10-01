@@ -31,7 +31,7 @@ export interface OrderItem {
 
 export interface PickupNote {
   note: string
-  readyForPickupTime: string
+  readyForPickupBy: string
 }
 
 export interface DeliveryNote {
@@ -55,7 +55,7 @@ export interface Order {
   pickupAddress: string
   deliveryAddress: string
   vehicleType: string
-  lastestDeliverByTime: string
+  lastestDeliverBy: string
   pickupNote: PickupNote
   deliveryNote: DeliveryNote
 

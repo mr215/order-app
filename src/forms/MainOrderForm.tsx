@@ -135,11 +135,11 @@ const MainOrderForm: React.FC<
           radioProps={{ slot: 'start', mode: 'md' }}
           items={[
             {
-              label: 'Yes please -  help me save more time',
+              label: 'Yes please - help me save more time!',
               value: OrderThrough.SupplyHound,
             },
             {
-              label: "No thanks, I'll call in myself",
+              label: "No thanks, I'll call it in myself",
               value: OrderThrough.Supplier,
             },
           ]}
@@ -149,7 +149,7 @@ const MainOrderForm: React.FC<
           name="pickupAddress"
           component={FormikAddress}
           type="text"
-          label="Pick up From"
+          label="Pickup From"
           placeholder="Search pickup address"
           required
           extraHeader={
@@ -210,7 +210,7 @@ const MainOrderForm: React.FC<
         />
 
         <Field
-          name="lastestDeliverByTime"
+          name="lastestDeliverBy"
           component={FormikDatetime}
           label="Latest Deliver By"
           required
@@ -267,7 +267,7 @@ export default withFormik<MainOrderFormProps, MainOrderFormValues>({
     vehicleType: Yup.mixed()
       .required()
       .oneOf([VehicleType.Car, VehicleType.Truck] as const),
-    lastestDeliverByTime: Yup.string().required('Required'),
+    lastestDeliverBy: Yup.string().required('Required'),
   }),
 
   mapPropsToValues({ order }: MainOrderFormProps): MainOrderFormValues {
