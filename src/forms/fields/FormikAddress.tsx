@@ -26,6 +26,10 @@ const FormikAddress: React.FC<FieldProps & Props> = ({
   const error = getIn(form.errors, name)
   const touched = getIn(form.touched, name)
 
+  const handleFocus = () => {
+    ionInputRef.current!.getInputElement().then(input => input.select())
+  }
+
   useEffect(() => {
     const initAutoComplete = async () => {
       if (!ionInputRef.current) {
@@ -78,6 +82,7 @@ const FormikAddress: React.FC<FieldProps & Props> = ({
           value={value}
           onIonChange={e => form.setFieldValue(name, e.detail.value!)}
           onIonBlur={onBlur}
+          onIonFocus={handleFocus}
           {...props}
         />
 
