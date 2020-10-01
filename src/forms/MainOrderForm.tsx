@@ -47,6 +47,10 @@ const VehicleImg = styled.img<{ small?: boolean }>`
   ${props => (props.small ? `transform: scale(0.9);` : '')}
 `
 
+const AddressButton = styled(IonButton)`
+  width: 5rem;
+`
+
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
 > = ({
@@ -82,24 +86,24 @@ const MainOrderForm: React.FC<
   const favoriteAddressButton = useMemo(() => {
     if (!values.deliveryAddress || isDeliveryAddressFavorite) {
       return (
-        <IonButton
+        <AddressButton
           slot="start"
           size="default"
           onClick={() => setShowFavoriteAddresses(true)}
         >
           Favorites
-        </IonButton>
+        </AddressButton>
       )
     }
 
     return (
-      <IonButton
+      <AddressButton
         slot="start"
         size="default"
         onClick={() => onFavoriteAddress(values.deliveryAddress)}
       >
         Save
-      </IonButton>
+      </AddressButton>
     )
   }, [isDeliveryAddressFavorite, values.deliveryAddress, onFavoriteAddress])
 
@@ -162,13 +166,13 @@ const MainOrderForm: React.FC<
             </IonButton>
           }
           extraContent={
-            <IonButton
+            <AddressButton
               slot="start"
               size="default"
               onClick={() => setShowSuppliersModal(true)}
             >
               Select
-            </IonButton>
+            </AddressButton>
           }
         />
 
