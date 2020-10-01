@@ -144,5 +144,7 @@ const SuppliersModal: React.FC<Props> = ({
 
 export default memo<Props>(
   SuppliersModal,
-  (prevProps, nextProps) => prevProps.isOpen === nextProps.isOpen
+  (prevProps, nextProps) =>
+    prevProps.isOpen === nextProps.isOpen &&
+    prevProps.suppliers === nextProps.suppliers
 )
