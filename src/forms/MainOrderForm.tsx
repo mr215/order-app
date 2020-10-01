@@ -24,8 +24,8 @@ import FormikInput from './fields/FormikInput'
 import FormikRadioGroup from './fields/FormikRadioGroup'
 import FormikAddress from './fields/FormikAddress'
 
-import PickupNoteModal from './modals/PickupNoteModal'
-import DeliveryNoteModal from './modals/DeliveryNoteModal'
+import PickupNotesModal from './modals/PickupNotesModal'
+import DeliveryNotesModal from './modals/DeliveryNotesModal'
 import SuppliersModal from './modals/SuppliersModal'
 
 import FavoriteAddresssModal from './modals/FavoriteAddressesModal'
@@ -73,8 +73,10 @@ const MainOrderForm: React.FC<
   submitForm,
   setFieldValue,
 }) => {
-  const [showPickupNoteModal, setShowPickupNoteModal] = useState<boolean>(false)
-  const [showDeliveryNoteModal, setShowDeliveryNoteModal] = useState<boolean>(
+  const [showPickupNotesModal, setShowPickupNotesModal] = useState<boolean>(
+    false
+  )
+  const [showDeliveryNotesModal, setShowDeliveryNotesModal] = useState<boolean>(
     false
   )
   const [showSuppliersModal, setShowSuppliersModal] = useState<boolean>(false)
@@ -167,7 +169,7 @@ const MainOrderForm: React.FC<
           extraHeader={
             <NotesButton
               slot="end"
-              onClick={() => setShowPickupNoteModal(true)}
+              onClick={() => setShowPickupNotesModal(true)}
             >
               Pickup Notes <IonIcon icon={pencilSharp} />
             </NotesButton>
@@ -193,7 +195,7 @@ const MainOrderForm: React.FC<
           extraHeader={
             <NotesButton
               slot="end"
-              onClick={() => setShowDeliveryNoteModal(true)}
+              onClick={() => setShowDeliveryNotesModal(true)}
             >
               Delivery Notes <IonIcon icon={pencilSharp} />
             </NotesButton>
@@ -235,14 +237,14 @@ const MainOrderForm: React.FC<
       </FooterWithButton>
 
       {/* Modals */}
-      <PickupNoteModal
-        isOpen={showPickupNoteModal}
-        onClose={() => setShowPickupNoteModal(false)}
+      <PickupNotesModal
+        isOpen={showPickupNotesModal}
+        onClose={() => setShowPickupNotesModal(false)}
       />
 
-      <DeliveryNoteModal
-        isOpen={showDeliveryNoteModal}
-        onClose={() => setShowDeliveryNoteModal(false)}
+      <DeliveryNotesModal
+        isOpen={showDeliveryNotesModal}
+        onClose={() => setShowDeliveryNotesModal(false)}
       />
 
       <SuppliersModal
