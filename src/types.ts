@@ -25,13 +25,13 @@ export enum VehicleType {
 
 export interface OrderItem {
   description: string
-  quantity: number
+  quantity: number | ''
   image?: string
 }
 
 export interface PickupNote {
   note: string
-  readyForPickupTime: string
+  readyForPickupBy: string
 }
 
 export interface DeliveryNote {
@@ -55,7 +55,7 @@ export interface Order {
   pickupAddress: string
   deliveryAddress: string
   vehicleType: string
-  lastestDeliverByTime: string
+  lastestDeliverBy: string
   pickupNote: PickupNote
   deliveryNote: DeliveryNote
 
@@ -79,5 +79,5 @@ export const DEFAULT_USER: User = {
 
 export const DEFAULT_ORDER_ITEM: OrderItem = {
   description: '',
-  quantity: 0.0,
+  quantity: '',
 }

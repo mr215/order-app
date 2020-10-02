@@ -15,7 +15,7 @@ import {
   callOutline,
   cardOutline,
   homeOutline,
-  listOutline,
+  // listOutline,
   logOutOutline,
   // shareSocialOutline,
 } from 'ionicons/icons'
@@ -41,11 +41,14 @@ const menuItems: MenuItem[] = [
     icon: cardOutline,
     routerLink: '/page/Payment',
   },
-  {
-    title: 'History',
-    icon: listOutline,
-    routerLink: '/page/History',
-  },
+
+  // TODO: Add this back when we support this feature
+  // {
+  //   title: 'History',
+  //   icon: listOutline,
+  //   routerLink: '/page/History',
+  // },
+
   // TODO: Add this back when we support this feature
   // {
   //   title: 'Referrals',

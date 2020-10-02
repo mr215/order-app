@@ -56,5 +56,7 @@ const FavoriteAddresssModal: React.FC<Props> = ({
 
 export default memo<Props>(
   FavoriteAddresssModal,
-  (prevProps, nextProps) => prevProps.isOpen === nextProps.isOpen
+  (prevProps, nextProps) =>
+    prevProps.isOpen === nextProps.isOpen &&
+    prevProps.favoriteAddresses === nextProps.favoriteAddresses
 )

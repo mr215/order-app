@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import {
   IonContent,
-  IonIcon,
   IonItem,
   IonItemGroup,
   IonLabel,
@@ -10,7 +9,6 @@ import {
   IonPage,
   IonRouterLink,
 } from '@ionic/react'
-import { helpCircle } from 'ionicons/icons'
 import styled from 'styled-components'
 
 import { OrderThrough } from 'types'
@@ -68,11 +66,7 @@ const OrderSummary: React.FC<RouteComponentProps> = () => {
 
           <IonItem lines="full">
             <IonLabel>
-              Total{' '}
-              <IonNote>
-                (excluding tolls)
-                <IonIcon icon={helpCircle} />
-              </IonNote>
+              Total <IonNote>(excluding tolls)</IonNote>
             </IonLabel>
 
             <div slot="end">

@@ -21,7 +21,7 @@ const ModalTitle = styled.h1`
 
 const TODAY = formatISO(new Date(), { representation: 'date' })
 
-const PickupNoteModal: React.FC<Props> = ({ isOpen, onClose }) => (
+const PickupNotesModal: React.FC<Props> = ({ isOpen, onClose }) => (
   <IonModal isOpen={isOpen} mode="ios" onDidDismiss={onClose}>
     <IonHeader>
       <ModalTitle>Pickup Note</ModalTitle>
@@ -37,9 +37,9 @@ const PickupNoteModal: React.FC<Props> = ({ isOpen, onClose }) => (
       />
 
       <Field
-        name="pickupNote.readyForPickupTime"
+        name="pickupNote.readyForPickupBy"
         component={FormikDatetime}
-        label="Ready For Pickup At"
+        label="Ready For Pickup By"
         placeholder="Enter ready for pickup time"
         min={TODAY}
         displayFormat="DDD MMM D h:mm A"
@@ -52,6 +52,6 @@ const PickupNoteModal: React.FC<Props> = ({ isOpen, onClose }) => (
 )
 
 export default memo<Props>(
-  PickupNoteModal,
+  PickupNotesModal,
   (prevProps, nextProps) => prevProps.isOpen === nextProps.isOpen
 )

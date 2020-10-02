@@ -15,7 +15,7 @@
 @import '~@ionic/react/css/display';
 
 /* Theme variables */
-@import './variables';
+@import 'variables';
 
 ion-item {
   --highlight-height: 2px;
@@ -23,4 +23,16 @@ ion-item {
   --padding-bottom: 0.5rem;
 
   font-size: 1.25rem;
+}
+
+// Google Map Places AutoComplete customization
+.pac-item {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  white-space: normal;
+  padding: 0.5rem;
+
+  .pac-item-query {
+    font-size: 1rem;
+  }
 }

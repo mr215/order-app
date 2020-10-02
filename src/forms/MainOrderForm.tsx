@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import { IonButton, IonContent } from '@ionic/react'
+import { IonButton, IonContent, IonIcon, IonLabel } from '@ionic/react'
+import { pencilSharp } from 'ionicons/icons'
 import { formatISO } from 'date-fns'
 import * as Yup from 'yup'
 
@@ -23,8 +24,8 @@ import FormikInput from './fields/FormikInput'
 import FormikRadioGroup from './fields/FormikRadioGroup'
 import FormikAddress from './fields/FormikAddress'
 
-import PickupNoteModal from './modals/PickupNoteModal'
-import DeliveryNoteModal from './modals/DeliveryNoteModal'
+import PickupNotesModal from './modals/PickupNotesModal'
+import DeliveryNotesModal from './modals/DeliveryNotesModal'
 import SuppliersModal from './modals/SuppliersModal'
 
 import FavoriteAddresssModal from './modals/FavoriteAddressesModal'
@@ -38,13 +39,24 @@ interface MainOrderFormProps {
   onSubmit: (values: MainOrderFormValues) => void
 }
 
-const TODAY = formatISO(new Date(), { representation: 'date' })
+const NOW = formatISO(new Date())
 
 const VehicleImg = styled.img<{ small?: boolean }>`
   width: auto;
   height: 3rem;
   margin: 0.5rem 1rem 0.5rem 0;
   ${props => (props.small ? `transform: scale(0.9);` : '')}
+`
+
+const AddressButton = styled(IonButton)`
+  width: 5rem;
+`
+
+const NotesButton = styled(IonLabel)`
+  --color: var(--ion-color-primary) !important;
+
+  cursor: pointer;
+  border-bottom: 1px dotted;
 `
 
 const MainOrderForm: React.FC<
@@ -61,8 +73,10 @@ const MainOrderForm: React.FC<
   submitForm,
   setFieldValue,
 }) => {
-  const [showPickupNoteModal, setShowPickupNoteModal] = useState<boolean>(false)
-  const [showDeliveryNoteModal, setShowDeliveryNoteModal] = useState<boolean>(
+  const [showPickupNotesModal, setShowPickupNotesModal] = useState<boolean>(
+    false
+  )
+  const [showDeliveryNotesModal, setShowDeliveryNotesModal] = useState<boolean>(
     false
   )
   const [showSuppliersModal, setShowSuppliersModal] = useState<boolean>(false)
@@ -82,24 +96,24 @@ const MainOrderForm: React.FC<
   const favoriteAddressButton = useMemo(() => {
     if (!values.deliveryAddress || isDeliveryAddressFavorite) {
       return (
-        <IonButton
+        <AddressButton
           slot="start"
           size="default"
           onClick={() => setShowFavoriteAddresses(true)}
         >
           Favorites
-        </IonButton>
+        </AddressButton>
       )
     }
 
     return (
-      <IonButton
+      <AddressButton
         slot="start"
         size="default"
         onClick={() => onFavoriteAddress(values.deliveryAddress)}
       >
         Save
-      </IonButton>
+      </AddressButton>
     )
   }, [isDeliveryAddressFavorite, values.deliveryAddress, onFavoriteAddress])
 
@@ -135,11 +149,11 @@ const MainOrderForm: React.FC<
           radioProps={{ slot: 'start', mode: 'md' }}
           items={[
             {
-              label: 'Yes please -  help me save more time',
+              label: 'Yes please - help me save more time!',
               value: OrderThrough.SupplyHound,
             },
             {
-              label: "No thanks, I'll call in myself",
+              label: "No thanks, I'll call it in myself",
               value: OrderThrough.Supplier,
             },
           ]}
@@ -149,26 +163,25 @@ const MainOrderForm: React.FC<
           name="pickupAddress"
           component={FormikAddress}
           type="text"
-          label="Pick up From"
+          label="Pickup From"
           placeholder="Search pickup address"
           required
           extraHeader={
-            <IonButton
+            <NotesButton
               slot="end"
-              size="default"
-              onClick={() => setShowPickupNoteModal(true)}
+              onClick={() => setShowPickupNotesModal(true)}
             >
-              Pickup Note
-            </IonButton>
+              Pickup Notes <IonIcon icon={pencilSharp} />
+            </NotesButton>
           }
           extraContent={
-            <IonButton
+            <AddressButton
               slot="start"
               size="default"
               onClick={() => setShowSuppliersModal(true)}
             >
               Select
-            </IonButton>
+            </AddressButton>
           }
         />
 
@@ -180,13 +193,12 @@ const MainOrderForm: React.FC<
           placeholder="Search delivery address"
           required
           extraHeader={
-            <IonButton
+            <NotesButton
               slot="end"
-              size="default"
-              onClick={() => setShowDeliveryNoteModal(true)}
+              onClick={() => setShowDeliveryNotesModal(true)}
             >
-              Delivery Note
-            </IonButton>
+              Delivery Notes <IonIcon icon={pencilSharp} />
+            </NotesButton>
           }
           extraContent={favoriteAddressButton}
         />
@@ -210,11 +222,11 @@ const MainOrderForm: React.FC<
         />
 
         <Field
-          name="lastestDeliverByTime"
+          name="lastestDeliverBy"
           component={FormikDatetime}
           label="Latest Deliver By"
           required
-          min={TODAY}
+          min={NOW}
           displayFormat="DDD MMM D h:mm A"
           minuteValues={[0, 15, 30, 45]}
         />
@@ -225,14 +237,14 @@ const MainOrderForm: React.FC<
       </FooterWithButton>
 
       {/* Modals */}
-      <PickupNoteModal
-        isOpen={showPickupNoteModal}
-        onClose={() => setShowPickupNoteModal(false)}
+      <PickupNotesModal
+        isOpen={showPickupNotesModal}
+        onClose={() => setShowPickupNotesModal(false)}
       />
 
-      <DeliveryNoteModal
-        isOpen={showDeliveryNoteModal}
-        onClose={() => setShowDeliveryNoteModal(false)}
+      <DeliveryNotesModal
+        isOpen={showDeliveryNotesModal}
+        onClose={() => setShowDeliveryNotesModal(false)}
       />
 
       <SuppliersModal
@@ -267,7 +279,7 @@ export default withFormik<MainOrderFormProps, MainOrderFormValues>({
     vehicleType: Yup.mixed()
       .required()
       .oneOf([VehicleType.Car, VehicleType.Truck] as const),
-    lastestDeliverByTime: Yup.string().required('Required'),
+    lastestDeliverBy: Yup.string().required('Required'),
   }),
 
   mapPropsToValues({ order }: MainOrderFormProps): MainOrderFormValues {
