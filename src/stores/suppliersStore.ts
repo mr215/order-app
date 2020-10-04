@@ -1,9 +1,8 @@
-import { observable, action, set } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 
 import { Supplier } from 'types'
 
 export default class SuppliersStore {
-  @observable
   suppliers: Supplier[] = [
     {
       id: 1,
@@ -53,8 +52,11 @@ export default class SuppliersStore {
     },
   ]
 
-  @action
+  constructor() {
+    makeAutoObservable(this)
+  }
+
   updateSuppliers(suppliers: Supplier[]) {
-    set(this.suppliers, suppliers)
+    this.suppliers = suppliers
   }
 }
