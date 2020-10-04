@@ -1,4 +1,4 @@
-import { observable, action, set } from 'mobx'
+import { makeAutoObservable, set } from 'mobx'
 import { add, formatISO } from 'date-fns'
 
 import { Order, VehicleType, OrderThrough, DEFAULT_ORDER_ITEM } from 'types'
@@ -24,15 +24,16 @@ const DEFAULT_ORDER = {
 }
 
 export default class OrderStore {
-  @observable
   order: Order = DEFAULT_ORDER
 
-  @action
+  constructor() {
+    makeAutoObservable(this)
+  }
+
   updateOrder(newOrder: Partial<Order>) {
     set(this.order, newOrder)
   }
 
-  @action
   resetOrder() {
     this.updateOrder(DEFAULT_ORDER)
   }
