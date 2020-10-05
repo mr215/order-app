@@ -2,6 +2,7 @@ import React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { IonReactRouter } from '@ionic/react-router'
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
+import { observer } from 'mobx-react-lite'
 
 import LogIn from 'pages/LogIn'
 import SignUp from 'pages/SignUp'
@@ -9,7 +10,6 @@ import Landing from 'pages/Landing'
 import Home from 'pages/Home'
 import OrderItems from 'pages/OrderItems'
 import OrderSummary from 'pages/OrderSummary'
-
 import Page from 'pages/Page'
 
 import Menu from './Menu'
@@ -46,4 +46,4 @@ const App: React.FC = () => {
   )
 }
 
-export default App
+export default observer(App)

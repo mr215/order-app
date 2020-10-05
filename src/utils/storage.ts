@@ -8,3 +8,6 @@ export const setItem = (key: string, value: any): void =>
 
 export const getItem = (key: string): any =>
   parseJson(localStorage.getItem(getKey(key)))
+
+export const removeItem = (key: string): void =>
+  localStorage.removeItem(getKey(key))
