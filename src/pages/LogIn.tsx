@@ -29,10 +29,12 @@ const LogIn: React.FC<RouteComponentProps> = ({ history }) => {
   return (
     <IonPage>
       <Header login />
+
       <TitleContainer>
-        <Title> Log In </Title>
+        <Title>Log In</Title>
         <IonLabel>Welcome Back! Log in with your info below.</IonLabel>
       </TitleContainer>
+
       <LogInForm user={userStore.user} onSubmit={handleSubmit} />
     </IonPage>
   )

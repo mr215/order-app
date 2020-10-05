@@ -1,7 +1,7 @@
 import React from 'react'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import { IonContent } from '@ionic/react'
-
+import { IonContent, IonLoading, IonText } from '@ionic/react'
+import styled from 'styled-components'
 import * as Yup from 'yup'
 
 import { User, LandingFormValues } from 'types'
@@ -14,24 +14,37 @@ interface LandingFormProps {
   onSubmit: (values: LandingFormValues) => void
 }
 
+const TitleContainer = styled(IonText)`
+  text-align: center;
+`
+
 const LandingForm: React.FC<
   LandingFormProps & FormikProps<LandingFormValues>
-> = ({ isValid, submitForm }) => {
+> = ({ isValid, isSubmitting, submitForm }) => {
   return (
-    <IonContent>
-      <Field
-        name="email"
-        component={FormikInput}
-        type="text"
-        label="Email Address"
-        placeholder="Enter email here"
-        required
-      />
+    <>
+      <IonContent>
+        <IonLoading isOpen={isSubmitting} />
+
+        <TitleContainer>
+          <h2>Welcome to SupplyHound!</h2>
+          <p>Please enter your email to log in.</p>
+        </TitleContainer>
+
+        <Field
+          name="email"
+          component={FormikInput}
+          type="text"
+          label="Email Address"
+          placeholder="Email Address"
+          required
+        />
+      </IonContent>
 
       <FooterWithButton disabled={!isValid} onClick={submitForm}>
         Continue
       </FooterWithButton>
-    </IonContent>
+    </>
   )
 }
 
@@ -40,22 +53,17 @@ export default withFormik<LandingFormProps, LandingFormValues>({
   enableReinitialize: true,
 
   validationSchema: Yup.object().shape({
-    email: Yup.string().required('Email address is required'),
+    email: Yup.string().email('Invalid email').required('Required'),
   }),
 
   mapPropsToValues({ user }: LandingFormProps): LandingFormValues {
     return user as LandingFormValues
   },
 
-  handleSubmit(
+  async handleSubmit(
     values: LandingFormValues,
-    {
-      props: { onSubmit },
-      setSubmitting,
-    }: FormikBag<LandingFormProps, LandingFormValues>
+    { props: { onSubmit } }: FormikBag<LandingFormProps, LandingFormValues>
   ) {
-    onSubmit(values)
-
-    setSubmitting(false)
+    await onSubmit(values)
   },
 })(LandingForm)

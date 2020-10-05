@@ -1,33 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { IonPage, IonLabel } from '@ionic/react'
-import styled from 'styled-components'
+import { IonPage, IonToast } from '@ionic/react'
+import { observer } from 'mobx-react-lite'
 
 import { LandingFormValues } from 'types'
 import useStores from 'hooks/useStores'
 import Header from 'components/Header'
 import LandingForm from 'forms/LandingForm'
 
-const TitleContainer = styled.div`
-  text-align: center;
-  margin: 0.5rem;
-`
-
-const Title = styled.h2`
-  margin-top: auto;
-`
-
 const Landing: React.FC<RouteComponentProps> = ({ history }) => {
   const { userStore } = useStores()
+  const [error, setError] = useState('')
 
-  const handleSubmit = (values: LandingFormValues) => {
-    userStore.updateUser(values)
+  const handleSubmit = async (values: LandingFormValues) => {
+    try {
+      await new Promise((resolve, reject) => {
+        setTimeout(reject, 1000)
+      })
 
-    // if account exists, go to login; else redirect to signup
-    if (true) {
+      userStore.updateUser(values)
       history.push({ pathname: '/login' })
-    } else {
-      history.push({ pathname: '/new' })
+    } catch (e) {
+      setError('Error in checking email')
     }
   }
 
@@ -35,14 +29,20 @@ const Landing: React.FC<RouteComponentProps> = ({ history }) => {
     <IonPage>
       <Header login />
 
-      <TitleContainer>
-        <Title> Welcome to SupplyHound! </Title>
-        <IonLabel>Enter your email to continue.</IonLabel>
-      </TitleContainer>
-
       <LandingForm user={userStore.user} onSubmit={handleSubmit} />
+
+      {error && (
+        <IonToast
+          isOpen
+          message={error}
+          position="middle"
+          color="danger"
+          mode="ios"
+          duration={2000}
+        />
+      )}
     </IonPage>
   )
 }
 
-export default Landing
+export default observer(Landing)

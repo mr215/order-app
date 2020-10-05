@@ -16,7 +16,7 @@ const ProtectedRoute: React.FC<RouteProps> = props => {
   ) : (
     <Route
       render={({ location }: RouteComponentProps) => (
-        <Redirect to={{ pathname: '/login', state: { from: location } }} />
+        <Redirect to={{ pathname: '/landing', state: { from: location } }} />
       )}
     />
   )
