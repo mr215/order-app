@@ -1,8 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 
+import { TOKEN_KEY } from 'utils/config'
 import { getItem, removeItem, setItem } from 'utils/storage'
-
-const TOKEN_NAME = 'token'
 
 export default class AuthStore {
   token: string | null = null
@@ -10,7 +9,7 @@ export default class AuthStore {
   constructor() {
     makeAutoObservable(this)
 
-    const existingToken = getItem(TOKEN_NAME)
+    const existingToken = getItem(TOKEN_KEY)
 
     if (existingToken) {
       this.token = existingToken
@@ -18,13 +17,13 @@ export default class AuthStore {
   }
 
   saveToken(token: string) {
-    setItem(TOKEN_NAME, token)
+    setItem(TOKEN_KEY, token)
 
     this.token = token
   }
 
   clearToken() {
-    removeItem(TOKEN_NAME)
+    removeItem(TOKEN_KEY)
 
     this.token = null
   }

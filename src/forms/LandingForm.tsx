@@ -4,13 +4,13 @@ import { IonContent, IonLoading, IonText } from '@ionic/react'
 import styled from 'styled-components'
 import * as Yup from 'yup'
 
-import { User, LandingFormValues } from 'types'
+import { LandingFormValues } from 'types'
 import FooterWithButton from 'components/FooterWithButton'
 
 import FormikInput from './fields/FormikInput'
 
 interface LandingFormProps {
-  user: User
+  user: LandingFormValues
   onSubmit: (values: LandingFormValues) => void
 }
 
@@ -57,7 +57,7 @@ export default withFormik<LandingFormProps, LandingFormValues>({
   }),
 
   mapPropsToValues({ user }: LandingFormProps): LandingFormValues {
-    return user as LandingFormValues
+    return user
   },
 
   async handleSubmit(
