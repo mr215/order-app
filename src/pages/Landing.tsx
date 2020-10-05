@@ -23,7 +23,7 @@ const Landing: React.FC<RouteComponentProps> = ({ history }) => {
   const handleSubmit = (values: LandingFormValues) => {
     userStore.updateUser(values)
 
-    //if account exists, go to login; else redirect to signup
+    // if account exists, go to login; else redirect to signup
     if (true) {
       history.push({ pathname: '/login' })
     } else {
@@ -34,10 +34,12 @@ const Landing: React.FC<RouteComponentProps> = ({ history }) => {
   return (
     <IonPage>
       <Header login />
+
       <TitleContainer>
         <Title> Welcome to SupplyHound! </Title>
         <IonLabel>Enter your email to continue.</IonLabel>
       </TitleContainer>
+
       <LandingForm user={userStore.user} onSubmit={handleSubmit} />
     </IonPage>
   )

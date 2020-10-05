@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { defineCustomElements } from '@ionic/pwa-elements/loader'
 import { LoadScript } from '@react-google-maps/api'
-import 'mobx-react-lite/batchingForReactDom'
 
 import App from './layout/App'
 import * as serviceWorker from './serviceWorker'

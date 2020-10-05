@@ -4,6 +4,9 @@ import { IonReactRouter } from '@ionic/react-router'
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
 import { observer } from 'mobx-react-lite'
 
+import ProtectedRoute from 'components/auth/ProtectedRoute'
+import PublicRoute from 'components/auth/PublicRoute'
+
 import LogIn from 'pages/LogIn'
 import SignUp from 'pages/SignUp'
 import Landing from 'pages/Landing'
@@ -22,24 +25,25 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         <Switch>
-          {/* App page routes */}
-          <IonSplitPane contentId="main">
-            <Menu />
+          <Redirect exact from="/" to="/landing" />
 
-            <IonRouterOutlet id="main">
-              <Route exact path="/page/:name" component={Page} />
+          <Route exact path="/landing" component={Landing} />
+          <PublicRoute exact path="/signup" component={SignUp} />
+          <PublicRoute exact path="/login" component={LogIn} />
 
-              <Route exact path="/home" component={Home} />
-              <Route exact path="/order-items" component={OrderItems} />
-              <Route exact path="/order-summary" component={OrderSummary} />
+          <ProtectedRoute>
+            <IonSplitPane contentId="main">
+              <Menu />
 
-              <Route exact path="/landing" component={Landing} />
-              <Route exact path="/signup" component={SignUp} />
-              <Route exact path="/login" component={LogIn} />
+              <IonRouterOutlet id="main">
+                <Route exact path="/page/:name" component={Page} />
 
-              <Redirect exact from="/" to="/home" />
-            </IonRouterOutlet>
-          </IonSplitPane>
+                <Route exact path="/home" component={Home} />
+                <Route exact path="/order-items" component={OrderItems} />
+                <Route exact path="/order-summary" component={OrderSummary} />
+              </IonRouterOutlet>
+            </IonSplitPane>
+          </ProtectedRoute>
         </Switch>
       </IonReactRouter>
     </IonApp>
