@@ -26,7 +26,7 @@ const SignUp: React.FC<RouteComponentProps> = ({ history }) => {
       // Redirect to the login page
       history.push({ pathname: '/login' })
     } catch (e) {
-      setError(serializeError(e).join('<br>'))
+      setError(serializeError(e))
     }
   }
 

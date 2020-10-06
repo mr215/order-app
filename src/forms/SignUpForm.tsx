@@ -7,7 +7,6 @@ import {
   IonLoading,
   IonText,
 } from '@ionic/react'
-import styled from 'styled-components'
 import * as Yup from 'yup'
 
 import { User, SignUpFormValues } from 'types'
@@ -22,10 +21,6 @@ interface SignUpFormProps {
   onSubmit: (values: User) => Promise<void>
 }
 
-const TitleContainer = styled(IonText)`
-  text-align: center;
-`
-
 const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
   isValid,
   isSubmitting,
@@ -36,10 +31,10 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
       <IonContent>
         <IonLoading isOpen={isSubmitting} />
 
-        <TitleContainer>
+        <IonText className="ion-text-center">
           <h2>Sign Up</h2>
           <p>Please enter your info below to get started.</p>
-        </TitleContainer>
+        </IonText>
 
         <Field
           name="first_name"
