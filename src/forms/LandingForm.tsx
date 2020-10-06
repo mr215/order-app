@@ -11,7 +11,7 @@ import FormikInput from './fields/FormikInput'
 
 interface LandingFormProps {
   user: LandingFormValues
-  onSubmit: (values: LandingFormValues) => void
+  onSubmit: (values: LandingFormValues) => Promise<void>
 }
 
 const TitleContainer = styled(IonText)`

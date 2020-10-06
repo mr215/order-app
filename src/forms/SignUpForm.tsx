@@ -1,35 +1,48 @@
 import React from 'react'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 import {
-  IonButton,
   IonContent,
-  IonFooter,
   IonItem,
   IonLabel,
+  IonLoading,
+  IonText,
 } from '@ionic/react'
-
+import styled from 'styled-components'
 import * as Yup from 'yup'
 
 import { User, SignUpFormValues } from 'types'
 import { titleCase } from 'utils/formatters'
+import FooterWithButton from 'components/FooterWithButton'
 
 import FormikInput from './fields/FormikInput'
 import FormikCheckbox from './fields/FormikCheckbox'
 
 interface SignUpFormProps {
   user: User
-  onSubmit: (values: SignUpFormValues) => void
+  onSubmit: (values: User) => Promise<void>
 }
+
+const TitleContainer = styled(IonText)`
+  text-align: center;
+`
 
 const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
   isValid,
+  isSubmitting,
   submitForm,
 }) => {
   return (
     <>
       <IonContent>
+        <IonLoading isOpen={isSubmitting} />
+
+        <TitleContainer>
+          <h2>Sign Up</h2>
+          <p>Please enter your info below to get started.</p>
+        </TitleContainer>
+
         <Field
-          name="firstName"
+          name="first_name"
           component={FormikInput}
           type="text"
           label="First Name"
@@ -39,7 +52,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
         />
 
         <Field
-          name="lastName"
+          name="last_name"
           component={FormikInput}
           type="text"
           label="Last Name"
@@ -63,10 +76,11 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           type="tel"
           label="Phone Number"
           placeholder="Enter your mobile number here"
+          mask="(999)-999-9999"
           required
         />
 
-        <Field
+        {/* <Field
           name="companyName"
           component={FormikInput}
           type="text"
@@ -74,36 +88,38 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           placeholder="Enter your company name here"
           formatter={titleCase}
           required
-        />
+        /> */}
 
-        <Field
+        {/* <Field
           name="accountingEmail"
           component={FormikInput}
           type="text"
           label="Accounting Email"
           placeholder="Enter where receipts should be sent"
           required
-        />
+        /> */}
 
         <Field
           name="password"
           component={FormikInput}
-          type="text"
+          type="password"
           label="Password"
           placeholder="Enter password here"
           required
         />
 
         <Field
-          name="authorize"
-          value={false}
+          name="agreeTerms"
           component={FormikCheckbox}
-          label="I authorize Supply Hound, Inc. to pickup and deliver the items specified by my use of this service. See Privacy and Terms"
+          label={
+            <>
+              I authorize Supply Hound, Inc. to pickup and deliver the items
+              specified by my use of this service. See <a href="#">Privacy</a>{' '}
+              and <a href="#">Terms</a>
+            </>
+          }
           slot="start"
           required
-          item={{
-            value: true,
-          }}
         />
 
         <IonItem>
@@ -114,16 +130,9 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
         </IonItem>
       </IonContent>
 
-      <IonFooter className="ion-padding ion-no-border">
-        <IonButton
-          expand="block"
-          size="large"
-          disabled={!isValid}
-          onClick={submitForm}
-        >
-          Sign Up
-        </IonButton>
-      </IonFooter>
+      <FooterWithButton disabled={!isValid} onClick={submitForm}>
+        Sign Up
+      </FooterWithButton>
     </>
   )
 }
@@ -133,29 +142,24 @@ export default withFormik<SignUpFormProps, SignUpFormValues>({
   enableReinitialize: true,
 
   validationSchema: Yup.object().shape({
-    firstName: Yup.string().required('First name is required'),
-    lastName: Yup.string().required('Last name is required'),
-    email: Yup.string().required('Email address is required'),
-    phone: Yup.string().required('Phone number is required'),
-    companyName: Yup.string().required('Email address is required'),
-    accountingEmail: Yup.string().required('Accounting email is required'),
-    password: Yup.string().required('Password is required'),
-    authorize: Yup.mixed().required().oneOf([true]),
+    first_name: Yup.string().required('Required'),
+    last_name: Yup.string().required('Required'),
+    email: Yup.string().email('Invalid email').required('Required'),
+    phone: Yup.string().required('Required'),
+    // companyName: Yup.string().required('Required'),
+    // accountingEmail: Yup.string().required('Required'),
+    password: Yup.string().required('Required'),
+    agreeTerms: Yup.boolean().required().oneOf([true], 'Required'),
   }),
 
   mapPropsToValues({ user }: SignUpFormProps): SignUpFormValues {
-    return user as SignUpFormValues
+    return { ...user, agreeTerms: false }
   },
 
-  handleSubmit(
-    values: SignUpFormValues,
-    {
-      props: { onSubmit },
-      setSubmitting,
-    }: FormikBag<SignUpFormProps, SignUpFormValues>
+  async handleSubmit(
+    { agreeTerms, ...values }: SignUpFormValues,
+    { props: { onSubmit } }: FormikBag<SignUpFormProps, SignUpFormValues>
   ) {
-    onSubmit(values)
-
-    setSubmitting(false)
+    await onSubmit(values)
   },
 })(SignUpForm)

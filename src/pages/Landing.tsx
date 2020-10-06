@@ -6,6 +6,8 @@ import { observer } from 'mobx-react-lite'
 import { LandingFormValues } from 'types'
 import useStores from 'hooks/useStores'
 import { checkEmail } from 'utils/api'
+import { TOAST_DURATION } from 'utils/config'
+
 import Header from 'components/Header'
 import LandingForm from 'forms/LandingForm'
 
@@ -42,10 +44,10 @@ const Landing: React.FC<RouteComponentProps> = ({ history }) => {
         <IonToast
           isOpen
           message={error}
-          position="middle"
+          position="top"
           color="danger"
           mode="ios"
-          duration={2000}
+          duration={TOAST_DURATION}
         />
       )}
     </IonPage>

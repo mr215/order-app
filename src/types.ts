@@ -1,15 +1,15 @@
 export interface User {
-  firstName: string
-  lastName: string
+  first_name: string
+  last_name: string
   email: string
   phone: string
-  companyName: string
-  accountingEmail: string
+  // companyName: string
+  // accountingEmail: string
   password: string
   favoriteAddresses: string[]
 }
 
-export type SignUpFormValues = User
+export type SignUpFormValues = User & { agreeTerms: boolean }
 export type LogInFormValues = Pick<User, 'email' | 'password'>
 export type LandingFormValues = Pick<User, 'email'>
 
@@ -67,12 +67,12 @@ export type MainOrderFormValues = Omit<Order, 'items' | 'orderId'>
 export type OrderItemsFormValues = Pick<Order, 'items' | 'orderId'>
 
 export const DEFAULT_USER: User = {
-  firstName: '',
-  lastName: '',
+  first_name: '',
+  last_name: '',
   email: '',
   phone: '',
-  companyName: '',
-  accountingEmail: '',
+  // companyName: '',
+  // accountingEmail: '',
   password: '',
   favoriteAddresses: [],
 }

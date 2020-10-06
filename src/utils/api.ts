@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
+import { User } from 'types'
 import { TOKEN_KEY } from './config'
 import { getItem } from './storage'
 
@@ -22,3 +23,5 @@ axiosInstance.interceptors.request.use((config: AxiosRequestConfig) => {
 
 export const checkEmail = (email: string) =>
   axiosInstance.post('/check', { email })
+
+export const signUp = (payload: User) => axiosInstance.post('/signup', payload)
