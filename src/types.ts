@@ -9,9 +9,15 @@ export interface User {
   favoriteAddresses: string[]
 }
 
-export type SignUpFormValues = User & { agreeTerms: boolean }
-export type LogInFormValues = Pick<User, 'email' | 'password'>
-export type LandingFormValues = Pick<User, 'email'>
+export interface SignUpFormValues extends User {
+  agreeTerms: boolean
+}
+export interface LogInFormValues {
+  password: string
+}
+export interface LandingFormValues {
+  email: string
+}
 
 export enum OrderThrough {
   SupplyHound = 'SupplyHound',

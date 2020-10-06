@@ -1,7 +1,6 @@
 import React from 'react'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 import { IonContent, IonLoading, IonText } from '@ionic/react'
-import styled from 'styled-components'
 import * as Yup from 'yup'
 
 import { LandingFormValues } from 'types'
@@ -14,10 +13,6 @@ interface LandingFormProps {
   onSubmit: (values: LandingFormValues) => Promise<void>
 }
 
-const TitleContainer = styled(IonText)`
-  text-align: center;
-`
-
 const LandingForm: React.FC<
   LandingFormProps & FormikProps<LandingFormValues>
 > = ({ isValid, isSubmitting, submitForm }) => {
@@ -26,10 +21,10 @@ const LandingForm: React.FC<
       <IonContent>
         <IonLoading isOpen={isSubmitting} />
 
-        <TitleContainer>
+        <IonText className="ion-text-center">
           <h2>Welcome to SupplyHound!</h2>
           <p>Please enter your email to log in.</p>
-        </TitleContainer>
+        </IonText>
 
         <Field
           name="email"

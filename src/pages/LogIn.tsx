@@ -1,43 +1,55 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { IonPage, IonLabel } from '@ionic/react'
-import styled from 'styled-components'
+import { IonPage, IonToast } from '@ionic/react'
+import { observer } from 'mobx-react-lite'
 
+import { TOAST_DURATION } from 'utils/config'
 import { LogInFormValues } from 'types'
+import { logIn } from 'utils/api'
+import { serializeError } from 'utils/serializers'
 import useStores from 'hooks/useStores'
+
 import Header from 'components/Header'
 import LogInForm from 'forms/LogInForm'
 
-const TitleContainer = styled.div`
-  text-align: center;
-  margin: 0.5rem;
-`
-
-const Title = styled.h2`
-  margin-top: auto;
-`
-
 const LogIn: React.FC<RouteComponentProps> = ({ history }) => {
-  const { userStore } = useStores()
+  const { authStore, userStore } = useStores()
+  const [error, setError] = useState('')
 
-  const handleSubmit = (values: LogInFormValues) => {
-    userStore.updateUser(values)
+  const handleSubmit = async ({ password }: LogInFormValues) => {
+    try {
+      const { data } = await logIn({
+        email: userStore.user.email,
+        password,
+      })
 
-    history.push({ pathname: '/home' })
+      // Store token
+      authStore.saveToken(data.token)
+
+      history.push({ pathname: '/home' })
+    } catch (e) {
+      setError(serializeError(e))
+    }
   }
 
   return (
     <IonPage>
       <Header login />
 
-      <TitleContainer>
-        <Title>Log In</Title>
-        <IonLabel>Welcome Back! Log in with your info below.</IonLabel>
-      </TitleContainer>
+      <LogInForm onSubmit={handleSubmit} />
 
-      <LogInForm user={userStore.user} onSubmit={handleSubmit} />
+      {error && (
+        <IonToast
+          isOpen
+          message={error}
+          position="top"
+          color="danger"
+          mode="ios"
+          duration={TOAST_DURATION}
+        />
+      )}
     </IonPage>
   )
 }
 
-export default LogIn
+export default observer(LogIn)
