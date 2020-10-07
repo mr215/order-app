@@ -27,8 +27,7 @@ const LogIn: React.FC<RouteComponentProps> = ({ history }) => {
 
       history.push({ pathname: '/home' })
     } catch (e) {
-      console.log('e', e.response)
-      setError('Invalid username or password')
+      setError('Invalid password')
     }
   }
 

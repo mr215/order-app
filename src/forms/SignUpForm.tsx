@@ -1,12 +1,7 @@
 import React from 'react'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import {
-  IonContent,
-  IonItem,
-  IonLabel,
-  IonLoading,
-  IonText,
-} from '@ionic/react'
+import { IonContent, IonLoading, IonRouterLink, IonText } from '@ionic/react'
+import styled from 'styled-components'
 import * as Yup from 'yup'
 
 import { User, SignUpFormValues } from 'types'
@@ -20,6 +15,13 @@ interface SignUpFormProps {
   user: User
   onSubmit: (values: User) => Promise<void>
 }
+
+const BottomSection = styled.div`
+  padding: 2rem 1rem;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+`
 
 const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
   isValid,
@@ -109,20 +111,19 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           label={
             <>
               I authorize Supply Hound, Inc. to pickup and deliver the items
-              specified by my use of this service. See <a href="#">Privacy</a>{' '}
-              and <a href="#">Terms</a>
+              specified by my use of this service. See{' '}
+              <IonRouterLink href="#">Privacy</IonRouterLink> and{' '}
+              <IonRouterLink href="#">Terms</IonRouterLink>
             </>
           }
           slot="start"
           required
         />
 
-        <IonItem>
-          Already have an account?
-          <IonItem routerLink="/login">
-            <IonLabel> Log In </IonLabel>
-          </IonItem>
-        </IonItem>
+        <BottomSection>
+          Already have an account?&nbsp;
+          <IonRouterLink routerLink="/landing">Log In</IonRouterLink>
+        </BottomSection>
       </IonContent>
 
       <FooterWithButton disabled={!isValid} onClick={submitForm}>

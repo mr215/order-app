@@ -79,7 +79,7 @@ const OrderSummary: React.FC<RouteComponentProps> = () => {
               <IonLabel style={{ lineHeight: '2rem' }}>Payment Method</IonLabel>
 
               <IonNote>
-                <IonRouterLink href="/payment-setting">
+                <IonRouterLink routerLink="/payment-setting">
                   Update Payment
                 </IonRouterLink>
               </IonNote>

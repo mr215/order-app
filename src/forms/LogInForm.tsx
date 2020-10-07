@@ -1,12 +1,7 @@
 import React from 'react'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import {
-  IonContent,
-  IonItem,
-  IonLabel,
-  IonLoading,
-  IonText,
-} from '@ionic/react'
+import { IonContent, IonLoading, IonRouterLink, IonText } from '@ionic/react'
+import styled from 'styled-components'
 import * as Yup from 'yup'
 
 import { LogInFormValues } from 'types'
@@ -17,6 +12,13 @@ import FormikInput from './fields/FormikInput'
 interface LogInFormProps {
   onSubmit: (values: LogInFormValues) => Promise<void>
 }
+
+const BottomSection = styled.div`
+  padding: 2rem 1rem;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+`
 
 const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({
   isValid,
@@ -42,12 +44,10 @@ const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({
           required
         />
 
-        <IonItem>
-          New to SupplyHound?
-          <IonItem routerLink="/new">
-            <IonLabel>Sign Up</IonLabel>
-          </IonItem>
-        </IonItem>
+        <BottomSection>
+          New to SupplyHound?&nbsp;
+          <IonRouterLink routerLink="/signup">Sign Up</IonRouterLink>
+        </BottomSection>
       </IonContent>
 
       <FooterWithButton disabled={!isValid} onClick={submitForm}>
