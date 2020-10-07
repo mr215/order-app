@@ -1,6 +1,5 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom'
-
+import { useLocation, useHistory } from 'react-router-dom'
 import {
   IonContent,
   IonIcon,
@@ -19,62 +18,77 @@ import {
   logOutOutline,
   // shareSocialOutline,
 } from 'ionicons/icons'
+import { observer } from 'mobx-react-lite'
 
 import useStores from 'hooks/useStores'
-import { DEFAULT_USER } from 'types'
 
 interface MenuItem {
   title: string
   icon: string
-  routerLink?: string
-  href?: string
+  routeProps: {
+    routerLink?: string
+    href?: string
+    onClick?(): void
+  }
 }
-
-const menuItems: MenuItem[] = [
-  {
-    title: 'Home',
-    icon: homeOutline,
-    routerLink: '/home',
-  },
-  {
-    title: 'Payment',
-    icon: cardOutline,
-    routerLink: '/page/Payment',
-  },
-
-  // TODO: Add this back when we support this feature
-  // {
-  //   title: 'History',
-  //   icon: listOutline,
-  //   routerLink: '/page/History',
-  // },
-
-  // TODO: Add this back when we support this feature
-  // {
-  //   title: 'Referrals',
-  //   icon: shareSocialOutline,
-  //   routerLink: '/page/Referrals',
-  // },
-  {
-    title: '+1 (415) 349-5085',
-    icon: callOutline,
-    href: 'tel:4153495085',
-  },
-  {
-    title: 'Logout',
-    icon: logOutOutline,
-    href: '/landing',
-  },
-]
 
 const Menu: React.FC = () => {
   const location = useLocation()
+  const history = useHistory()
+  const { authStore } = useStores()
 
-  const { userStore } = useStores()
+  const menuItems: MenuItem[] = [
+    {
+      title: 'Home',
+      icon: homeOutline,
+      routeProps: {
+        routerLink: '/home',
+      },
+    },
+    {
+      title: 'Payment',
+      icon: cardOutline,
+      routeProps: {
+        routerLink: '/page/Payment',
+      },
+    },
 
-  const handleClick = () => {
-    userStore.updateUser(DEFAULT_USER)
-  }
+    // TODO: Add this back when we support this feature
+    // {
+    //   title: 'History',
+    //   icon: listOutline,
+    //   routeProps: {
+    //     routerLink: '/page/History',
+    //   },
+    // },
+
+    // TODO: Add this back when we support this feature
+    // {
+    //   title: 'Referrals',
+    //   icon: shareSocialOutline,
+    //   routeProps: {
+    //     routerLink: '/page/Referrals',
+    //   },
+    // },
+    {
+      title: '+1 (415) 349-5085',
+      icon: callOutline,
+      routeProps: {
+        href: 'tel:4153495085',
+      },
+    },
+    {
+      title: 'Logout',
+      icon: logOutOutline,
+      routeProps: {
+        onClick() {
+          authStore.clearToken()
+
+          history.push('/landing')
+        },
+      },
+    },
+  ]
 
   return (
     <IonMenu contentId="main" type="overlay">
@@ -83,22 +97,18 @@ const Menu: React.FC = () => {
           <IonListHeader>Menu</IonListHeader>
 
           {menuItems.map((menuItem, index) => {
-            const routerProps = menuItem.href
-              ? { href: menuItem.href }
-              : { routerLink: menuItem.routerLink }
-
             return (
               <IonMenuToggle key={index} autoHide={false}>
                 <IonItem
                   mode="ios"
-                  className={
-                    location.pathname === menuItem.routerLink ? 'selected' : ''
+                  lines="full"
+                  color={
+                    location.pathname === menuItem.routeProps.routerLink
+                      ? 'secondary'
+                      : ''
                   }
-                  {...routerProps}
-                  routerDirection="none"
-                  lines="none"
                   detail={false}
-                  onClick={menuItem.title === 'Logout' ? handleClick : () => {}}
+                  {...menuItem.routeProps}
                 >
                   <IonIcon slot="start" icon={menuItem.icon} />
                   <IonLabel>{menuItem.title}</IonLabel>
@@ -112,4 +122,4 @@ const Menu: React.FC = () => {
   )
 }
 
-export default Menu
+export default observer(Menu)
