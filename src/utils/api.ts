@@ -27,4 +27,4 @@ export const checkEmail = (email: string) =>
 export const signUp = (payload: User) => axiosInstance.post('/signup', payload)
 
 export const logIn = (user: Pick<User, 'email' | 'password'>) =>
-  axiosInstance.post('/login', { user })
+  axiosInstance.post('/login', { auth: user })

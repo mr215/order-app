@@ -27,7 +27,7 @@ const App: React.FC = () => {
         <Switch>
           <Redirect exact from="/" to="/landing" />
 
-          <Route exact path="/landing" component={Landing} />
+          <PublicRoute exact path="/landing" component={Landing} />
           <PublicRoute exact path="/signup" component={SignUp} />
           <PublicRoute exact path="/login" component={LogIn} />
 

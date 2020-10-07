@@ -6,7 +6,6 @@ import { observer } from 'mobx-react-lite'
 import { TOAST_DURATION } from 'utils/config'
 import { LogInFormValues } from 'types'
 import { logIn } from 'utils/api'
-import { serializeError } from 'utils/serializers'
 import useStores from 'hooks/useStores'
 
 import Header from 'components/Header'
@@ -24,11 +23,12 @@ const LogIn: React.FC<RouteComponentProps> = ({ history }) => {
       })
 
       // Store token
-      authStore.saveToken(data.token)
+      authStore.saveToken(data.jwt)
 
       history.push({ pathname: '/home' })
     } catch (e) {
-      setError(serializeError(e))
+      console.log('e', e.response)
+      setError('Invalid username or password')
     }
   }
 

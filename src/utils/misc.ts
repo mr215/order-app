@@ -4,7 +4,7 @@ export const parseJson = (value: string | null): any => {
   }
 
   try {
-    JSON.parse(value)
+    return JSON.parse(value)
   } catch (e) {
     return null
   }
