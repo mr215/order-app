@@ -45,6 +45,7 @@ const LogIn: React.FC<RouteComponentProps> = ({ history }) => {
           color="danger"
           mode="ios"
           duration={TOAST_DURATION}
+          onDidDismiss={() => setError('')}
         />
       )}
     </IonPage>
