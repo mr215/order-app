@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
-import { User } from 'types'
+import { User, MarketEntity } from 'types'
 import { TOKEN_KEY } from './config'
 import { getItem } from './storage'
 
@@ -28,3 +28,6 @@ export const signUp = (payload: User) => axiosInstance.post('/signup', payload)
 
 export const logIn = (user: Pick<User, 'email' | 'password'>) =>
   axiosInstance.post('/login', { auth: user })
+
+export const fetchMarkets = () =>
+  axiosInstance.get<{ data: MarketEntity[] }>('/markets')

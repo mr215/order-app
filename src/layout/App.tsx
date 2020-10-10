@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { IonReactRouter } from '@ionic/react-router'
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
 import { observer } from 'mobx-react-lite'
 
-import ProtectedRoute from 'components/auth/ProtectedRoute'
-import PublicRoute from 'components/auth/PublicRoute'
+import useStores from 'hooks/useStores'
+import { fetchMarkets as fetchMarketsApi } from 'utils/api'
 
 import LogIn from 'pages/LogIn'
 import SignUp from 'pages/SignUp'
@@ -15,12 +15,33 @@ import OrderItems from 'pages/OrderItems'
 import OrderSummary from 'pages/OrderSummary'
 import Page from 'pages/Page'
 
+import ProtectedRoute from 'components/auth/ProtectedRoute'
+import PublicRoute from 'components/auth/PublicRoute'
+
 import Menu from './Menu'
 
 /* Theme */
 import 'theme/app.scss'
 
 const App: React.FC = () => {
+  const { marketsStore } = useStores()
+
+  useEffect(() => {
+    const fetchMarkets = async () => {
+      try {
+        const {
+          data: { data },
+        } = await fetchMarketsApi()
+
+        marketsStore.markets = data
+      } catch (e) {
+        // TODO: Handle error
+      }
+    }
+
+    fetchMarkets()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <IonApp>
       <IonReactRouter>

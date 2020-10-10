@@ -87,3 +87,19 @@ export const DEFAULT_ORDER_ITEM: OrderItem = {
   description: '',
   quantity: '',
 }
+
+interface Entity {
+  id: string
+  attributes: {}
+  relationships?: {}
+  type: string
+}
+
+interface MarketAttributes {
+  name: string
+}
+
+export interface MarketEntity extends Entity {
+  attributes: MarketAttributes
+  type: 'markets'
+}
