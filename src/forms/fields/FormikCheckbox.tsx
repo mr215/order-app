@@ -1,6 +1,6 @@
 import React, { ComponentProps, ReactNode } from 'react'
-import { FieldProps, getIn } from 'formik'
-import { IonCheckbox, IonItem, IonLabel, IonText } from '@ionic/react'
+import { FieldProps } from 'formik'
+import { IonCheckbox, IonItem, IonLabel } from '@ionic/react'
 
 interface Props extends ComponentProps<typeof IonCheckbox> {
   label: ReactNode
@@ -14,14 +14,9 @@ const FormikCheckbox: React.FC<FieldProps & Props> = ({
   slot = 'start',
   ...props
 }) => {
-  const error = getIn(form.errors, name)
-  const touched = getIn(form.touched, name)
-
   return (
     <IonItem mode="ios" lines="full">
-      <IonLabel className="ion-text-wrap">
-        {label} {error && touched && <IonText color="danger">{error}</IonText>}
-      </IonLabel>
+      <IonLabel className="ion-text-wrap">{label}</IonLabel>
 
       <IonCheckbox
         checked={value}

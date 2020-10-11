@@ -7,6 +7,7 @@ export interface User {
   // accountingEmail: string
   password: string
   favoriteAddresses: string[]
+  market_id: string
 }
 
 export interface SignUpFormValues extends User {
@@ -81,6 +82,7 @@ export const DEFAULT_USER: User = {
   // accountingEmail: '',
   password: '',
   favoriteAddresses: [],
+  market_id: '',
 }
 
 export const DEFAULT_ORDER_ITEM: OrderItem = {
@@ -102,4 +104,9 @@ interface MarketAttributes {
 export interface MarketEntity extends Entity {
   attributes: MarketAttributes
   type: 'markets'
+}
+
+export interface SelectOption {
+  label: string
+  value: string | number
 }

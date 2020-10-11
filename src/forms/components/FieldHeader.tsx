@@ -1,12 +1,12 @@
-import React, { ReactElement } from 'react'
+import React, { ReactNode } from 'react'
 import styled from 'styled-components'
 import { IonItemDivider, IonLabel, IonText } from '@ionic/react'
 
 interface Props {
-  label: string
+  label: ReactNode
   required?: boolean
   error?: string
-  extraHeader?: ReactElement
+  extraHeader?: ReactNode
 }
 
 const StyledItemDivider = styled(IonItemDivider)`

@@ -4,15 +4,17 @@ import { IonContent, IonLoading, IonRouterLink, IonText } from '@ionic/react'
 import styled from 'styled-components'
 import * as Yup from 'yup'
 
-import { User, SignUpFormValues } from 'types'
+import { User, SelectOption, SignUpFormValues } from 'types'
 import { titleCase } from 'utils/formatters'
 import FooterWithButton from 'components/FooterWithButton'
 
 import FormikInput from './fields/FormikInput'
 import FormikCheckbox from './fields/FormikCheckbox'
+import FormikSelect from './fields/FormikSelect'
 
 interface SignUpFormProps {
   user: User
+  marketOptions: SelectOption[]
   onSubmit: (values: User) => Promise<void>
 }
 
@@ -24,6 +26,7 @@ const BottomSection = styled.div`
 `
 
 const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
+  marketOptions,
   isValid,
   isSubmitting,
   submitForm,
@@ -74,6 +77,16 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           label="Phone Number"
           placeholder="Enter your mobile number here"
           mask="(999)-999-9999"
+          required
+        />
+
+        <Field
+          name="market_id"
+          component={FormikSelect}
+          label="Market"
+          placeholder="Select market"
+          interfaceOptions={{ header: 'Market' }}
+          options={marketOptions}
           required
         />
 
