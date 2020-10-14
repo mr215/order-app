@@ -1,55 +1,58 @@
 import React from 'react'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import { IonContent, IonItem, IonLabel } from '@ionic/react'
-
+import { IonContent, IonLoading, IonRouterLink, IonText } from '@ionic/react'
+import styled from 'styled-components'
 import * as Yup from 'yup'
 
-import { User, LogInFormValues } from 'types'
+import { LogInFormValues } from 'types'
 import FooterWithButton from 'components/FooterWithButton'
 
 import FormikInput from './fields/FormikInput'
 
 interface LogInFormProps {
-  user: User
-  onSubmit: (values: LogInFormValues) => void
+  onSubmit: (values: LogInFormValues) => Promise<void>
 }
+
+const BottomSection = styled.div`
+  padding: 2rem 1rem;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+`
 
 const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({
   isValid,
+  isSubmitting,
   submitForm,
 }) => {
   return (
     <>
       <IonContent>
-        <Field
-          name="email"
-          component={FormikInput}
-          type="text"
-          label="Email Address"
-          placeholder="Enter email here"
-          required
-        />
+        <IonLoading isOpen={isSubmitting} />
+
+        <IonText class="ion-text-center">
+          <h2>Log In</h2>
+          <p>Please enter your password below to log in.</p>
+        </IonText>
 
         <Field
           name="password"
           component={FormikInput}
-          type="text"
+          type="password"
           label="Password"
           placeholder="Enter password here"
           required
         />
 
-        <IonItem>
-          New to SupplyHound?
-          <IonItem routerLink="/new">
-            <IonLabel> Sign Up </IonLabel>
-          </IonItem>
-        </IonItem>
-
-        <FooterWithButton disabled={!isValid} onClick={submitForm}>
-          Log In
-        </FooterWithButton>
+        <BottomSection>
+          New to SupplyHound?&nbsp;
+          <IonRouterLink routerLink="/signup">Sign Up</IonRouterLink>
+        </BottomSection>
       </IonContent>
+
+      <FooterWithButton disabled={!isValid} onClick={submitForm}>
+        Log In
+      </FooterWithButton>
     </>
   )
 }
@@ -59,23 +62,17 @@ export default withFormik<LogInFormProps, LogInFormValues>({
   enableReinitialize: true,
 
   validationSchema: Yup.object().shape({
-    email: Yup.string().required('Email address is required'),
     password: Yup.string().required('Password is required'),
   }),
 
-  mapPropsToValues({ user }: LogInFormProps): LogInFormValues {
-    return user as LogInFormValues
+  mapPropsToValues(): LogInFormValues {
+    return { password: '' }
   },
 
-  handleSubmit(
+  async handleSubmit(
     values: LogInFormValues,
-    {
-      props: { onSubmit },
-      setSubmitting,
-    }: FormikBag<LogInFormProps, LogInFormValues>
+    { props: { onSubmit } }: FormikBag<LogInFormProps, LogInFormValues>
   ) {
-    onSubmit(values)
-
-    setSubmitting(false)
+    await onSubmit(values)
   },
 })(LogInForm)

@@ -2,7 +2,7 @@ import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { IonPage } from '@ionic/react'
 import { toJS } from 'mobx'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import { MainOrderFormValues } from 'types'
 import useStores from 'hooks/useStores'

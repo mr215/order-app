@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { IonReactRouter } from '@ionic/react-router'
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
+import { observer } from 'mobx-react-lite'
+
+import useStores from 'hooks/useStores'
+import { fetchMarkets as fetchMarketsApi } from 'utils/api'
 
 import LogIn from 'pages/LogIn'
 import SignUp from 'pages/SignUp'
@@ -9,8 +13,10 @@ import Landing from 'pages/Landing'
 import Home from 'pages/Home'
 import OrderItems from 'pages/OrderItems'
 import OrderSummary from 'pages/OrderSummary'
-
 import Page from 'pages/Page'
+
+import ProtectedRoute from 'components/auth/ProtectedRoute'
+import PublicRoute from 'components/auth/PublicRoute'
 
 import Menu from './Menu'
 
@@ -18,32 +24,51 @@ import Menu from './Menu'
 import 'theme/app.scss'
 
 const App: React.FC = () => {
+  const { marketsStore } = useStores()
+
+  useEffect(() => {
+    const fetchMarkets = async () => {
+      try {
+        const {
+          data: { data },
+        } = await fetchMarketsApi()
+
+        marketsStore.markets = data
+      } catch (e) {
+        // TODO: Handle error
+      }
+    }
+
+    fetchMarkets()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <IonApp>
       <IonReactRouter>
         <Switch>
-          {/* App page routes */}
-          <IonSplitPane contentId="main">
-            <Menu />
+          <Redirect exact from="/" to="/landing" />
 
-            <IonRouterOutlet id="main">
-              <Route exact path="/page/:name" component={Page} />
+          <PublicRoute exact path="/landing" component={Landing} />
+          <PublicRoute exact path="/signup" component={SignUp} />
+          <PublicRoute exact path="/login" component={LogIn} />
 
-              <Route exact path="/home" component={Home} />
-              <Route exact path="/order-items" component={OrderItems} />
-              <Route exact path="/order-summary" component={OrderSummary} />
+          <ProtectedRoute>
+            <IonSplitPane contentId="main">
+              <Menu />
 
-              <Route exact path="/landing" component={Landing} />
-              <Route exact path="/signup" component={SignUp} />
-              <Route exact path="/login" component={LogIn} />
+              <IonRouterOutlet id="main">
+                <Route exact path="/page/:name" component={Page} />
 
-              <Redirect exact from="/" to="/home" />
-            </IonRouterOutlet>
-          </IonSplitPane>
+                <Route exact path="/home" component={Home} />
+                <Route exact path="/order-items" component={OrderItems} />
+                <Route exact path="/order-summary" component={OrderSummary} />
+              </IonRouterOutlet>
+            </IonSplitPane>
+          </ProtectedRoute>
         </Switch>
       </IonReactRouter>
     </IonApp>
   )
 }
 
-export default App
+export default observer(App)

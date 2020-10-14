@@ -1,17 +1,24 @@
 export interface User {
-  firstName: string
-  lastName: string
+  first_name: string
+  last_name: string
   email: string
   phone: string
-  companyName: string
-  accountingEmail: string
+  // companyName: string
+  // accountingEmail: string
   password: string
   favoriteAddresses: string[]
+  market_id: string
 }
 
-export type SignUpFormValues = User
-export type LogInFormValues = Pick<User, 'email' | 'password'>
-export type LandingFormValues = Pick<User, 'email'>
+export interface SignUpFormValues extends User {
+  agreeTerms: boolean
+}
+export interface LogInFormValues {
+  password: string
+}
+export interface LandingFormValues {
+  email: string
+}
 
 export enum OrderThrough {
   SupplyHound = 'SupplyHound',
@@ -67,17 +74,39 @@ export type MainOrderFormValues = Omit<Order, 'items' | 'orderId'>
 export type OrderItemsFormValues = Pick<Order, 'items' | 'orderId'>
 
 export const DEFAULT_USER: User = {
-  firstName: '',
-  lastName: '',
+  first_name: '',
+  last_name: '',
   email: '',
   phone: '',
-  companyName: '',
-  accountingEmail: '',
+  // companyName: '',
+  // accountingEmail: '',
   password: '',
   favoriteAddresses: [],
+  market_id: '',
 }
 
 export const DEFAULT_ORDER_ITEM: OrderItem = {
   description: '',
   quantity: '',
+}
+
+interface Entity {
+  id: string
+  attributes: {}
+  relationships?: {}
+  type: string
+}
+
+interface MarketAttributes {
+  name: string
+}
+
+export interface MarketEntity extends Entity {
+  attributes: MarketAttributes
+  type: 'markets'
+}
+
+export interface SelectOption {
+  label: string
+  value: string | number
 }
