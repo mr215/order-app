@@ -90,24 +90,24 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           required
         />
 
-        {/* <Field
-          name="companyName"
+        <Field
+          name="company_name"
           component={FormikInput}
           type="text"
           label="Company Name"
           placeholder="Enter your company name here"
           formatter={titleCase}
           required
-        /> */}
+        />
 
-        {/* <Field
-          name="accountingEmail"
+        <Field
+          name="accounting_email"
           component={FormikInput}
           type="text"
           label="Accounting Email"
           placeholder="Enter where receipts should be sent"
           required
-        /> */}
+        />
 
         <Field
           name="password"
@@ -119,7 +119,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
         />
 
         <Field
-          name="agreeTerms"
+          name="agree_terms"
           component={FormikCheckbox}
           label={
             <>
@@ -155,18 +155,18 @@ export default withFormik<SignUpFormProps, SignUpFormValues>({
     last_name: Yup.string().required('Required'),
     email: Yup.string().email('Invalid email').required('Required'),
     phone: Yup.string().required('Required'),
-    // companyName: Yup.string().required('Required'),
-    // accountingEmail: Yup.string().required('Required'),
+    company_name: Yup.string().required('Required'),
+    accounting_email: Yup.string().required('Required'),
     password: Yup.string().required('Required'),
-    agreeTerms: Yup.boolean().required().oneOf([true], 'Required'),
+    agree_terms: Yup.boolean().required().oneOf([true], 'Required'),
   }),
 
   mapPropsToValues({ user }: SignUpFormProps): SignUpFormValues {
-    return { ...user, agreeTerms: false }
+    return { ...user, agree_terms: false }
   },
 
   async handleSubmit(
-    { agreeTerms, ...values }: SignUpFormValues,
+    { agree_terms, ...values }: SignUpFormValues,
     { props: { onSubmit } }: FormikBag<SignUpFormProps, SignUpFormValues>
   ) {
     await onSubmit(values)
