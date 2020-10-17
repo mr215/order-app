@@ -1,24 +1,17 @@
 import React from 'react'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 import { IonContent, IonLoading, IonRouterLink, IonText } from '@ionic/react'
-import styled from 'styled-components'
 import * as Yup from 'yup'
 
 import { LogInFormValues } from 'types'
 import FooterWithButton from 'components/FooterWithButton'
 
 import FormikInput from './fields/FormikInput'
+import AuthFormBottomSection from './components/AuthFormBottomSection'
 
 interface LogInFormProps {
   onSubmit: (values: LogInFormValues) => Promise<void>
 }
-
-const BottomSection = styled.div`
-  padding: 2rem 1rem;
-  text-align: center;
-  font-size: 1.25rem;
-  font-weight: 500;
-`
 
 const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({
   isValid,
@@ -44,10 +37,10 @@ const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({
           required
         />
 
-        <BottomSection>
+        <AuthFormBottomSection>
           New to SupplyHound?&nbsp;
           <IonRouterLink routerLink="/signup">Sign Up</IonRouterLink>
-        </BottomSection>
+        </AuthFormBottomSection>
       </IonContent>
 
       <FooterWithButton disabled={!isValid} onClick={submitForm}>

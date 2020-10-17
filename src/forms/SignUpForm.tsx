@@ -1,7 +1,6 @@
 import React from 'react'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 import { IonContent, IonLoading, IonRouterLink, IonText } from '@ionic/react'
-import styled from 'styled-components'
 import * as Yup from 'yup'
 
 import { User, SelectOption, SignUpFormValues } from 'types'
@@ -11,19 +10,13 @@ import FooterWithButton from 'components/FooterWithButton'
 import FormikInput from './fields/FormikInput'
 import FormikCheckbox from './fields/FormikCheckbox'
 import FormikSelect from './fields/FormikSelect'
+import AuthFormBottomSection from './components/AuthFormBottomSection'
 
 interface SignUpFormProps {
   user: User
   marketOptions: SelectOption[]
   onSubmit: (values: User) => Promise<void>
 }
-
-const BottomSection = styled.div`
-  padding: 2rem 1rem;
-  text-align: center;
-  font-size: 1.25rem;
-  font-weight: 500;
-`
 
 const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
   marketOptions,
@@ -133,10 +126,10 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           required
         />
 
-        <BottomSection>
+        <AuthFormBottomSection>
           Already have an account?&nbsp;
           <IonRouterLink routerLink="/landing">Log In</IonRouterLink>
-        </BottomSection>
+        </AuthFormBottomSection>
       </IonContent>
 
       <FooterWithButton disabled={!isValid} onClick={submitForm}>
