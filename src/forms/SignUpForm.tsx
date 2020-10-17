@@ -74,16 +74,6 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
         />
 
         <Field
-          name="market_id"
-          component={FormikSelect}
-          label="Market"
-          placeholder="Select market"
-          interfaceOptions={{ header: 'Market' }}
-          options={marketOptions}
-          required
-        />
-
-        <Field
           name="company_name"
           component={FormikInput}
           type="text"
@@ -96,9 +86,19 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
         <Field
           name="accounting_email"
           component={FormikInput}
-          type="text"
+          type="email"
           label="Accounting Email"
           placeholder="Enter where receipts should be sent"
+          required
+        />
+
+        <Field
+          name="market_id"
+          component={FormikSelect}
+          label="Market"
+          placeholder="Select market"
+          interfaceOptions={{ header: 'Market' }}
+          options={marketOptions}
           required
         />
 
@@ -149,7 +149,8 @@ export default withFormik<SignUpFormProps, SignUpFormValues>({
     email: Yup.string().email('Invalid email').required('Required'),
     phone: Yup.string().required('Required'),
     company_name: Yup.string().required('Required'),
-    accounting_email: Yup.string().required('Required'),
+    accounting_email: Yup.string().email('Invalid email').required('Required'),
+    market_id: Yup.number().required('Required'),
     password: Yup.string().required('Required'),
     agree_terms: Yup.boolean().required().oneOf([true], 'Required'),
   }),
