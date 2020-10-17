@@ -25,6 +25,13 @@ ion-item {
   font-size: 1.25rem;
 }
 
+.ion-select-custom-interface {
+  .select-interface-option {
+    height: 50px;
+    font-size: 1.25rem;
+  }
+}
+
 // Google Map Places AutoComplete customization
 .pac-item {
   font-size: 1rem;
