@@ -3,6 +3,7 @@ import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 import { IonContent, IonLoading, IonRouterLink, IonText } from '@ionic/react'
 import * as Yup from 'yup'
 
+import { SIGNUP_ROUTE } from 'utils/config'
 import { LogInFormValues } from 'types'
 import FooterWithButton from 'components/FooterWithButton'
 
@@ -39,7 +40,7 @@ const LogInForm: React.FC<LogInFormProps & FormikProps<LogInFormValues>> = ({
 
         <AuthFormBottomSection>
           New to SupplyHound?&nbsp;
-          <IonRouterLink routerLink="/signup">Sign Up</IonRouterLink>
+          <IonRouterLink routerLink={SIGNUP_ROUTE}>Sign Up</IonRouterLink>
         </AuthFormBottomSection>
       </IonContent>
 

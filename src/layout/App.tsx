@@ -4,6 +4,12 @@ import { IonReactRouter } from '@ionic/react-router'
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
 import { observer } from 'mobx-react-lite'
 
+import {
+  HOME_ROUTE,
+  LANDING_ROUTE,
+  LOGIN_ROUTE,
+  SIGNUP_ROUTE,
+} from 'utils/config'
 import useStores from 'hooks/useStores'
 import { fetchMarkets as fetchMarketsApi } from 'utils/api'
 
@@ -46,11 +52,11 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         <Switch>
-          <Redirect exact from="/" to="/landing" />
+          <Redirect exact from="/" to={LANDING_ROUTE} />
 
-          <PublicRoute exact path="/landing" component={Landing} />
-          <PublicRoute exact path="/signup" component={SignUp} />
-          <PublicRoute exact path="/login" component={LogIn} />
+          <PublicRoute exact path={LANDING_ROUTE} component={Landing} />
+          <PublicRoute exact path={SIGNUP_ROUTE} component={SignUp} />
+          <PublicRoute exact path={LOGIN_ROUTE} component={LogIn} />
 
           <ProtectedRoute>
             <IonSplitPane contentId="main">
@@ -59,7 +65,7 @@ const App: React.FC = () => {
               <IonRouterOutlet id="main">
                 <Route exact path="/page/:name" component={Page} />
 
-                <Route exact path="/home" component={Home} />
+                <Route exact path={HOME_ROUTE} component={Home} />
                 <Route exact path="/order-items" component={OrderItems} />
                 <Route exact path="/order-summary" component={OrderSummary} />
               </IonRouterOutlet>

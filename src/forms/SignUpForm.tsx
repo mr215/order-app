@@ -3,6 +3,7 @@ import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 import { IonContent, IonLoading, IonRouterLink, IonText } from '@ionic/react'
 import * as Yup from 'yup'
 
+import { LANDING_ROUTE } from 'utils/config'
 import { User, SelectOption, SignUpFormValues } from 'types'
 import { titleCase } from 'utils/formatters'
 import FooterWithButton from 'components/FooterWithButton'
@@ -128,7 +129,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
 
         <AuthFormBottomSection>
           Already have an account?&nbsp;
-          <IonRouterLink routerLink="/landing">Log In</IonRouterLink>
+          <IonRouterLink routerLink={LANDING_ROUTE}>Log In</IonRouterLink>
         </AuthFormBottomSection>
       </IonContent>
 
