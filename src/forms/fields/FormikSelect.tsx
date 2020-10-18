@@ -17,6 +17,7 @@ const StyledIonSelect = styled(IonSelect)`
 
   max-width: 100%;
 `
+
 const FormikSelect: React.FC<FieldProps & Props> = ({
   field: { name, value },
   form,
@@ -36,6 +37,10 @@ const FormikSelect: React.FC<FieldProps & Props> = ({
         <StyledIonSelect
           {...props}
           value={value}
+          interfaceOptions={{
+            header: label,
+            cssClass: 'ion-select-custom-interface',
+          }}
           onIonBlur={e => form.setFieldTouched(name)}
           onIonChange={e => form.setFieldValue(name, e.detail.value)}
         >

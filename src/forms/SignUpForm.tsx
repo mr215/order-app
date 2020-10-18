@@ -1,9 +1,9 @@
 import React from 'react'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 import { IonContent, IonLoading, IonRouterLink, IonText } from '@ionic/react'
-import styled from 'styled-components'
 import * as Yup from 'yup'
 
+import { LANDING_ROUTE } from 'utils/config'
 import { User, SelectOption, SignUpFormValues } from 'types'
 import { titleCase } from 'utils/formatters'
 import FooterWithButton from 'components/FooterWithButton'
@@ -11,19 +11,13 @@ import FooterWithButton from 'components/FooterWithButton'
 import FormikInput from './fields/FormikInput'
 import FormikCheckbox from './fields/FormikCheckbox'
 import FormikSelect from './fields/FormikSelect'
+import AuthFormBottomSection from './components/AuthFormBottomSection'
 
 interface SignUpFormProps {
   user: User
   marketOptions: SelectOption[]
   onSubmit: (values: User) => Promise<void>
 }
-
-const BottomSection = styled.div`
-  padding: 2rem 1rem;
-  text-align: center;
-  font-size: 1.25rem;
-  font-weight: 500;
-`
 
 const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
   marketOptions,
@@ -81,6 +75,25 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
         />
 
         <Field
+          name="company_name"
+          component={FormikInput}
+          type="text"
+          label="Company Name"
+          placeholder="Enter your company name here"
+          formatter={titleCase}
+          required
+        />
+
+        <Field
+          name="accounting_email"
+          component={FormikInput}
+          type="email"
+          label="Accounting Email"
+          placeholder="Enter where receipts should be sent"
+          required
+        />
+
+        <Field
           name="market_id"
           component={FormikSelect}
           label="Market"
@@ -89,25 +102,6 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           options={marketOptions}
           required
         />
-
-        {/* <Field
-          name="companyName"
-          component={FormikInput}
-          type="text"
-          label="Company Name"
-          placeholder="Enter your company name here"
-          formatter={titleCase}
-          required
-        /> */}
-
-        {/* <Field
-          name="accountingEmail"
-          component={FormikInput}
-          type="text"
-          label="Accounting Email"
-          placeholder="Enter where receipts should be sent"
-          required
-        /> */}
 
         <Field
           name="password"
@@ -119,7 +113,7 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
         />
 
         <Field
-          name="agreeTerms"
+          name="agree_terms"
           component={FormikCheckbox}
           label={
             <>
@@ -133,10 +127,10 @@ const SignUpForm: React.FC<SignUpFormProps & FormikProps<SignUpFormValues>> = ({
           required
         />
 
-        <BottomSection>
+        <AuthFormBottomSection>
           Already have an account?&nbsp;
-          <IonRouterLink routerLink="/landing">Log In</IonRouterLink>
-        </BottomSection>
+          <IonRouterLink routerLink={LANDING_ROUTE}>Log In</IonRouterLink>
+        </AuthFormBottomSection>
       </IonContent>
 
       <FooterWithButton disabled={!isValid} onClick={submitForm}>
@@ -155,18 +149,19 @@ export default withFormik<SignUpFormProps, SignUpFormValues>({
     last_name: Yup.string().required('Required'),
     email: Yup.string().email('Invalid email').required('Required'),
     phone: Yup.string().required('Required'),
-    // companyName: Yup.string().required('Required'),
-    // accountingEmail: Yup.string().required('Required'),
+    company_name: Yup.string().required('Required'),
+    accounting_email: Yup.string().email('Invalid email').required('Required'),
+    market_id: Yup.number().required('Required'),
     password: Yup.string().required('Required'),
-    agreeTerms: Yup.boolean().required().oneOf([true], 'Required'),
+    agree_terms: Yup.boolean().required().oneOf([true], 'Required'),
   }),
 
   mapPropsToValues({ user }: SignUpFormProps): SignUpFormValues {
-    return { ...user, agreeTerms: false }
+    return { ...user, agree_terms: false }
   },
 
   async handleSubmit(
-    { agreeTerms, ...values }: SignUpFormValues,
+    { agree_terms, ...values }: SignUpFormValues,
     { props: { onSubmit } }: FormikBag<SignUpFormProps, SignUpFormValues>
   ) {
     await onSubmit(values)

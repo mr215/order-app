@@ -7,6 +7,7 @@ import {
 } from '@ionic/react'
 import styled from 'styled-components'
 
+import { HOME_ROUTE } from 'utils/config'
 import logoImg from 'images/logo.png'
 
 interface Props {
@@ -42,7 +43,7 @@ const Header: React.FC<Props> = ({ home = false, login = false }) => (
         {home ? (
           <IonMenuButton />
         ) : (
-          !login && <IonBackButton defaultHref="/home" />
+          !login && <IonBackButton defaultHref={HOME_ROUTE} />
         )}
       </ButtonContainer>
 

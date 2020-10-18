@@ -20,6 +20,7 @@ import {
 } from 'ionicons/icons'
 import { observer } from 'mobx-react-lite'
 
+import { HOME_ROUTE, LANDING_ROUTE } from 'utils/config'
 import useStores from 'hooks/useStores'
 
 interface MenuItem {
@@ -42,7 +43,7 @@ const Menu: React.FC = () => {
       title: 'Home',
       icon: homeOutline,
       routeProps: {
-        routerLink: '/home',
+        routerLink: HOME_ROUTE,
       },
     },
     {
@@ -85,7 +86,7 @@ const Menu: React.FC = () => {
           authStore.clearToken()
           userStore.resetUser()
 
-          history.push('/landing')
+          history.push(LANDING_ROUTE)
         },
       },
     },

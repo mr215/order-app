@@ -3,15 +3,15 @@ export interface User {
   last_name: string
   email: string
   phone: string
-  // companyName: string
-  // accountingEmail: string
+  company_name: string
+  accounting_email: string
   password: string
   favoriteAddresses: string[]
   market_id: string
 }
 
 export interface SignUpFormValues extends User {
-  agreeTerms: boolean
+  agree_terms: boolean
 }
 export interface LogInFormValues {
   password: string
@@ -78,8 +78,8 @@ export const DEFAULT_USER: User = {
   last_name: '',
   email: '',
   phone: '',
-  // companyName: '',
-  // accountingEmail: '',
+  company_name: '',
+  accounting_email: '',
   password: '',
   favoriteAddresses: [],
   market_id: '',

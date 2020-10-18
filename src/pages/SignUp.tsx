@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { IonPage, IonToast } from '@ionic/react'
 import { observer } from 'mobx-react-lite'
 
-import { TOAST_DURATION } from 'utils/config'
+import { TOAST_DURATION, HOME_ROUTE } from 'utils/config'
 import { signUp } from 'utils/api'
 import { serializeError } from 'utils/serializers'
 import { User } from 'types'
@@ -13,18 +13,16 @@ import Header from 'components/Header'
 import SignUpForm from 'forms/SignUpForm'
 
 const SignUp: React.FC<RouteComponentProps> = ({ history }) => {
-  const { userStore, marketsStore } = useStores()
+  const { authStore, userStore, marketsStore } = useStores()
   const [error, setError] = useState('')
 
   const handleSubmit = async (user: User) => {
     try {
-      await signUp(user)
+      const { data } = await signUp(user)
 
-      // Preserve email only
-      userStore.updateUser({ email: user.email })
+      authStore.saveToken(data.jwt)
 
-      // Redirect to the login page
-      history.push({ pathname: '/login' })
+      history.push({ pathname: HOME_ROUTE })
     } catch (e) {
       setError(serializeError(e))
     }

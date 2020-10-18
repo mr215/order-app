@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom'
 import get from 'lodash/get'
 
+import { HOME_ROUTE } from 'utils/config'
 import useStores from 'hooks/useStores'
 
 const PublicRoute: React.FC<RouteProps> = props => {
@@ -15,7 +16,7 @@ const PublicRoute: React.FC<RouteProps> = props => {
   return authStore.token ? (
     <Route
       render={({ location }: RouteComponentProps) => (
-        <Redirect to={get(location, ['state', 'from'], '/home')} />
+        <Redirect to={get(location, ['state', 'from'], HOME_ROUTE)} />
       )}
     />
   ) : (

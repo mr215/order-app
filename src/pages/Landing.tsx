@@ -3,10 +3,10 @@ import { RouteComponentProps } from 'react-router-dom'
 import { IonPage, IonToast } from '@ionic/react'
 import { observer } from 'mobx-react-lite'
 
+import { TOAST_DURATION, LOGIN_ROUTE, SIGNUP_ROUTE } from 'utils/config'
 import { LandingFormValues } from 'types'
 import useStores from 'hooks/useStores'
 import { checkEmail } from 'utils/api'
-import { TOAST_DURATION } from 'utils/config'
 
 import Header from 'components/Header'
 import LandingForm from 'forms/LandingForm'
@@ -22,9 +22,9 @@ const Landing: React.FC<RouteComponentProps> = ({ history }) => {
       userStore.updateUser({ email })
 
       if (data.valid) {
-        history.push({ pathname: '/login' })
+        history.push({ pathname: LOGIN_ROUTE })
       } else {
-        history.push({ pathname: '/signup' })
+        history.push({ pathname: SIGNUP_ROUTE })
       }
     } catch (e) {
       setError('Error in checking email')

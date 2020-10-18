@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { IonPage, IonToast } from '@ionic/react'
 import { observer } from 'mobx-react-lite'
 
-import { TOAST_DURATION } from 'utils/config'
+import { TOAST_DURATION, HOME_ROUTE } from 'utils/config'
 import { LogInFormValues } from 'types'
 import { logIn } from 'utils/api'
 import useStores from 'hooks/useStores'
@@ -25,7 +25,7 @@ const LogIn: React.FC<RouteComponentProps> = ({ history }) => {
       // Store token
       authStore.saveToken(data.jwt)
 
-      history.push({ pathname: '/home' })
+      history.push({ pathname: HOME_ROUTE })
     } catch (e) {
       setError('Invalid password')
     }
