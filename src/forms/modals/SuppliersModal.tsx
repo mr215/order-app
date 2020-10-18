@@ -9,6 +9,7 @@ import {
   IonList,
   IonListHeader,
   IonModal,
+  IonRouterLink,
   IonSegment,
   IonSegmentButton,
 } from '@ionic/react'
@@ -130,7 +131,14 @@ const SuppliersModal: React.FC<Props> = ({
               <IonLabel className="ion-text-wrap">
                 <h2>{supplier.name}</h2>
                 <p>{supplier.address}</p>
-                <h2>{supplier.phone}</h2>
+                <h2>
+                  <IonRouterLink
+                    href={`tel:${supplier.phone}`}
+                    onClick={e => e.stopPropagation()}
+                  >
+                    {supplier.phone}
+                  </IonRouterLink>
+                </h2>
               </IonLabel>
             </IonItem>
           ))}
