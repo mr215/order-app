@@ -1,4 +1,4 @@
-import React, { memo, useState, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import {
   IonButton,
   IonContent,
@@ -8,6 +8,7 @@ import {
   IonLabel,
   IonList,
   IonListHeader,
+  IonLoading,
   IonModal,
   IonRouterLink,
   IonSegment,
@@ -16,22 +17,23 @@ import {
 import styled from 'styled-components'
 import { search, close } from 'ionicons/icons'
 
-import { Supplier } from 'types'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
+import { fetchSuppliers as fetchSuppliersApi } from 'utils/api'
 import FooterWithButton from 'components/FooterWithButton'
+import { SupplierEntity } from 'types'
 
 const SUPPLIER_TYPES: Record<string, string> = {
-  All: 'All',
-  Lumber: 'Lumber',
-  Hardware: 'Hardware',
-  Plumbing: 'Plumbing',
-  Electric: 'Electric',
-  Landscape: 'Landscape',
-  Other: 'Other',
+  all: 'All',
+  lumber: 'Lumber',
+  hardware: 'Hardware',
+  plumbing: 'Plumbing',
+  electric: 'Electric',
+  paint: 'Paint',
+  other: 'Other',
 }
 
 interface Props {
   isOpen: boolean
-  suppliers: Supplier[]
   onClose: () => void
   onSelect: (address: string) => void
 }
@@ -50,38 +52,47 @@ const LogoImg = styled.img`
   height: auto;
 `
 
-const SuppliersModal: React.FC<Props> = ({
-  isOpen,
-  suppliers,
-  onSelect,
-  onClose,
-}) => {
+const SuppliersModal: React.FC<Props> = ({ isOpen, onSelect, onClose }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [suppliers, setSuppliers] = useState<SupplierEntity[]>([])
   const [showSearch, setShowSearch] = useState<boolean>(false)
-  const [supplierType, setSupplierType] = useState('All')
+  const [storeType, setStoreType] = useState('all')
   const [query, setQuery] = useState('')
+  const params = useMemo(() => {
+    if (showSearch) {
+      return { q: query }
+    }
 
-  const filteredSuppliersByType = useMemo(
-    () =>
-      supplierType === 'All'
-        ? suppliers
-        : suppliers.filter(supplier => supplier.type === supplierType),
-    [suppliers, supplierType]
-  )
-  const filteredSuppliersByQuery = useMemo(
-    () =>
-      suppliers.filter(supplier =>
-        supplier.name.toLowerCase().includes(query.toLowerCase())
-      ),
-    [suppliers, query]
-  )
-  const filteredSuppliers = useMemo(
-    () => (showSearch ? filteredSuppliersByQuery : filteredSuppliersByType),
-    [showSearch, filteredSuppliersByType, filteredSuppliersByQuery]
+    return storeType === 'all' ? {} : { store_type: storeType }
+  }, [showSearch, storeType, query])
+
+  useDebouncedEffect(
+    () => {
+      const fetchSuppliers = async () => {
+        try {
+          setIsLoading(true)
+
+          const { data } = await fetchSuppliersApi(params)
+
+          setSuppliers(data as SupplierEntity[])
+        } catch (e) {
+          console.log('Error in loading suppliers')
+        } finally {
+          setIsLoading(false)
+        }
+      }
+
+      fetchSuppliers()
+    },
+    500,
+    [params]
   )
 
   return (
     <IonModal isOpen={isOpen} mode="ios" onDidDismiss={onClose}>
       <IonContent>
+        <IonLoading isOpen={isLoading} />
+
         <IonList>
           <IonListHeader>
             <IonLabel>Select Supplier</IonLabel>
@@ -103,8 +114,8 @@ const SuppliersModal: React.FC<Props> = ({
             <IonSegment
               scrollable
               mode="ios"
-              value={supplierType}
-              onIonChange={e => setSupplierType(e.detail.value!)}
+              value={storeType}
+              onIonChange={e => setStoreType(e.detail.value!)}
             >
               {Object.keys(SUPPLIER_TYPES).map(type => (
                 <StyledIonSegmentButton key={type} value={type}>
@@ -114,29 +125,29 @@ const SuppliersModal: React.FC<Props> = ({
             </IonSegment>
           )}
 
-          {filteredSuppliers.map(supplier => (
+          {suppliers.map(({ id, attributes }) => (
             <IonItem
-              key={supplier.id}
+              key={id}
               button
               lines="full"
-              onClick={() => onSelect(supplier.address)}
+              onClick={() => onSelect(attributes.address)}
             >
               <LogoImg
                 slot="start"
-                src={supplier.logo}
-                alt={supplier.name}
+                src={attributes.logo}
+                alt={attributes.store_name}
                 width={150}
               />
 
               <IonLabel className="ion-text-wrap">
-                <h2>{supplier.name}</h2>
-                <p>{supplier.address}</p>
+                <h2>{attributes.store_name}</h2>
+                <p>{attributes.address}</p>
                 <h2>
                   <IonRouterLink
-                    href={`tel:${supplier.phone}`}
+                    href={`tel:${attributes.phone}`}
                     onClick={e => e.stopPropagation()}
                   >
-                    {supplier.phone}
+                    {attributes.phone}
                   </IonRouterLink>
                 </h2>
               </IonLabel>
@@ -150,9 +161,4 @@ const SuppliersModal: React.FC<Props> = ({
   )
 }
 
-export default memo<Props>(
-  SuppliersModal,
-  (prevProps, nextProps) =>
-    prevProps.isOpen === nextProps.isOpen &&
-    prevProps.suppliers === nextProps.suppliers
-)
+export default SuppliersModal

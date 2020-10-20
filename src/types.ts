@@ -47,15 +47,6 @@ export interface DeliveryNote {
   note: string
 }
 
-export interface Supplier {
-  id: number
-  name: string
-  address: string
-  phone: string
-  type: string
-  logo: string
-}
-
 export interface Order {
   jobName: string
   orderThrough: OrderThrough
@@ -109,4 +100,27 @@ export interface MarketEntity extends Entity {
 export interface SelectOption {
   label: string
   value: string | number
+}
+
+interface Entity {
+  id: string
+  attributes: {}
+  relationships?: {}
+  type: string
+}
+
+interface SupplierAttributes {
+  store_type: string
+  store_name: string
+  address: string
+  phone: string
+  supplier_order_email: string
+  sh_order_email: string
+  logo: string
+  website: string
+}
+
+export interface SupplierEntity extends Entity {
+  attributes: SupplierAttributes
+  type: 'supplier'
 }

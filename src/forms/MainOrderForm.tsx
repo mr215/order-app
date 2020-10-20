@@ -6,13 +6,7 @@ import { pencilSharp } from 'ionicons/icons'
 import { formatISO } from 'date-fns'
 import * as Yup from 'yup'
 
-import {
-  OrderThrough,
-  VehicleType,
-  Order,
-  Supplier,
-  MainOrderFormValues,
-} from 'types'
+import { OrderThrough, VehicleType, Order, MainOrderFormValues } from 'types'
 import { titleCase } from 'utils/formatters'
 import FooterWithButton from 'components/FooterWithButton'
 
@@ -32,7 +26,6 @@ import FavoriteAddresssModal from './modals/FavoriteAddressesModal'
 
 interface MainOrderFormProps {
   favoriteAddresses: string[]
-  suppliers: Supplier[]
   order: Order
   onFavoriteAddress: (address: string) => void
   onUnfavoriteAddress: (address: string) => void
@@ -63,7 +56,6 @@ const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
 > = ({
   favoriteAddresses,
-  suppliers,
   onFavoriteAddress,
   onUnfavoriteAddress,
 
@@ -249,7 +241,6 @@ const MainOrderForm: React.FC<
 
       <SuppliersModal
         isOpen={showSuppliersModal}
-        suppliers={suppliers}
         onSelect={handleSupplierSelect}
         onClose={() => setShowSuppliersModal(false)}
       />
