@@ -132,12 +132,12 @@ const SuppliersModal: React.FC<Props> = ({ isOpen, onSelect, onClose }) => {
               lines="full"
               onClick={() => onSelect(attributes.address)}
             >
-              {/* <LogoImg
+              <LogoImg
                 slot="start"
                 src={attributes.logo}
                 alt={attributes.store_name}
                 width={150}
-              /> */}
+              />
 
               <IonLabel className="ion-text-wrap">
                 <h2>{attributes.store_name}</h2>
