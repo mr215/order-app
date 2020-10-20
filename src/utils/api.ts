@@ -31,3 +31,6 @@ export const logIn = (user: Pick<User, 'email' | 'password'>) =>
 
 export const fetchMarkets = () =>
   axiosInstance.get<{ data: MarketEntity[] }>('/markets')
+
+export const fetchSuppliers = (params: any) =>
+  axiosInstance.get('/suppliers', { params }).then(({ data }) => data)

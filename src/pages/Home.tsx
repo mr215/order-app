@@ -11,7 +11,7 @@ import Header from 'components/Header'
 import MainOrderForm from 'forms/MainOrderForm'
 
 const Home: React.FC<RouteComponentProps> = ({ history }) => {
-  const { userStore, orderStore, suppliersStore } = useStores()
+  const { userStore, orderStore } = useStores()
 
   const handleFavoriteAddress = (address: string) => {
     userStore.favoriteAddress(address)
@@ -33,7 +33,6 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
 
       <MainOrderForm
         favoriteAddresses={toJS(userStore.user.favoriteAddresses)}
-        suppliers={toJS(suppliersStore.suppliers)}
         order={toJS(orderStore.order)}
         onFavoriteAddress={handleFavoriteAddress}
         onUnfavoriteAddress={handleUnfavoriteAddress}
