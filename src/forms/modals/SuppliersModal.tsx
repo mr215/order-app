@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react'
-import { observer } from 'mobx-react-lite'
 import {
   IonButton,
   IonContent,
@@ -9,6 +8,7 @@ import {
   IonLabel,
   IonList,
   IonListHeader,
+  IonLoading,
   IonModal,
   IonRouterLink,
   IonSegment,
@@ -17,10 +17,10 @@ import {
 import styled from 'styled-components'
 import { search, close } from 'ionicons/icons'
 
-import useStores from 'hooks/useStores'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import { fetchSuppliers as fetchSuppliersApi } from 'utils/api'
 import FooterWithButton from 'components/FooterWithButton'
+import { SupplierEntity } from 'types'
 
 const SUPPLIER_TYPES: Record<string, string> = {
   all: 'All',
@@ -53,7 +53,8 @@ const LogoImg = styled.img`
 `
 
 const SuppliersModal: React.FC<Props> = ({ isOpen, onSelect, onClose }) => {
-  const { suppliersStore } = useStores()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [suppliers, setSuppliers] = useState<SupplierEntity[]>([])
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [storeType, setStoreType] = useState('all')
   const [query, setQuery] = useState('')
@@ -69,11 +70,15 @@ const SuppliersModal: React.FC<Props> = ({ isOpen, onSelect, onClose }) => {
     () => {
       const fetchSuppliers = async () => {
         try {
+          setIsLoading(true)
+
           const { data } = await fetchSuppliersApi(params)
 
-          suppliersStore.suppliers = data
+          setSuppliers(data as SupplierEntity[])
         } catch (e) {
           console.log('Error in loading suppliers')
+        } finally {
+          setIsLoading(false)
         }
       }
 
@@ -86,6 +91,8 @@ const SuppliersModal: React.FC<Props> = ({ isOpen, onSelect, onClose }) => {
   return (
     <IonModal isOpen={isOpen} mode="ios" onDidDismiss={onClose}>
       <IonContent>
+        <IonLoading isOpen={isLoading} />
+
         <IonList>
           <IonListHeader>
             <IonLabel>Select Supplier</IonLabel>
@@ -118,19 +125,19 @@ const SuppliersModal: React.FC<Props> = ({ isOpen, onSelect, onClose }) => {
             </IonSegment>
           )}
 
-          {suppliersStore.suppliers.map(({ id, attributes }) => (
+          {suppliers.map(({ id, attributes }) => (
             <IonItem
               key={id}
               button
               lines="full"
               onClick={() => onSelect(attributes.address)}
             >
-              <LogoImg
+              {/* <LogoImg
                 slot="start"
                 src={attributes.logo}
                 alt={attributes.store_name}
                 width={150}
-              />
+              /> */}
 
               <IonLabel className="ion-text-wrap">
                 <h2>{attributes.store_name}</h2>
@@ -154,4 +161,4 @@ const SuppliersModal: React.FC<Props> = ({ isOpen, onSelect, onClose }) => {
   )
 }
 
-export default observer(SuppliersModal)
+export default SuppliersModal

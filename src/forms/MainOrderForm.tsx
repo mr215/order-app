@@ -1,12 +1,10 @@
 import React, { useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
-import { observer } from 'mobx-react-lite'
 import { IonButton, IonContent, IonIcon, IonLabel } from '@ionic/react'
 import { pencilSharp } from 'ionicons/icons'
 import { formatISO } from 'date-fns'
 import * as Yup from 'yup'
-import flowRight from 'lodash/fp/flowRight'
 
 import { OrderThrough, VehicleType, Order, MainOrderFormValues } from 'types'
 import { titleCase } from 'utils/formatters'
@@ -258,39 +256,36 @@ const MainOrderForm: React.FC<
   )
 }
 
-export default flowRight(
-  withFormik<MainOrderFormProps, MainOrderFormValues>({
-    displayName: 'MainOrderForm',
-    enableReinitialize: true,
+export default withFormik<MainOrderFormProps, MainOrderFormValues>({
+  displayName: 'MainOrderForm',
+  enableReinitialize: true,
 
-    validationSchema: Yup.object().shape({
-      jobName: Yup.string().required('Required'),
-      orderThrough: Yup.mixed()
-        .required()
-        .oneOf([OrderThrough.SupplyHound, OrderThrough.Supplier] as const),
-      pickupAddress: Yup.string().required('Required'),
-      deliveryAddress: Yup.string().required('Required'),
-      vehicleType: Yup.mixed()
-        .required()
-        .oneOf([VehicleType.Car, VehicleType.Truck] as const),
-      lastestDeliverBy: Yup.string().required('Required'),
-    }),
-
-    mapPropsToValues({ order }: MainOrderFormProps): MainOrderFormValues {
-      return order as MainOrderFormValues
-    },
-
-    handleSubmit(
-      values: MainOrderFormValues,
-      {
-        props: { onSubmit },
-        setSubmitting,
-      }: FormikBag<MainOrderFormProps, MainOrderFormValues>
-    ) {
-      onSubmit(values)
-
-      setSubmitting(false)
-    },
+  validationSchema: Yup.object().shape({
+    jobName: Yup.string().required('Required'),
+    orderThrough: Yup.mixed()
+      .required()
+      .oneOf([OrderThrough.SupplyHound, OrderThrough.Supplier] as const),
+    pickupAddress: Yup.string().required('Required'),
+    deliveryAddress: Yup.string().required('Required'),
+    vehicleType: Yup.mixed()
+      .required()
+      .oneOf([VehicleType.Car, VehicleType.Truck] as const),
+    lastestDeliverBy: Yup.string().required('Required'),
   }),
-  observer
-)(MainOrderForm)
+
+  mapPropsToValues({ order }: MainOrderFormProps): MainOrderFormValues {
+    return order as MainOrderFormValues
+  },
+
+  handleSubmit(
+    values: MainOrderFormValues,
+    {
+      props: { onSubmit },
+      setSubmitting,
+    }: FormikBag<MainOrderFormProps, MainOrderFormValues>
+  ) {
+    onSubmit(values)
+
+    setSubmitting(false)
+  },
+})(MainOrderForm)
