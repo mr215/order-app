@@ -1,12 +1,19 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import styled from 'styled-components'
+import { observer } from 'mobx-react-lite'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 import { IonButton, IonContent, IonIcon, IonLabel } from '@ionic/react'
 import { pencilSharp } from 'ionicons/icons'
 import { formatISO } from 'date-fns'
 import * as Yup from 'yup'
+import flowRight from 'lodash/fp/flowRight'
 
+import useStores from 'hooks/useStores'
 import { OrderThrough, VehicleType, Order, MainOrderFormValues } from 'types'
+import {
+  fetchFavoriteAddresses as fetchFavoriteAddressesApi,
+  addFavoriteAddress as addFavoriteAddressApi,
+} from 'utils/api'
 import { titleCase } from 'utils/formatters'
 import FooterWithButton from 'components/FooterWithButton'
 
@@ -25,10 +32,7 @@ import SuppliersModal from './modals/SuppliersModal'
 import FavoriteAddresssModal from './modals/FavoriteAddressesModal'
 
 interface MainOrderFormProps {
-  favoriteAddresses: string[]
   order: Order
-  onFavoriteAddress: (address: string) => void
-  onUnfavoriteAddress: (address: string) => void
   onSubmit: (values: MainOrderFormValues) => void
 }
 
@@ -54,17 +58,7 @@ const NotesButton = styled(IonLabel)`
 
 const MainOrderForm: React.FC<
   MainOrderFormProps & FormikProps<MainOrderFormValues>
-> = ({
-  favoriteAddresses,
-  onFavoriteAddress,
-  onUnfavoriteAddress,
-
-  // Formik
-  isValid,
-  values,
-  submitForm,
-  setFieldValue,
-}) => {
+> = ({ isValid, values, submitForm, setFieldValue }) => {
   const [showPickupNotesModal, setShowPickupNotesModal] = useState<boolean>(
     false
   )
@@ -76,13 +70,10 @@ const MainOrderForm: React.FC<
     boolean
   >(false)
 
+  const { favoriteAddressesStore } = useStores()
   const isDeliveryAddressFavorite = useMemo(
-    () =>
-      !!favoriteAddresses.find(
-        (address: string) =>
-          address.toLowerCase() === values.deliveryAddress.toLowerCase()
-      ),
-    [favoriteAddresses, values.deliveryAddress]
+    () => favoriteAddressesStore.exists(values.deliveryAddress),
+    [values.deliveryAddress]
   )
 
   const favoriteAddressButton = useMemo(() => {
@@ -102,12 +93,28 @@ const MainOrderForm: React.FC<
       <AddressButton
         slot="start"
         size="default"
-        onClick={() => onFavoriteAddress(values.deliveryAddress)}
+        onClick={() => addFavoriteAddress(values.deliveryAddress)}
       >
         Save
       </AddressButton>
     )
-  }, [isDeliveryAddressFavorite, values.deliveryAddress, onFavoriteAddress])
+  }, [isDeliveryAddressFavorite, values.deliveryAddress])
+
+  useEffect(() => {
+    const fetcher = async () => {
+      const { data } = await fetchFavoriteAddressesApi()
+
+      favoriteAddressesStore.load(data)
+    }
+
+    fetcher()
+  }, [])
+
+  const addFavoriteAddress = async (address: string) => {
+    const { data } = await addFavoriteAddressApi({ address })
+
+    favoriteAddressesStore.add(data)
+  }
 
   const handleFavoriteAddressSelect = (address: string) => {
     setFieldValue('deliveryAddress', address)
@@ -247,8 +254,6 @@ const MainOrderForm: React.FC<
 
       <FavoriteAddresssModal
         isOpen={showFavoriteAddressesModal}
-        favoriteAddresses={favoriteAddresses}
-        onRemove={onUnfavoriteAddress}
         onSelect={handleFavoriteAddressSelect}
         onClose={() => setShowFavoriteAddresses(false)}
       />
@@ -256,36 +261,39 @@ const MainOrderForm: React.FC<
   )
 }
 
-export default withFormik<MainOrderFormProps, MainOrderFormValues>({
-  displayName: 'MainOrderForm',
-  enableReinitialize: true,
+export default flowRight(
+  withFormik<MainOrderFormProps, MainOrderFormValues>({
+    displayName: 'MainOrderForm',
+    enableReinitialize: true,
 
-  validationSchema: Yup.object().shape({
-    jobName: Yup.string().required('Required'),
-    orderThrough: Yup.mixed()
-      .required()
-      .oneOf([OrderThrough.SupplyHound, OrderThrough.Supplier] as const),
-    pickupAddress: Yup.string().required('Required'),
-    deliveryAddress: Yup.string().required('Required'),
-    vehicleType: Yup.mixed()
-      .required()
-      .oneOf([VehicleType.Car, VehicleType.Truck] as const),
-    lastestDeliverBy: Yup.string().required('Required'),
+    validationSchema: Yup.object().shape({
+      jobName: Yup.string().required('Required'),
+      orderThrough: Yup.mixed()
+        .required()
+        .oneOf([OrderThrough.SupplyHound, OrderThrough.Supplier] as const),
+      pickupAddress: Yup.string().required('Required'),
+      deliveryAddress: Yup.string().required('Required'),
+      vehicleType: Yup.mixed()
+        .required()
+        .oneOf([VehicleType.Car, VehicleType.Truck] as const),
+      lastestDeliverBy: Yup.string().required('Required'),
+    }),
+
+    mapPropsToValues({ order }: MainOrderFormProps): MainOrderFormValues {
+      return order as MainOrderFormValues
+    },
+
+    handleSubmit(
+      values: MainOrderFormValues,
+      {
+        props: { onSubmit },
+        setSubmitting,
+      }: FormikBag<MainOrderFormProps, MainOrderFormValues>
+    ) {
+      onSubmit(values)
+
+      setSubmitting(false)
+    },
   }),
-
-  mapPropsToValues({ order }: MainOrderFormProps): MainOrderFormValues {
-    return order as MainOrderFormValues
-  },
-
-  handleSubmit(
-    values: MainOrderFormValues,
-    {
-      props: { onSubmit },
-      setSubmitting,
-    }: FormikBag<MainOrderFormProps, MainOrderFormValues>
-  ) {
-    onSubmit(values)
-
-    setSubmitting(false)
-  },
-})(MainOrderForm)
+  observer
+)(MainOrderForm)
