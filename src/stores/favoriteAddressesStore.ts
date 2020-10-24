@@ -9,16 +9,16 @@ export default class FavoriteAddressesStore {
     makeAutoObservable(this)
   }
 
-  load(favoriteAddresses: FavoriteAddressEntity[]) {
-    set(this.favoriteAddresses, favoriteAddresses)
-  }
-
   exists(address: string) {
     const favoriteAddress = this.favoriteAddresses.find(fa =>
       fa.attributes.address.toLowerCase().includes(address.toLowerCase())
     )
 
     return !!favoriteAddress
+  }
+
+  load(favoriteAddresses: FavoriteAddressEntity[]) {
+    set(this.favoriteAddresses, favoriteAddresses)
   }
 
   add(address: FavoriteAddressEntity) {

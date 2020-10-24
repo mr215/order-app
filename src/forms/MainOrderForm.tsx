@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
@@ -71,12 +71,12 @@ const MainOrderForm: React.FC<
   >(false)
 
   const { favoriteAddressesStore } = useStores()
-  const isDeliveryAddressFavorite = useMemo(
-    () => favoriteAddressesStore.exists(values.deliveryAddress),
-    [values.deliveryAddress]
-  )
 
-  const favoriteAddressButton = useMemo(() => {
+  const makeFavoriteAddressButton = () => {
+    const isDeliveryAddressFavorite = favoriteAddressesStore.exists(
+      values.deliveryAddress
+    )
+
     if (!values.deliveryAddress || isDeliveryAddressFavorite) {
       return (
         <AddressButton
@@ -98,7 +98,7 @@ const MainOrderForm: React.FC<
         Save
       </AddressButton>
     )
-  }, [isDeliveryAddressFavorite, values.deliveryAddress])
+  }
 
   useEffect(() => {
     const fetcher = async () => {
@@ -199,7 +199,7 @@ const MainOrderForm: React.FC<
               Delivery Notes <IonIcon icon={pencilSharp} />
             </NotesButton>
           }
-          extraContent={favoriteAddressButton}
+          extraContent={makeFavoriteAddressButton()}
         />
 
         <Field
