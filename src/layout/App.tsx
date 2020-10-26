@@ -46,7 +46,7 @@ const App: React.FC = () => {
     }
 
     fetchMarkets()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <IonApp>
