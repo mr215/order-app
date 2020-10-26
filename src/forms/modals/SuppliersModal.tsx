@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import {
   IonButton,
   IonContent,
@@ -16,21 +16,42 @@ import {
 } from '@ionic/react'
 import styled from 'styled-components'
 import { search, close } from 'ionicons/icons'
+import debounce from 'lodash/debounce'
 
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import { fetchSuppliers as fetchSuppliersApi } from 'utils/api'
 import FooterWithButton from 'components/FooterWithButton'
 import { SupplierEntity } from 'types'
 
-const SUPPLIER_TYPES: Record<string, string> = {
-  all: 'All',
-  lumber: 'Lumber',
-  hardware: 'Hardware',
-  plumbing: 'Plumbing',
-  electric: 'Electric',
-  paint: 'Paint',
-  other: 'Other',
-}
+const SUPPLIER_TYPES = [
+  {
+    value: '',
+    label: 'All',
+  },
+  {
+    value: 'lumber',
+    label: 'Lumber',
+  },
+  {
+    value: 'hardware',
+    label: 'Hardware',
+  },
+  {
+    value: 'plumbing',
+    label: 'Plumbing',
+  },
+  {
+    value: 'electric',
+    label: 'Electric',
+  },
+  {
+    value: 'paint',
+    label: 'Paint',
+  },
+  {
+    value: 'other',
+    label: 'Other',
+  },
+]
 
 interface Props {
   isOpen: boolean
@@ -56,37 +77,53 @@ const SuppliersModal: React.FC<Props> = ({ isOpen, onSelect, onClose }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [suppliers, setSuppliers] = useState<SupplierEntity[]>([])
   const [showSearch, setShowSearch] = useState<boolean>(false)
-  const [storeType, setStoreType] = useState('all')
+
+  const [storeType, setStoreType] = useState('')
   const [query, setQuery] = useState('')
-  const params = useMemo(() => {
-    if (showSearch) {
-      return { q: query }
-    }
+  const queryRef = useRef<HTMLIonInputElement>(null)
 
-    return storeType === 'all' ? {} : { store_type: storeType }
-  }, [showSearch, storeType, query])
-
-  useDebouncedEffect(
-    () => {
-      const fetchSuppliers = async () => {
-        try {
-          setIsLoading(true)
-
-          const { data } = await fetchSuppliersApi(params)
-
-          setSuppliers(data as SupplierEntity[])
-        } catch (e) {
-          console.log('Error in loading suppliers')
-        } finally {
-          setIsLoading(false)
-        }
-      }
-
-      fetchSuppliers()
-    },
-    500,
-    [params]
+  const focusQueryInput = useCallback(
+    debounce(() => queryRef.current!.setFocus(), 300),
+    []
   )
+
+  const fetchSuppliers = useCallback(
+    debounce(async (params?: any) => {
+      try {
+        setIsLoading(true)
+
+        const { data } = await fetchSuppliersApi(params)
+
+        setSuppliers(data as SupplierEntity[])
+      } catch (e) {
+        console.log('Error in loading suppliers')
+      } finally {
+        setIsLoading(false)
+      }
+    }, 500),
+    []
+  )
+
+  // Fetch suppliers when store type changes
+  useEffect(() => {
+    const params = storeType === '' ? {} : { store_type: storeType }
+
+    fetchSuppliers(params)
+  }, [storeType])
+
+  // Fetch suppliers when query changes
+  useEffect(() => {
+    if (query.length >= 3) {
+      fetchSuppliers({ q: query })
+    }
+  }, [query])
+
+  // Focus query input when reloading the suppliers
+  useEffect(() => {
+    if (queryRef.current) {
+      focusQueryInput()
+    }
+  }, [showSearch, suppliers])
 
   return (
     <IonModal isOpen={isOpen} mode="ios" onDidDismiss={onClose}>
@@ -105,8 +142,10 @@ const SuppliersModal: React.FC<Props> = ({ isOpen, onSelect, onClose }) => {
           {showSearch ? (
             <IonItem>
               <IonInput
+                ref={queryRef}
                 type="text"
                 placeholder="Enter Supplier Name"
+                value={query}
                 onIonChange={e => setQuery(e.detail.value!)}
               />
             </IonItem>
@@ -117,9 +156,9 @@ const SuppliersModal: React.FC<Props> = ({ isOpen, onSelect, onClose }) => {
               value={storeType}
               onIonChange={e => setStoreType(e.detail.value!)}
             >
-              {Object.keys(SUPPLIER_TYPES).map(type => (
-                <StyledIonSegmentButton key={type} value={type}>
-                  <IonLabel>{SUPPLIER_TYPES[type]}</IonLabel>
+              {SUPPLIER_TYPES.map(({ value, label }) => (
+                <StyledIonSegmentButton key={value} value={value}>
+                  <IonLabel>{label}</IonLabel>
                 </StyledIonSegmentButton>
               ))}
             </IonSegment>
@@ -132,12 +171,12 @@ const SuppliersModal: React.FC<Props> = ({ isOpen, onSelect, onClose }) => {
               lines="full"
               onClick={() => onSelect(attributes.address)}
             >
-              {/* <LogoImg
+              <LogoImg
                 slot="start"
                 src={attributes.logo}
                 alt={attributes.store_name}
                 width={150}
-              /> */}
+              />
 
               <IonLabel className="ion-text-wrap">
                 <h2>{attributes.store_name}</h2>

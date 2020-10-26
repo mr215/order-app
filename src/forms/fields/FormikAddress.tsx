@@ -64,7 +64,7 @@ const FormikAddress: React.FC<FieldProps & Props> = ({
         google.maps.event.removeListener(autocompleteListener.current)
       }
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <IonItemGroup>
