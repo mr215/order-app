@@ -11,15 +11,7 @@ import Header from 'components/Header'
 import MainOrderForm from 'forms/MainOrderForm'
 
 const Home: React.FC<RouteComponentProps> = ({ history }) => {
-  const { userStore, orderStore } = useStores()
-
-  const handleFavoriteAddress = (address: string) => {
-    userStore.favoriteAddress(address)
-  }
-
-  const handleUnfavoriteAddress = (address: string) => {
-    userStore.unfavoriteAddress(address)
-  }
+  const { orderStore } = useStores()
 
   const handleSubmit = (values: MainOrderFormValues) => {
     orderStore.updateOrder(values)
@@ -32,10 +24,7 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
       <Header home />
 
       <MainOrderForm
-        favoriteAddresses={toJS(userStore.user.favoriteAddresses)}
         order={toJS(orderStore.order)}
-        onFavoriteAddress={handleFavoriteAddress}
-        onUnfavoriteAddress={handleUnfavoriteAddress}
         onSubmit={handleSubmit}
       />
     </IonPage>

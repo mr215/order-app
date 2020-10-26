@@ -6,7 +6,6 @@ export interface User {
   company_name: string
   accounting_email: string
   password: string
-  favoriteAddresses: string[]
   market_id: string
 }
 
@@ -72,7 +71,6 @@ export const DEFAULT_USER: User = {
   company_name: '',
   accounting_email: '',
   password: '',
-  favoriteAddresses: [],
   market_id: '',
 }
 
@@ -109,7 +107,7 @@ interface Entity {
   type: string
 }
 
-interface SupplierAttributes {
+export interface SupplierAttributes {
   store_type: string
   store_name: string
   address: string
@@ -123,4 +121,13 @@ interface SupplierAttributes {
 export interface SupplierEntity extends Entity {
   attributes: SupplierAttributes
   type: 'supplier'
+}
+
+export interface FavoriteAddressAttributes {
+  address: string
+}
+
+export interface FavoriteAddressEntity extends Entity {
+  attributes: FavoriteAddressAttributes
+  type: 'favorite_address'
 }

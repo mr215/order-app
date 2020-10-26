@@ -16,14 +16,4 @@ export default class UserStore {
   resetUser() {
     this.updateUser(DEFAULT_USER)
   }
-
-  favoriteAddress(address: string) {
-    this.user.favoriteAddresses.push(address)
-  }
-
-  unfavoriteAddress(address: string) {
-    this.user.favoriteAddresses = this.user.favoriteAddresses.filter(
-      fa => fa.toLowerCase() !== address.toLowerCase()
-    )
-  }
 }

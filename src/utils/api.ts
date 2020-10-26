@@ -1,6 +1,11 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
-import { User, MarketEntity } from 'types'
+import {
+  User,
+  MarketEntity,
+  FavoriteAddressEntity,
+  FavoriteAddressAttributes,
+} from 'types'
 import { TOKEN_KEY } from './config'
 import { getItem } from './storage'
 
@@ -34,3 +39,16 @@ export const fetchMarkets = () =>
 
 export const fetchSuppliers = (params: any) =>
   axiosInstance.get('/suppliers', { params }).then(({ data }) => data)
+
+export const fetchFavoriteAddresses = () =>
+  axiosInstance
+    .get<{ data: FavoriteAddressEntity[] }>('/favorite_addresses')
+    .then(({ data }) => data)
+
+export const addFavoriteAddress = (params: FavoriteAddressAttributes) =>
+  axiosInstance
+    .post<{ data: FavoriteAddressEntity }>('/favorite_addresses', params)
+    .then(({ data }) => data)
+
+export const deleteFavoriteAddress = (id: string) =>
+  axiosInstance.delete(`/favorite_addresses/${id}`).then(({ data }) => data)

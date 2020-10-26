@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React from 'react'
 import {
   IonContent,
   IonIcon,
@@ -8,25 +8,33 @@ import {
   IonListHeader,
   IonModal,
 } from '@ionic/react'
+import { observer } from 'mobx-react-lite'
 import { closeCircle } from 'ionicons/icons'
 
+import { FavoriteAddressEntity } from 'types'
+import useStores from 'hooks/useStores'
+import { deleteFavoriteAddress } from 'utils/api'
 import FooterWithButton from 'components/FooterWithButton'
 
 interface Props {
   isOpen: boolean
-  favoriteAddresses: string[]
-  onRemove: (address: string) => void
   onSelect: (address: string) => void
   onClose: () => void
 }
 
 const FavoriteAddresssModal: React.FC<Props> = ({
   isOpen,
-  favoriteAddresses,
-  onRemove,
   onSelect,
   onClose,
 }) => {
+  const { favoriteAddressesStore: store } = useStores()
+
+  const removeFavoriteAddress = async (fa: FavoriteAddressEntity) => {
+    await deleteFavoriteAddress(fa.id)
+
+    store.remove(fa.id)
+  }
+
   return (
     <IonModal isOpen={isOpen} mode="ios" onDidDismiss={onClose}>
       <IonContent>
@@ -35,14 +43,16 @@ const FavoriteAddresssModal: React.FC<Props> = ({
             <IonLabel>Favorite Addresses</IonLabel>
           </IonListHeader>
 
-          {favoriteAddresses.map((address: string, index: number) => (
-            <IonItem key={index}>
-              <IonLabel onClick={() => onSelect(address)}>{address}</IonLabel>
+          {store.favoriteAddresses.map(fa => (
+            <IonItem key={fa.id}>
+              <IonLabel onClick={() => onSelect(fa.attributes.address)}>
+                {fa.attributes.address}
+              </IonLabel>
 
               <IonIcon
                 slot="end"
                 icon={closeCircle}
-                onClick={() => onRemove(address)}
+                onClick={() => removeFavoriteAddress(fa)}
               />
             </IonItem>
           ))}
@@ -54,9 +64,4 @@ const FavoriteAddresssModal: React.FC<Props> = ({
   )
 }
 
-export default memo<Props>(
-  FavoriteAddresssModal,
-  (prevProps, nextProps) =>
-    prevProps.isOpen === nextProps.isOpen &&
-    prevProps.favoriteAddresses === nextProps.favoriteAddresses
-)
+export default observer(FavoriteAddresssModal)
