@@ -50,7 +50,7 @@ const Menu: React.FC = () => {
       title: 'Payment',
       icon: cardOutline,
       routeProps: {
-        routerLink: '/page/Payment',
+        routerLink: '/payment-setup',
       },
     },
 

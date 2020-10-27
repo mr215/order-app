@@ -19,7 +19,7 @@ import Landing from 'pages/Landing'
 import Home from 'pages/Home'
 import OrderItems from 'pages/OrderItems'
 import OrderSummary from 'pages/OrderSummary'
-import Page from 'pages/Page'
+import PaymentSetup from 'pages/PaymentSetup'
 
 import ProtectedRoute from 'components/auth/ProtectedRoute'
 import PublicRoute from 'components/auth/PublicRoute'
@@ -63,9 +63,8 @@ const App: React.FC = () => {
               <Menu />
 
               <IonRouterOutlet id="main">
-                <Route exact path="/page/:name" component={Page} />
-
                 <Route exact path={HOME_ROUTE} component={Home} />
+                <Route exact path="/payment-setup" component={PaymentSetup} />
                 <Route exact path="/order-items" component={OrderItems} />
                 <Route exact path="/order-summary" component={OrderSummary} />
               </IonRouterOutlet>
