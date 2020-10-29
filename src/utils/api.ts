@@ -34,6 +34,8 @@ export const signUp = (payload: User) => axiosInstance.post('/signup', payload)
 export const logIn = (user: Pick<User, 'email' | 'password'>) =>
   axiosInstance.post('/login', { auth: user })
 
+export const fetchProfile = () => axiosInstance.get('/profile')
+
 export const fetchMarkets = () =>
   axiosInstance.get<{ data: MarketEntity[] }>('/markets')
 

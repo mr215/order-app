@@ -9,6 +9,11 @@ export interface User {
   market_id: string
 }
 
+// Stripe Payment method
+export interface PaymentMethod {
+  id: string,
+}
+
 export interface SignUpFormValues extends User {
   agree_terms: boolean
 }

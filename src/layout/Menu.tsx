@@ -36,7 +36,7 @@ interface MenuItem {
 const Menu: React.FC = () => {
   const location = useLocation()
   const history = useHistory()
-  const { authStore, userStore } = useStores()
+  const { authStore, profileStore, userStore } = useStores()
 
   const menuItems: MenuItem[] = [
     {
@@ -84,7 +84,8 @@ const Menu: React.FC = () => {
       routeProps: {
         onClick() {
           authStore.clearToken()
-          userStore.resetUser()
+          profileStore.reset()
+          userStore.reset()
 
           history.push(LANDING_ROUTE)
         },

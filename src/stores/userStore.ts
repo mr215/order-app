@@ -13,7 +13,7 @@ export default class UserStore {
     set(this.user, user)
   }
 
-  resetUser() {
+  reset() {
     this.updateUser(DEFAULT_USER)
   }
 }
