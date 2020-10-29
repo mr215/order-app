@@ -11,7 +11,7 @@ const PaymentSetup: React.FC = () => {
 
   return (
     <IonPage>
-      <Header />
+      <Header home />
 
       <IonContent>
         <IonLabel>Setup Payment</IonLabel>

@@ -1,17 +1,17 @@
-import { makeAutoObservable, set } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 
-import { User, PaymentMethod, DEFAULT_USER } from 'types'
+import { ProfileEntity, PaymentMethod } from 'types'
 
 export default class ProfileStore {
-  profile: User = DEFAULT_USER
+  profile: ProfileEntity | null = null
   paymentMethods: PaymentMethod[] = []
 
   constructor() {
     makeAutoObservable(this)
   }
 
-  setProfile(profile: User) {
-    set(this.profile, profile)
+  setProfile(profile: ProfileEntity) {
+    this.profile = profile
   }
 
   setPaymentMethods(paymentMethods: PaymentMethod[]) {
@@ -19,7 +19,7 @@ export default class ProfileStore {
   }
 
   reset() {
-    this.setProfile(DEFAULT_USER)
+    this.profile = null
     this.paymentMethods = []
   }
 }

@@ -125,7 +125,7 @@ export interface SupplierAttributes {
 
 export interface SupplierEntity extends Entity {
   attributes: SupplierAttributes
-  type: 'supplier'
+  type: 'suppliers'
 }
 
 export interface FavoriteAddressAttributes {
@@ -134,5 +134,10 @@ export interface FavoriteAddressAttributes {
 
 export interface FavoriteAddressEntity extends Entity {
   attributes: FavoriteAddressAttributes
-  type: 'favorite_address'
+  type: 'favorite_addresses'
+}
+
+export interface ProfileEntity extends Entity {
+  attributes: User,
+  type: 'users',
 }
