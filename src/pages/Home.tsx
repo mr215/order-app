@@ -4,6 +4,7 @@ import { IonLoading, IonPage, IonToast } from '@ionic/react'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
+import { TOAST_DURATION } from 'utils/config'
 import { MainOrderFormValues } from 'types'
 import useStores from 'hooks/useStores'
 import { fetchProfile, fetchPaymentMethods } from 'utils/api'
@@ -56,7 +57,7 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
     <IonPage>
       <IonLoading isOpen={loading} />
 
-      {error && <IonToast isOpen message={error} duration={200} />}
+      {error && <IonToast isOpen message={error} duration={TOAST_DURATION} />}
 
       <Header home />
 
