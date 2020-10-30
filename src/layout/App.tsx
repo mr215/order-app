@@ -36,16 +36,14 @@ import 'theme/app.scss'
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY!)
 
 const App: React.FC = () => {
-  const { marketsStore } = useStores()
+  const { appStore } = useStores()
 
   useEffect(() => {
     const fetchMarkets = async () => {
       try {
-        const {
-          data: { data },
-        } = await fetchMarketsApi()
+        const response = await fetchMarketsApi()
 
-        marketsStore.markets = data
+        appStore.setMarkets(response.data.data)
       } catch (e) {
         // TODO: Handle error
       }

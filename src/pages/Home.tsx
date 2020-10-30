@@ -13,7 +13,7 @@ import Header from 'components/Header'
 import MainOrderForm from 'forms/MainOrderForm'
 
 const Home: React.FC<RouteComponentProps> = ({ history }) => {
-  const { profileStore, orderStore } = useStores()
+  const { appStore, orderStore } = useStores()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -33,11 +33,11 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
           fetchPaymentMethods(),
         ])
 
-        profileStore.setProfile(profileResponse.data.data)
-        profileStore.setPaymentMethods(paymentMethodsResponse.data.data)
+        appStore.setProfile(profileResponse.data.data)
+        appStore.setPaymentMethods(paymentMethodsResponse.data.data)
 
         // If payment is not setup, redirect to payment-setup page
-        if (!profileStore.paymentMethods.length) {
+        if (!appStore.paymentMethods.length) {
           history.push({ pathname: '/payment-setup' })
         }
       } catch (e) {
@@ -48,7 +48,7 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
     }
 
     // Load data
-    if (!profileStore.profile) {
+    if (!appStore.profile) {
       loadData()
     }
   }, [])

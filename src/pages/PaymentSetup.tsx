@@ -12,7 +12,7 @@ import Header from 'components/Header'
 import CardSection from 'components/CardSection'
 
 const PaymentSetup: React.FC<RouteComponentProps> = ({ history }) => {
-  const { profileStore } = useStores()
+  const { appStore } = useStores()
 
   const [setupIntentClientSecret, setSetupIntentClientSecret] = useState('')
   const [loading, setLoading] = useState(false)
@@ -21,7 +21,7 @@ const PaymentSetup: React.FC<RouteComponentProps> = ({ history }) => {
   const elements = useElements()
 
   // If payment methods are linked already, return to home page
-  if (profileStore.paymentMethods.length) {
+  if (appStore.paymentMethods.length) {
     history.push({ pathname: HOME_ROUTE })
   }
 
@@ -40,7 +40,7 @@ const PaymentSetup: React.FC<RouteComponentProps> = ({ history }) => {
       payment_method: {
         card: elements.getElement(CardElement)!,
         billing_details: {
-          name: profileStore.profile!.attributes.name,
+          name: appStore.profile!.attributes.name,
         },
       },
     })

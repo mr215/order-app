@@ -13,7 +13,7 @@ import Header from 'components/Header'
 import SignUpForm from 'forms/SignUpForm'
 
 const SignUp: React.FC<RouteComponentProps> = ({ history }) => {
-  const { authStore, userStore, marketsStore } = useStores()
+  const { authStore, userStore, appStore } = useStores()
   const [error, setError] = useState('')
 
   const handleSubmit = async (user: User) => {
@@ -34,7 +34,7 @@ const SignUp: React.FC<RouteComponentProps> = ({ history }) => {
 
       <SignUpForm
         user={userStore.user}
-        marketOptions={marketsStore.options}
+        marketOptions={appStore.marketOptions}
         onSubmit={handleSubmit}
       />
 
