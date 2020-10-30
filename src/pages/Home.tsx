@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { IonLoading, IonPage } from '@ionic/react'
+import { IonLoading, IonPage, IonToast } from '@ionic/react'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
 import { MainOrderFormValues } from 'types'
 import useStores from 'hooks/useStores'
-import { fetchProfile } from 'utils/api'
+import { fetchProfile, fetchPaymentMethods } from 'utils/api'
 
 import Header from 'components/Header'
 import MainOrderForm from 'forms/MainOrderForm'
@@ -14,6 +14,7 @@ import MainOrderForm from 'forms/MainOrderForm'
 const Home: React.FC<RouteComponentProps> = ({ history }) => {
   const { profileStore, orderStore } = useStores()
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = (values: MainOrderFormValues) => {
     orderStore.updateOrder(values)
@@ -25,17 +26,21 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
     const loadData = async () => {
       try {
         setLoading(true)
-        const {
-          data: { data: profile },
-        } = await fetchProfile()
 
-        profileStore.setProfile(profile)
+        const [profileResponse, paymentMethodsResponse] = await Promise.all([
+          fetchProfile(),
+          fetchPaymentMethods(),
+        ])
+
+        profileStore.setProfile(profileResponse.data.data)
+        profileStore.setPaymentMethods(paymentMethodsResponse.data.data)
 
         // If payment is not setup, redirect to payment-setup page
-        // if (true) {
-        //   // TODO: Change the conditional
-        //   history.push({ pathname: '/payment-setup' })
-        // }
+        if (!profileStore.paymentMethods.length) {
+          history.push({ pathname: '/payment-setup' })
+        }
+      } catch (e) {
+        setError(e.toString())
       } finally {
         setLoading(false)
       }
@@ -50,6 +55,8 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
   return (
     <IonPage>
       <IonLoading isOpen={loading} />
+
+      {error && <IonToast isOpen message={error} duration={200} />}
 
       <Header home />
 

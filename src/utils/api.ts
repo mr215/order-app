@@ -36,6 +36,8 @@ export const logIn = (user: Pick<User, 'email' | 'password'>) =>
 
 export const fetchProfile = () => axiosInstance.get('/profile')
 
+export const fetchPaymentMethods = () => axiosInstance.get('/payment/payment_methods')
+
 export const fetchMarkets = () =>
   axiosInstance.get<{ data: MarketEntity[] }>('/markets')
 
