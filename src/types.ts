@@ -9,9 +9,20 @@ export interface User {
   market_id: string
 }
 
+export interface Profile {
+  first_name: string
+  last_name: string
+  name: string
+  email: string
+  phone: string
+  company_name: string
+  accounting_email: string
+  role: string
+}
+
 // Stripe Payment method
 export interface PaymentMethod {
-  id: string,
+  id: string
 }
 
 export interface SignUpFormValues extends User {
@@ -138,6 +149,6 @@ export interface FavoriteAddressEntity extends Entity {
 }
 
 export interface ProfileEntity extends Entity {
-  attributes: User,
-  type: 'users',
+  attributes: Profile
+  type: 'users'
 }
