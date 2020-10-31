@@ -3,21 +3,22 @@ import { makeAutoObservable } from 'mobx'
 import { TOKEN_KEY } from 'utils/config'
 import { getItem, removeItem, setItem } from 'utils/storage'
 import { ProfileEntity, PaymentMethod, MarketEntity, SelectOption } from 'types'
+import { fetchMarkets, fetchProfile, fetchPaymentMethods } from 'utils/api'
 
 export default class AppStore {
   token: string | null = null
   markets: MarketEntity[] = []
   profile: ProfileEntity | null = null
   paymentMethods: PaymentMethod[] = []
+  loading: boolean = false
+  error: string = ''
 
   constructor() {
     makeAutoObservable(this)
 
-    const existingToken = getItem(TOKEN_KEY)
+    this.loadPublicData()
 
-    if (existingToken) {
-      this.token = existingToken
-    }
+    this.loadTokenFromStorage()
   }
 
   get marketOptions(): SelectOption[] {
@@ -27,10 +28,13 @@ export default class AppStore {
     }))
   }
 
-  saveToken(token: string) {
+  setToken(token: string) {
     setItem(TOKEN_KEY, token)
 
     this.token = token
+
+    // Load private data with token set
+    this.loadPrivateData()
   }
 
   clearToken() {
@@ -55,5 +59,52 @@ export default class AppStore {
     this.markets = []
     this.profile = null
     this.paymentMethods = []
+  }
+
+  loadTokenFromStorage() {
+    const existingToken = getItem(TOKEN_KEY)
+
+    if (existingToken) {
+      this.setToken(existingToken)
+    }
+  }
+
+  async loadPublicData() {
+    try {
+      this.loading = true
+      this.error = ''
+
+      const response = await fetchMarkets()
+
+      this.setMarkets(response.data.data)
+    } catch (e) {
+      this.error = e.toString()
+    } finally {
+      this.loading = false
+    }
+  }
+
+  /**
+   * Load app data after being authenticated.
+   * It also gets called when loading the app with token stored in local storage
+   */
+  async loadPrivateData() {
+    if (!this.token) {
+      return
+    }
+
+    try {
+      const [profileResponse, paymentMethodsResponse] = await Promise.all([
+        fetchProfile(),
+        fetchPaymentMethods(),
+      ])
+
+      this.setProfile(profileResponse.data.data)
+      this.setPaymentMethods(paymentMethodsResponse.data.data)
+    } catch (e) {
+      this.error = e.toString()
+    } finally {
+      this.loading = false
+    }
   }
 }

@@ -23,7 +23,7 @@ const LogIn: React.FC<RouteComponentProps> = ({ history }) => {
       })
 
       // Store token
-      appStore.saveToken(data.jwt)
+      appStore.setToken(data.jwt)
 
       history.push({ pathname: HOME_ROUTE })
     } catch (e) {

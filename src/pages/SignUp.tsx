@@ -20,7 +20,7 @@ const SignUp: React.FC<RouteComponentProps> = ({ history }) => {
     try {
       const { data } = await signUp(user)
 
-      appStore.saveToken(data.jwt)
+      appStore.setToken(data.jwt)
 
       history.push({ pathname: HOME_ROUTE })
     } catch (e) {

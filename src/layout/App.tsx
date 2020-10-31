@@ -1,7 +1,13 @@
 import React, { useEffect } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { IonReactRouter } from '@ionic/react-router'
-import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
+import {
+  IonApp,
+  IonRouterOutlet,
+  IonLoading,
+  IonSplitPane,
+  IonToast,
+} from '@ionic/react'
 import { observer } from 'mobx-react-lite'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
@@ -11,9 +17,9 @@ import {
   LANDING_ROUTE,
   LOGIN_ROUTE,
   SIGNUP_ROUTE,
+  TOAST_DURATION,
 } from 'utils/config'
 import useStores from 'hooks/useStores'
-import { fetchMarkets as fetchMarketsApi } from 'utils/api'
 
 import LogIn from 'pages/LogIn'
 import SignUp from 'pages/SignUp'
@@ -38,45 +44,53 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY!)
 const App: React.FC = () => {
   const { appStore } = useStores()
 
-  useEffect(() => {
-    const fetchMarkets = async () => {
-      try {
-        const response = await fetchMarketsApi()
-
-        appStore.setMarkets(response.data.data)
-      } catch (e) {
-        // TODO: Handle error
-      }
-    }
-
-    fetchMarkets()
-  }, [])
-
   return (
     <Elements stripe={stripePromise}>
       <IonApp>
-        <IonReactRouter>
-          <Switch>
-            <Redirect exact from="/" to={LANDING_ROUTE} />
+        {appStore.loading ? (
+          <IonLoading isOpen />
+        ) : (
+          <>
+            {appStore.error && (
+              <IonToast
+                isOpen
+                message={appStore.error}
+                duration={TOAST_DURATION}
+              />
+            )}
 
-            <PublicRoute exact path={LANDING_ROUTE} component={Landing} />
-            <PublicRoute exact path={SIGNUP_ROUTE} component={SignUp} />
-            <PublicRoute exact path={LOGIN_ROUTE} component={LogIn} />
+            <IonReactRouter>
+              <Switch>
+                <Redirect exact from="/" to={LANDING_ROUTE} />
 
-            <ProtectedRoute>
-              <IonSplitPane contentId="main">
-                <Menu />
+                <PublicRoute exact path={LANDING_ROUTE} component={Landing} />
+                <PublicRoute exact path={SIGNUP_ROUTE} component={SignUp} />
+                <PublicRoute exact path={LOGIN_ROUTE} component={LogIn} />
 
-                <IonRouterOutlet id="main">
-                  <Route exact path={HOME_ROUTE} component={Home} />
-                  <Route exact path="/payment-setup" component={PaymentSetup} />
-                  <Route exact path="/order-items" component={OrderItems} />
-                  <Route exact path="/order-summary" component={OrderSummary} />
-                </IonRouterOutlet>
-              </IonSplitPane>
-            </ProtectedRoute>
-          </Switch>
-        </IonReactRouter>
+                <ProtectedRoute>
+                  <IonSplitPane contentId="main">
+                    <Menu />
+
+                    <IonRouterOutlet id="main">
+                      <Route exact path={HOME_ROUTE} component={Home} />
+                      <Route
+                        exact
+                        path="/payment-setup"
+                        component={PaymentSetup}
+                      />
+                      <Route exact path="/order-items" component={OrderItems} />
+                      <Route
+                        exact
+                        path="/order-summary"
+                        component={OrderSummary}
+                      />
+                    </IonRouterOutlet>
+                  </IonSplitPane>
+                </ProtectedRoute>
+              </Switch>
+            </IonReactRouter>
+          </>
+        )}
       </IonApp>
     </Elements>
   )
