@@ -12,7 +12,7 @@ import Header from 'components/Header'
 import LogInForm from 'forms/LogInForm'
 
 const LogIn: React.FC<RouteComponentProps> = ({ history }) => {
-  const { authStore, userStore } = useStores()
+  const { appStore, userStore } = useStores()
   const [error, setError] = useState('')
 
   const handleSubmit = async ({ password }: LogInFormValues) => {
@@ -23,7 +23,7 @@ const LogIn: React.FC<RouteComponentProps> = ({ history }) => {
       })
 
       // Store token
-      authStore.saveToken(data.jwt)
+      appStore.saveToken(data.jwt)
 
       history.push({ pathname: HOME_ROUTE })
     } catch (e) {

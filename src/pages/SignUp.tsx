@@ -13,14 +13,14 @@ import Header from 'components/Header'
 import SignUpForm from 'forms/SignUpForm'
 
 const SignUp: React.FC<RouteComponentProps> = ({ history }) => {
-  const { authStore, userStore, appStore } = useStores()
+  const { appStore, userStore } = useStores()
   const [error, setError] = useState('')
 
   const handleSubmit = async (user: User) => {
     try {
       const { data } = await signUp(user)
 
-      authStore.saveToken(data.jwt)
+      appStore.saveToken(data.jwt)
 
       history.push({ pathname: HOME_ROUTE })
     } catch (e) {

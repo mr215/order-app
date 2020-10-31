@@ -36,7 +36,7 @@ interface MenuItem {
 const Menu: React.FC = () => {
   const location = useLocation()
   const history = useHistory()
-  const { authStore, appStore, userStore } = useStores()
+  const { appStore, userStore } = useStores()
 
   const menuItems: MenuItem[] = [
     {
@@ -83,7 +83,7 @@ const Menu: React.FC = () => {
       icon: logOutOutline,
       routeProps: {
         onClick() {
-          authStore.clearToken()
+          appStore.clearToken()
           appStore.reset()
           userStore.reset()
 
