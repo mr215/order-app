@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { IonReactRouter } from '@ionic/react-router'
 import {

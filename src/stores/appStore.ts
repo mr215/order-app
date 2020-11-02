@@ -100,7 +100,7 @@ export default class AppStore {
       ])
 
       this.setProfile(profileResponse.data.data)
-      this.setPaymentMethods(paymentMethodsResponse.data.data)
+      this.setPaymentMethods(paymentMethodsResponse.data)
     } catch (e) {
       this.error = e.toString()
     } finally {

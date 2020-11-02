@@ -1,7 +1,16 @@
-import React, { useState, useEffect, FormEvent } from 'react'
+import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { IonContent, IonLoading, IonPage, IonToast } from '@ionic/react'
+import {
+  IonContent,
+  IonItem,
+  IonItemGroup,
+  IonLabel,
+  IonLoading,
+  IonPage,
+  IonToast,
+} from '@ionic/react'
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js'
+import { StripeCardElementChangeEvent } from '@stripe/stripe-js'
 import { observer } from 'mobx-react-lite'
 
 import { HOME_ROUTE, TOAST_DURATION } from 'utils/config'
@@ -9,7 +18,26 @@ import useStores from 'hooks/useStores'
 import { createPaymentSetupIntent as createPaymentSetupIntentApi } from 'utils/api'
 
 import Header from 'components/Header'
-import CardSection from 'components/CardSection'
+import FooterWithButton from 'components/FooterWithButton'
+import FieldHeader from 'forms/components/FieldHeader'
+
+const CARD_ELEMENT_OPTIONS = {
+  style: {
+    base: {
+      color: '#32325d',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4',
+      },
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a',
+    },
+  },
+}
 
 const PaymentSetup: React.FC<RouteComponentProps> = ({ history }) => {
   const { appStore } = useStores()
@@ -17,19 +45,19 @@ const PaymentSetup: React.FC<RouteComponentProps> = ({ history }) => {
   const [setupIntentClientSecret, setSetupIntentClientSecret] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const stripe = useStripe()
   const elements = useElements()
 
-  // If payment methods are linked already, return to home page
-  if (appStore.paymentMethods.length) {
-    history.push({ pathname: HOME_ROUTE })
+  const handleChange = (event: StripeCardElementChangeEvent) => {
+    if (event.error) {
+      setError(event.error.message)
+    } else {
+      setError('')
+    }
   }
 
-  const handleSubmit = async (event: FormEvent) => {
-    // We don't want to let default form submission happen here,
-    // which would refresh the page.
-    event.preventDefault()
-
+  const handleSubmit = async () => {
     if (!stripe || !elements || !setupIntentClientSecret) {
       // Stripe.js has not yet loaded.
       // Make sure to disable form submission until Stripe.js has loaded.
@@ -41,16 +69,24 @@ const PaymentSetup: React.FC<RouteComponentProps> = ({ history }) => {
         card: elements.getElement(CardElement)!,
         billing_details: {
           name: appStore.profile!.attributes.name,
+          email: appStore.profile!.attributes.email,
+          phone: appStore.profile!.attributes.phone,
         },
       },
     })
 
     if (result.error) {
-      // Display result.error.message in your UI.
+      // Inform the user if there was an error.
+      setError(result.error!.message!)
     } else {
-      // The setup has succeeded. Display a success message and send
-      // result.setupIntent.payment_method to your server to save the
-      // card to a Customer
+      setError('')
+
+      setSuccess('Card has been linked successfully!')
+
+      // Load payment methods after 3 seconds of showing the message
+      setTimeout(() => {
+        appStore.loadPrivateData()
+      }, TOAST_DURATION)
     }
   }
 
@@ -77,21 +113,45 @@ const PaymentSetup: React.FC<RouteComponentProps> = ({ history }) => {
     createPaymentSetupIntent()
   }, [])
 
+  // If payment methods are linked already, return to home page
+  useEffect(() => {
+    if (appStore.paymentMethods.length) {
+      history.push({ pathname: HOME_ROUTE })
+    }
+  }, [appStore.paymentMethods.length])
+
   return (
     <IonPage>
       <IonLoading isOpen={loading} />
 
-      {error && <IonToast isOpen message={error} duration={TOAST_DURATION} />}
+      {success && (
+        <IonToast isOpen message={success} duration={TOAST_DURATION} />
+      )}
 
       <Header home />
 
       <IonContent>
-        <form onSubmit={handleSubmit}>
-          <CardSection />
+        <IonItemGroup>
+          <FieldHeader label="Card details" />
 
-          <button disabled={!stripe}>Save Card</button>
-        </form>
+          <IonItem mode="ios" lines="none">
+            <CardElement
+              options={CARD_ELEMENT_OPTIONS}
+              onChange={handleChange}
+            />
+
+            {error && (
+              <IonLabel color="danger" position="stacked">
+                {error}
+              </IonLabel>
+            )}
+          </IonItem>
+        </IonItemGroup>
       </IonContent>
+
+      <FooterWithButton disabled={!stripe || !!error} onClick={handleSubmit}>
+        Save
+      </FooterWithButton>
     </IonPage>
   )
 }
