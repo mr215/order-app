@@ -20,7 +20,7 @@
   transition: box-shadow 150ms ease;
 
   &.StripeElement--focus {
-    box-shadow: 0 1px 3px 0 var(--ion-color-step-900);
+    box-shadow: 0 1px 3px 0 #cfd7df;
   }
 
   &.StripeElement--invalid {
@@ -28,6 +28,6 @@
   }
 
   &.StripeElement--webkit-autofill {
-    background-color: var(--ion-color-step-950) !important;
+    background-color: #fefde5 !important;
   }
 }

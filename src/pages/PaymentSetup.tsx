@@ -7,6 +7,7 @@ import {
   IonLabel,
   IonLoading,
   IonPage,
+  IonText,
   IonToast,
 } from '@ionic/react'
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js'
@@ -131,6 +132,10 @@ const PaymentSetup: React.FC<RouteComponentProps> = ({ history }) => {
       <Header home />
 
       <IonContent>
+        <IonText className="ion-text-center">
+          <h2>Add credit card</h2>
+        </IonText>
+
         <IonItemGroup>
           <FieldHeader label="Card details" />
 
