@@ -10,6 +10,8 @@ export default class AppStore {
   markets: MarketEntity[] = []
   profile: ProfileEntity | null = null
   paymentMethods: PaymentMethod[] = []
+
+  loaded: boolean = false
   loading: boolean = false
   error: string = ''
 
@@ -35,6 +37,8 @@ export default class AppStore {
 
     // Load private data with token set
     await this.loadPrivateData()
+
+    this.setLoaded(true)
   }
 
   clearToken() {
@@ -55,10 +59,23 @@ export default class AppStore {
     this.paymentMethods = paymentMethods
   }
 
+  setLoaded(loaded: boolean) {
+    this.loaded = loaded
+  }
+
+  setLoading(loading: boolean) {
+    this.loading = loading
+  }
+
+  setError(error: string) {
+    this.error = error
+  }
+
   reset() {
-    this.markets = []
     this.profile = null
     this.paymentMethods = []
+
+    this.setLoaded(true)
   }
 
   loadTokenFromStorage() {
@@ -71,16 +88,16 @@ export default class AppStore {
 
   async loadPublicData() {
     try {
-      this.loading = true
-      this.error = ''
+      this.setLoading(true)
+      this.setError('')
 
       const response = await fetchMarkets()
 
       this.setMarkets(response.data.data)
     } catch (e) {
-      this.error = e.toString()
+      this.setError(e.toString())
     } finally {
-      this.loading = false
+      this.setLoading(false)
     }
   }
 
@@ -94,8 +111,8 @@ export default class AppStore {
     }
 
     try {
-      this.loading = true
-      this.error = ''
+      this.setLoading(true)
+      this.setError('')
 
       const [profileResponse, paymentMethodsResponse] = await Promise.all([
         fetchProfile(),
@@ -105,9 +122,9 @@ export default class AppStore {
       this.setProfile(profileResponse.data.data)
       this.setPaymentMethods(paymentMethodsResponse.data)
     } catch (e) {
-      this.error = e.toString()
+      this.setError(e.toString())
     } finally {
-      this.loading = false
+      this.setLoading(false)
     }
   }
 }
