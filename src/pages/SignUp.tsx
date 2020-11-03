@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { IonPage, IonToast } from '@ionic/react'
 import { observer } from 'mobx-react-lite'
 
-import { TOAST_DURATION, HOME_ROUTE } from 'utils/config'
+import { TOAST_DURATION } from 'utils/config'
 import { signUp } from 'utils/api'
 import { serializeError } from 'utils/serializers'
 import { User } from 'types'
@@ -20,9 +20,10 @@ const SignUp: React.FC<RouteComponentProps> = ({ history }) => {
     try {
       const { data } = await signUp(user)
 
-      appStore.setToken(data.jwt)
+      // Set token and load data
+      await appStore.setToken(data.jwt)
 
-      history.push({ pathname: HOME_ROUTE })
+      history.push({ pathname: '/payment-setup' })
     } catch (e) {
       setError(serializeError(e))
     }

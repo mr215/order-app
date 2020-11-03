@@ -28,13 +28,13 @@ export default class AppStore {
     }))
   }
 
-  setToken(token: string) {
+  async setToken(token: string) {
     setItem(TOKEN_KEY, token)
 
     this.token = token
 
     // Load private data with token set
-    this.loadPrivateData()
+    await this.loadPrivateData()
   }
 
   clearToken() {

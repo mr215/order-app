@@ -22,8 +22,8 @@ const LogIn: React.FC<RouteComponentProps> = ({ history }) => {
         password,
       })
 
-      // Store token
-      appStore.setToken(data.jwt)
+      // Set token and load data
+      await appStore.setToken(data.jwt)
 
       history.push({ pathname: HOME_ROUTE })
     } catch (e) {
