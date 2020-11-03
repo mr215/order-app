@@ -1,23 +1,14 @@
 import React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { IonReactRouter } from '@ionic/react-router'
-import {
-  IonApp,
-  IonRouterOutlet,
-  IonLoading,
-  IonSplitPane,
-  IonToast,
-} from '@ionic/react'
-import { observer } from 'mobx-react-lite'
+import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
 
 import {
   HOME_ROUTE,
   LANDING_ROUTE,
   LOGIN_ROUTE,
   SIGNUP_ROUTE,
-  TOAST_DURATION,
 } from 'utils/config'
-import useStores from 'hooks/useStores'
 
 import LogIn from 'pages/LogIn'
 import SignUp from 'pages/SignUp'
@@ -29,6 +20,7 @@ import PaymentSetup from 'pages/PaymentSetup'
 
 import ProtectedRoute from 'components/auth/ProtectedRoute'
 import PublicRoute from 'components/auth/PublicRoute'
+import PaymentProtectedRoute from 'components/auth/PaymentProtectedRoute'
 
 import Menu from './Menu'
 
@@ -36,56 +28,46 @@ import Menu from './Menu'
 import 'theme/app.scss'
 
 const App: React.FC = () => {
-  const { appStore } = useStores()
-
   return (
     <IonApp>
-      {appStore.loading ? (
-        <IonLoading isOpen />
-      ) : (
-        <>
-          {appStore.error && (
-            <IonToast
-              isOpen
-              message={appStore.error}
-              duration={TOAST_DURATION}
-            />
-          )}
+      <IonReactRouter>
+        <Switch>
+          <Redirect exact from="/" to={LANDING_ROUTE} />
 
-          <IonReactRouter>
-            <Switch>
-              <Redirect exact from="/" to={LANDING_ROUTE} />
+          <PublicRoute exact path={LANDING_ROUTE} component={Landing} />
+          <PublicRoute exact path={SIGNUP_ROUTE} component={SignUp} />
+          <PublicRoute exact path={LOGIN_ROUTE} component={LogIn} />
 
-              <PublicRoute exact path={LANDING_ROUTE} component={Landing} />
-              <PublicRoute exact path={SIGNUP_ROUTE} component={SignUp} />
-              <PublicRoute exact path={LOGIN_ROUTE} component={LogIn} />
+          <ProtectedRoute>
+            <IonSplitPane contentId="main">
+              <Menu />
 
-              <ProtectedRoute>
-                <IonSplitPane contentId="main">
-                  <Menu />
+              <IonRouterOutlet id="main">
+                <PaymentProtectedRoute
+                  exact
+                  path={HOME_ROUTE}
+                  component={Home}
+                />
+                <PaymentProtectedRoute
+                  exact
+                  path="/order-items"
+                  component={OrderItems}
+                />
 
-                  <IonRouterOutlet id="main">
-                    <Route exact path={HOME_ROUTE} component={Home} />
-                    <Route
-                      exact
-                      path="/payment-setup"
-                      component={PaymentSetup}
-                    />
-                    <Route exact path="/order-items" component={OrderItems} />
-                    <Route
-                      exact
-                      path="/order-summary"
-                      component={OrderSummary}
-                    />
-                  </IonRouterOutlet>
-                </IonSplitPane>
-              </ProtectedRoute>
-            </Switch>
-          </IonReactRouter>
-        </>
-      )}
+                <PaymentProtectedRoute
+                  exact
+                  path="/order-summary"
+                  component={OrderSummary}
+                />
+
+                <Route exact path="/payment-setup" component={PaymentSetup} />
+              </IonRouterOutlet>
+            </IonSplitPane>
+          </ProtectedRoute>
+        </Switch>
+      </IonReactRouter>
     </IonApp>
   )
 }
 
-export default observer(App)
+export default App

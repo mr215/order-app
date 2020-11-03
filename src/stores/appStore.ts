@@ -94,6 +94,9 @@ export default class AppStore {
     }
 
     try {
+      this.loading = true
+      this.error = ''
+
       const [profileResponse, paymentMethodsResponse] = await Promise.all([
         fetchProfile(),
         fetchPaymentMethods(),

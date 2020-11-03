@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { IonPage } from '@ionic/react'
 import { toJS } from 'mobx'
@@ -11,19 +11,13 @@ import Header from 'components/Header'
 import MainOrderForm from 'forms/MainOrderForm'
 
 const Home: React.FC<RouteComponentProps> = ({ history }) => {
-  const { appStore, orderStore } = useStores()
+  const { orderStore } = useStores()
 
   const handleSubmit = (values: MainOrderFormValues) => {
     orderStore.updateOrder(values)
 
     history.push({ pathname: '/order-items' })
   }
-
-  useEffect(() => {
-    if (!appStore.paymentMethods.length) {
-      history.push({ pathname: '/payment-setup' })
-    }
-  }, [])
 
   return (
     <IonPage>
