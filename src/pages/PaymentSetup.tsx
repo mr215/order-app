@@ -14,7 +14,7 @@ import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js'
 import { StripeCardElementChangeEvent } from '@stripe/stripe-js'
 import { observer } from 'mobx-react-lite'
 
-import { HOME_ROUTE, TOAST_DURATION } from 'utils/config'
+import { TOAST_DURATION } from 'utils/config'
 import useStores from 'hooks/useStores'
 import { createPaymentSetupIntent as createPaymentSetupIntentApi } from 'utils/api'
 
@@ -114,12 +114,7 @@ const PaymentSetup: React.FC<RouteComponentProps> = ({ history }) => {
     createPaymentSetupIntent()
   }, [])
 
-  // If payment methods are linked already, return to home page
-  useEffect(() => {
-    if (appStore.paymentMethods.length) {
-      history.push({ pathname: HOME_ROUTE })
-    }
-  }, [appStore.paymentMethods.length])
+  console.log('PaymentSetup')
 
   return (
     <IonPage>

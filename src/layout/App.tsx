@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Redirect, Switch } from 'react-router-dom'
 import { IonReactRouter } from '@ionic/react-router'
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
 
@@ -21,6 +21,7 @@ import PaymentSetup from 'pages/PaymentSetup'
 import ProtectedRoute from 'components/auth/ProtectedRoute'
 import PublicRoute from 'components/auth/PublicRoute'
 import PaymentProtectedRoute from 'components/auth/PaymentProtectedRoute'
+import PaymentPublicRoute from 'components/auth/PaymentPublicRoute'
 
 import Menu from './Menu'
 
@@ -53,14 +54,17 @@ const App: React.FC = () => {
                   path="/order-items"
                   component={OrderItems}
                 />
-
                 <PaymentProtectedRoute
                   exact
                   path="/order-summary"
                   component={OrderSummary}
                 />
 
-                <Route exact path="/payment-setup" component={PaymentSetup} />
+                <PaymentPublicRoute
+                  exact
+                  path="/payment-setup"
+                  component={PaymentSetup}
+                />
               </IonRouterOutlet>
             </IonSplitPane>
           </ProtectedRoute>

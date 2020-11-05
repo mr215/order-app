@@ -5,6 +5,7 @@ import {
   RouteProps,
   RouteComponentProps,
 } from 'react-router-dom'
+import { observer } from 'mobx-react-lite'
 import get from 'lodash/get'
 
 import { HOME_ROUTE } from 'utils/config'
@@ -24,4 +25,4 @@ const PublicRoute: React.FC<RouteProps> = props => {
   )
 }
 
-export default PublicRoute
+export default observer(PublicRoute)

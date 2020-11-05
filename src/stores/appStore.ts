@@ -75,7 +75,7 @@ export default class AppStore {
     this.profile = null
     this.paymentMethods = []
 
-    this.setLoaded(true)
+    this.setLoaded(false)
   }
 
   loadTokenFromStorage() {
