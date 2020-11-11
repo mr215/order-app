@@ -36,7 +36,7 @@ interface MenuItem {
 const Menu: React.FC = () => {
   const location = useLocation()
   const history = useHistory()
-  const { authStore, userStore } = useStores()
+  const { appStore, userStore } = useStores()
 
   const menuItems: MenuItem[] = [
     {
@@ -50,7 +50,7 @@ const Menu: React.FC = () => {
       title: 'Payment',
       icon: cardOutline,
       routeProps: {
-        routerLink: '/page/Payment',
+        routerLink: '/payment-setup',
       },
     },
 
@@ -83,8 +83,9 @@ const Menu: React.FC = () => {
       icon: logOutOutline,
       routeProps: {
         onClick() {
-          authStore.clearToken()
-          userStore.resetUser()
+          appStore.clearToken()
+          appStore.reset()
+          userStore.reset()
 
           history.push(LANDING_ROUTE)
         },

@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import React from 'react'
+import { Redirect, Switch } from 'react-router-dom'
 import { IonReactRouter } from '@ionic/react-router'
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
-import { observer } from 'mobx-react-lite'
 
 import {
   HOME_ROUTE,
@@ -10,8 +9,6 @@ import {
   LOGIN_ROUTE,
   SIGNUP_ROUTE,
 } from 'utils/config'
-import useStores from 'hooks/useStores'
-import { fetchMarkets as fetchMarketsApi } from 'utils/api'
 
 import LogIn from 'pages/LogIn'
 import SignUp from 'pages/SignUp'
@@ -19,10 +16,12 @@ import Landing from 'pages/Landing'
 import Home from 'pages/Home'
 import OrderItems from 'pages/OrderItems'
 import OrderSummary from 'pages/OrderSummary'
-import Page from 'pages/Page'
+import PaymentSetup from 'pages/PaymentSetup'
 
 import ProtectedRoute from 'components/auth/ProtectedRoute'
 import PublicRoute from 'components/auth/PublicRoute'
+import PaymentProtectedRoute from 'components/auth/PaymentProtectedRoute'
+import PaymentPublicRoute from 'components/auth/PaymentPublicRoute'
 
 import Menu from './Menu'
 
@@ -30,24 +29,6 @@ import Menu from './Menu'
 import 'theme/app.scss'
 
 const App: React.FC = () => {
-  const { marketsStore } = useStores()
-
-  useEffect(() => {
-    const fetchMarkets = async () => {
-      try {
-        const {
-          data: { data },
-        } = await fetchMarketsApi()
-
-        marketsStore.markets = data
-      } catch (e) {
-        // TODO: Handle error
-      }
-    }
-
-    fetchMarkets()
-  }, [])
-
   return (
     <IonApp>
       <IonReactRouter>
@@ -63,11 +44,27 @@ const App: React.FC = () => {
               <Menu />
 
               <IonRouterOutlet id="main">
-                <Route exact path="/page/:name" component={Page} />
+                <PaymentProtectedRoute
+                  exact
+                  path={HOME_ROUTE}
+                  component={Home}
+                />
+                <PaymentProtectedRoute
+                  exact
+                  path="/order-items"
+                  component={OrderItems}
+                />
+                <PaymentProtectedRoute
+                  exact
+                  path="/order-summary"
+                  component={OrderSummary}
+                />
 
-                <Route exact path={HOME_ROUTE} component={Home} />
-                <Route exact path="/order-items" component={OrderItems} />
-                <Route exact path="/order-summary" component={OrderSummary} />
+                <PaymentPublicRoute
+                  exact
+                  path="/payment-setup"
+                  component={PaymentSetup}
+                />
               </IonRouterOutlet>
             </IonSplitPane>
           </ProtectedRoute>
@@ -77,4 +74,4 @@ const App: React.FC = () => {
   )
 }
 
-export default observer(App)
+export default App

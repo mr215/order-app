@@ -5,14 +5,15 @@ import {
   RouteProps,
   RouteComponentProps,
 } from 'react-router-dom'
+import { observer } from 'mobx-react-lite'
 
 import { LANDING_ROUTE } from 'utils/config'
 import useStores from 'hooks/useStores'
 
 const ProtectedRoute: React.FC<RouteProps> = props => {
-  const { authStore } = useStores()
+  const { appStore } = useStores()
 
-  return authStore.token ? (
+  return appStore.token ? (
     <Route {...props} />
   ) : (
     <Route
@@ -23,4 +24,4 @@ const ProtectedRoute: React.FC<RouteProps> = props => {
   )
 }
 
-export default ProtectedRoute
+export default observer(ProtectedRoute)

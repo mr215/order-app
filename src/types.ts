@@ -9,6 +9,22 @@ export interface User {
   market_id: string
 }
 
+export interface Profile {
+  first_name: string
+  last_name: string
+  name: string
+  email: string
+  phone: string
+  company_name: string
+  accounting_email: string
+  role: string
+}
+
+// Stripe Payment method
+export interface PaymentMethod {
+  id: string
+}
+
 export interface SignUpFormValues extends User {
   agree_terms: boolean
 }
@@ -120,7 +136,7 @@ export interface SupplierAttributes {
 
 export interface SupplierEntity extends Entity {
   attributes: SupplierAttributes
-  type: 'supplier'
+  type: 'suppliers'
 }
 
 export interface FavoriteAddressAttributes {
@@ -129,5 +145,10 @@ export interface FavoriteAddressAttributes {
 
 export interface FavoriteAddressEntity extends Entity {
   attributes: FavoriteAddressAttributes
-  type: 'favorite_address'
+  type: 'favorite_addresses'
+}
+
+export interface ProfileEntity extends Entity {
+  attributes: Profile
+  type: 'users'
 }

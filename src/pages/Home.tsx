@@ -23,10 +23,7 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
     <IonPage>
       <Header home />
 
-      <MainOrderForm
-        order={toJS(orderStore.order)}
-        onSubmit={handleSubmit}
-      />
+      <MainOrderForm order={toJS(orderStore.order)} onSubmit={handleSubmit} />
     </IonPage>
   )
 }

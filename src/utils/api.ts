@@ -29,13 +29,21 @@ axiosInstance.interceptors.request.use((config: AxiosRequestConfig) => {
 export const checkEmail = (email: string) =>
   axiosInstance.post('/check', { email })
 
+export const fetchMarkets = () =>
+  axiosInstance.get<{ data: MarketEntity[] }>('/markets')
+
 export const signUp = (payload: User) => axiosInstance.post('/signup', payload)
 
 export const logIn = (user: Pick<User, 'email' | 'password'>) =>
   axiosInstance.post('/login', { auth: user })
 
-export const fetchMarkets = () =>
-  axiosInstance.get<{ data: MarketEntity[] }>('/markets')
+export const fetchProfile = () => axiosInstance.get('/profile')
+
+export const fetchPaymentMethods = () =>
+  axiosInstance.get('/payment/payment_methods')
+
+export const createPaymentSetupIntent = () =>
+  axiosInstance.post('/payment/setup_intent')
 
 export const fetchSuppliers = (params: any) =>
   axiosInstance.get('/suppliers', { params }).then(({ data }) => data)

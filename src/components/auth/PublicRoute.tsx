@@ -5,15 +5,16 @@ import {
   RouteProps,
   RouteComponentProps,
 } from 'react-router-dom'
+import { observer } from 'mobx-react-lite'
 import get from 'lodash/get'
 
 import { HOME_ROUTE } from 'utils/config'
 import useStores from 'hooks/useStores'
 
 const PublicRoute: React.FC<RouteProps> = props => {
-  const { authStore } = useStores()
+  const { appStore } = useStores()
 
-  return authStore.token ? (
+  return appStore.token ? (
     <Route
       render={({ location }: RouteComponentProps) => (
         <Redirect to={get(location, ['state', 'from'], HOME_ROUTE)} />
@@ -24,4 +25,4 @@ const PublicRoute: React.FC<RouteProps> = props => {
   )
 }
 
-export default PublicRoute
+export default observer(PublicRoute)
