@@ -1,6 +1,7 @@
 import { makeAutoObservable, set } from 'mobx'
 import { add, formatISO } from 'date-fns'
 
+import { BASE_MILEAGE, FEES } from 'utils/config'
 import { Order, VehicleType, OrderThrough, DEFAULT_ORDER_ITEM } from 'types'
 
 const DEFAULT_ORDER = {
@@ -30,11 +31,23 @@ export default class OrderStore {
     makeAutoObservable(this)
   }
 
+  get handlingFee(): number {
+    return this.order.orderThrough === OrderThrough.Supplier ? 0 : 5
+  }
+
   updateOrder(newOrder: Partial<Order>) {
     set(this.order, newOrder)
   }
 
   resetOrder() {
     this.updateOrder(DEFAULT_ORDER)
+  }
+
+  calculateDeliveryFee(miles: number): number {
+    const fee = FEES[this.order.vehicleType]
+
+    return miles <= BASE_MILEAGE
+      ? fee.base
+      : fee.base + (miles - BASE_MILEAGE) * fee.perMile
   }
 }
