@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import {
   IonContent,
@@ -7,11 +7,11 @@ import {
   IonLabel,
   IonNote,
   IonPage,
-  IonRouterLink,
+  // IonRouterLink,
 } from '@ionic/react'
 import styled from 'styled-components'
+import { observer, useLocalObservable } from 'mobx-react-lite'
 
-import { OrderThrough } from 'types'
 import useStores from 'hooks/useStores'
 import { formatCurrency } from 'utils/formatters'
 import Header from 'components/Header'
@@ -23,21 +23,24 @@ const Title = styled.h2`
 `
 
 const OrderSummary: React.FC<RouteComponentProps> = () => {
-  const { orderStore } = useStores()
-  const { order } = orderStore
+  const { appStore, orderStore } = useStores()
+  const localStore = useLocalObservable(() => ({
+    deliveryFee: 0,
+    setDeliveryFee(deliveryFee: number) {
+      this.deliveryFee = deliveryFee
+    },
+  }))
 
-  const deliveryFee = 0 // TODO: Apply estimate cost formula
-  const handlingFee = useMemo<number>(
-    () => (order.orderThrough === OrderThrough.Supplier ? 0 : 5),
-    [order.orderThrough]
-  )
-  const total = useMemo<number>(() => deliveryFee + handlingFee, [
-    deliveryFee,
-    handlingFee,
-  ])
+  const directionsCallback = (miles: number) => {
+    localStore.setDeliveryFee(orderStore.calculateDeliveryFee(miles))
+  }
 
   const handleSubmit = () => {
     // TODO: Handle placing an order
+  }
+
+  if (!appStore.currentPaymentMethod) {
+    return null
   }
 
   return (
@@ -52,7 +55,7 @@ const OrderSummary: React.FC<RouteComponentProps> = () => {
             <IonLabel>Delivery</IonLabel>
 
             <div slot="end">
-              <IonLabel>{formatCurrency(deliveryFee)}</IonLabel>
+              <IonLabel>{formatCurrency(localStore.deliveryFee)}</IonLabel>
             </div>
           </IonItem>
 
@@ -60,7 +63,7 @@ const OrderSummary: React.FC<RouteComponentProps> = () => {
             <IonLabel>Order Management</IonLabel>
 
             <div slot="end">
-              <IonLabel>{formatCurrency(handlingFee)}</IonLabel>
+              <IonLabel>{formatCurrency(orderStore.handlingFee)}</IonLabel>
             </div>
           </IonItem>
 
@@ -70,7 +73,11 @@ const OrderSummary: React.FC<RouteComponentProps> = () => {
             </IonLabel>
 
             <div slot="end">
-              <IonLabel>{formatCurrency(total)}</IonLabel>
+              <IonLabel>
+                {formatCurrency(
+                  localStore.deliveryFee + orderStore.handlingFee
+                )}
+              </IonLabel>
             </div>
           </IonItem>
 
@@ -78,15 +85,18 @@ const OrderSummary: React.FC<RouteComponentProps> = () => {
             <div slot="start">
               <IonLabel style={{ lineHeight: '2rem' }}>Payment Method</IonLabel>
 
-              <IonNote>
+              {/* TODO: Add it back when supporting multiple credit cards */}
+              {/* <IonNote>
                 <IonRouterLink routerLink="/payment-setting">
                   Update Payment
                 </IonRouterLink>
-              </IonNote>
+              </IonNote> */}
             </div>
 
             <div slot="end">
-              <IonLabel>**** **** **** 1234</IonLabel>
+              <IonLabel>
+                **** **** **** {appStore.currentPaymentMethod.card.last4}
+              </IonLabel>
             </div>
           </IonItem>
         </IonItemGroup>
@@ -94,6 +104,7 @@ const OrderSummary: React.FC<RouteComponentProps> = () => {
         <DirectionsMap
           origin={orderStore.order.pickupAddress}
           destination={orderStore.order.deliveryAddress}
+          callback={directionsCallback}
         />
       </IonContent>
 
@@ -102,4 +113,4 @@ const OrderSummary: React.FC<RouteComponentProps> = () => {
   )
 }
 
-export default OrderSummary
+export default observer(OrderSummary)

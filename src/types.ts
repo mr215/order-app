@@ -23,6 +23,12 @@ export interface Profile {
 // Stripe Payment method
 export interface PaymentMethod {
   id: string
+  card: {
+    last4: string
+    brand: string
+    exp_year: number
+    exp_month: number
+  }
 }
 
 export interface SignUpFormValues extends User {
@@ -67,7 +73,7 @@ export interface Order {
   orderThrough: OrderThrough
   pickupAddress: string
   deliveryAddress: string
-  vehicleType: string
+  vehicleType: VehicleType
   lastestDeliverBy: string
   pickupNote: PickupNote
   deliveryNote: DeliveryNote

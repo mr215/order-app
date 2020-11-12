@@ -12,13 +12,16 @@ const DEFAULT_CENTER = {
 }
 
 type Props = Pick<GoogleMapProps, 'center' | 'zoom'> &
-  google.maps.DirectionsRequest
+  google.maps.DirectionsRequest & {
+    callback: (miles: number) => void
+  }
 
 const DirectionsMap: React.FC<Props> = ({
   center = DEFAULT_CENTER,
   zoom = 10,
   origin,
   destination,
+  callback,
 }) => {
   const [
     directions,
@@ -32,6 +35,12 @@ const DirectionsMap: React.FC<Props> = ({
   ) => {
     if (status === google.maps.DirectionsStatus.OK) {
       setDirections(result)
+
+      const miles = parseFloat(
+        result.routes[0].legs[0].distance.text.split(' ')[0]
+      )
+
+      callback(miles)
     } else {
       setError(status)
     }
@@ -52,6 +61,7 @@ const DirectionsMap: React.FC<Props> = ({
           origin,
           destination,
           travelMode: google.maps.TravelMode.DRIVING,
+          unitSystem: google.maps.UnitSystem.IMPERIAL,
         }}
         callback={directionsServiceCallback}
       />

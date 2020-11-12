@@ -30,6 +30,10 @@ export default class AppStore {
     }))
   }
 
+  get currentPaymentMethod(): PaymentMethod {
+    return this.paymentMethods[0]
+  }
+
   async setToken(token: string) {
     setItem(TOKEN_KEY, token)
 
