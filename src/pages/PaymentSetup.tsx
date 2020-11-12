@@ -114,8 +114,6 @@ const PaymentSetup: React.FC<RouteComponentProps> = ({ history }) => {
     createPaymentSetupIntent()
   }, [])
 
-  console.log('PaymentSetup')
-
   return (
     <IonPage>
       <IonLoading isOpen={loading} />
