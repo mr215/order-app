@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 import { IonButton, IonContent, IonIcon, IonLabel } from '@ionic/react'
 import { pencilSharp } from 'ionicons/icons'
-import { formatISO } from 'date-fns'
+import { startOfDay, formatISO } from 'date-fns'
 import * as Yup from 'yup'
 import flowRight from 'lodash/fp/flowRight'
 
@@ -36,7 +36,7 @@ interface MainOrderFormProps {
   onSubmit: (values: MainOrderFormValues) => void
 }
 
-const NOW = formatISO(new Date())
+const NOW = formatISO(startOfDay(new Date()))
 
 const VehicleImg = styled.img<{ small?: boolean }>`
   width: auto;
