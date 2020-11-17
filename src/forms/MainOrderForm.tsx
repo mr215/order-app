@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 import { IonButton, IonContent, IonIcon, IonLabel } from '@ionic/react'
 import { pencilSharp } from 'ionicons/icons'
-import { startOfDay, formatISO } from 'date-fns'
 import * as Yup from 'yup'
 import flowRight from 'lodash/fp/flowRight'
 
@@ -35,8 +34,6 @@ interface MainOrderFormProps {
   order: Order
   onSubmit: (values: MainOrderFormValues) => void
 }
-
-const NOW = formatISO(startOfDay(new Date()))
 
 const VehicleImg = styled.img<{ small?: boolean }>`
   width: auto;
@@ -225,9 +222,6 @@ const MainOrderForm: React.FC<
           component={FormikDatetime}
           label="Latest Deliver By"
           required
-          min={NOW}
-          displayFormat="DDD MMM D h:mm A"
-          minuteValues={[0, 15, 30, 45]}
         />
       </IonContent>
 

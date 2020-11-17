@@ -3,12 +3,19 @@ import styled from 'styled-components'
 import clsx from 'clsx'
 import { FieldProps, getIn } from 'formik'
 import { IonDatetime, IonItem, IonItemGroup } from '@ionic/react'
+import { startOfDay, formatISO } from 'date-fns'
 
 import FieldHeader from '../components/FieldHeader'
 
 interface Props extends ComponentProps<typeof IonDatetime> {
   label: string
   required?: boolean
+}
+
+const DEFAULT_DATETIME_PROPS = {
+  min: formatISO(startOfDay(new Date())),
+  displayFormat: 'DDD MMM D h:mm A',
+  minuteValues: [0, 15, 30, 45],
 }
 
 const StyledDatetime = styled(IonDatetime)`
@@ -35,6 +42,7 @@ const FormikDatetime: React.FC<FieldProps & Props> = ({
         className={clsx({ 'ion-invalid': error && touched })}
       >
         <StyledDatetime
+          {...DEFAULT_DATETIME_PROPS}
           {...props}
           mode="ios"
           value={value}

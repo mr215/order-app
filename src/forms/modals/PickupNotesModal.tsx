@@ -2,7 +2,6 @@ import React, { memo } from 'react'
 import styled from 'styled-components'
 import { Field } from 'formik'
 import { IonContent, IonHeader, IonModal } from '@ionic/react'
-import { formatISO } from 'date-fns'
 
 import FooterWithButton from 'components/FooterWithButton'
 
@@ -18,8 +17,6 @@ const ModalTitle = styled.h1`
   text-align: center;
   margin: 1rem 0;
 `
-
-const TODAY = formatISO(new Date(), { representation: 'date' })
 
 const PickupNotesModal: React.FC<Props> = ({ isOpen, onClose }) => (
   <IonModal isOpen={isOpen} mode="ios" onDidDismiss={onClose}>
@@ -41,9 +38,6 @@ const PickupNotesModal: React.FC<Props> = ({ isOpen, onClose }) => (
         component={FormikDatetime}
         label="Ready For Pickup By"
         placeholder="Enter ready for pickup time"
-        min={TODAY}
-        displayFormat="DDD MMM D h:mm A"
-        minuteValues={[0, 15, 30, 45]}
       />
     </IonContent>
 

@@ -10,6 +10,7 @@ import {
   // IonRouterLink,
 } from '@ionic/react'
 import styled from 'styled-components'
+import { toJS } from 'mobx'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
 import useStores from 'hooks/useStores'
@@ -36,7 +37,7 @@ const OrderSummary: React.FC<RouteComponentProps> = () => {
   }
 
   const handleSubmit = () => {
-    // TODO: Handle placing an order
+    console.log(toJS(orderStore.order))
   }
 
   if (!appStore.currentPaymentMethod) {
