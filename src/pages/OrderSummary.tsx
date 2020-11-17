@@ -103,8 +103,8 @@ const OrderSummary: React.FC<RouteComponentProps> = () => {
         </IonItemGroup>
 
         <DirectionsMap
-          origin={orderStore.order.pickupAddress}
-          destination={orderStore.order.deliveryAddress}
+          origin={orderStore.order.pickup_address}
+          destination={orderStore.order.delivery_address}
           callback={directionsCallback}
         />
       </IonContent>

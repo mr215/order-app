@@ -19,7 +19,6 @@ import * as Yup from 'yup'
 
 import {
   DEFAULT_ORDER_ITEM,
-  OrderThrough,
   Order,
   OrderItem,
   OrderItemsFormValues,
@@ -50,7 +49,7 @@ const OrderItemsForm: React.FC<
 
   const renderOrderId = () => (
     <Field
-      name="orderId"
+      name="order_no"
       component={FormikInput}
       type="text"
       label="Order/PO #"
@@ -139,9 +138,7 @@ const OrderItemsForm: React.FC<
   return (
     <>
       <IonContent>
-        {order.orderThrough === OrderThrough.Supplier
-          ? renderOrderId()
-          : renderOrderItems()}
+        {order.ordered_directly ? renderOrderId() : renderOrderItems()}
       </IonContent>
 
       <FooterWithButton disabled={!isValid} onClick={submitForm}>
@@ -157,7 +154,7 @@ export default withFormik<OrderItemsFormProps, OrderItemsFormValues>({
 
   validationSchema: ({ order }: OrderItemsFormProps) => {
     const orderIdSchema = Yup.object().shape({
-      orderId: Yup.string().required('Order No. is required'),
+      order_no: Yup.string().required('Order No. is required'),
     })
 
     const itemsSchema = Yup.object().shape({
@@ -174,9 +171,7 @@ export default withFormik<OrderItemsFormProps, OrderItemsFormValues>({
         .min(1, 'Order must have mininum of 1 item'),
     })
 
-    return order.orderThrough === OrderThrough.Supplier
-      ? orderIdSchema
-      : itemsSchema
+    return order.ordered_directly ? orderIdSchema : itemsSchema
   },
 
   mapPropsToValues({ order }: OrderItemsFormProps): OrderItemsFormValues {

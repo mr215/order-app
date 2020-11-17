@@ -41,14 +41,9 @@ export interface LandingFormValues {
   email: string
 }
 
-export enum OrderThrough {
-  SupplyHound = 'SupplyHound',
-  Supplier = 'Supplier',
-}
-
 export enum VehicleType {
-  Car = 'car',
-  Truck = 'truck',
+  Car = 'Car',
+  Truck = 'Truck',
 }
 
 export interface OrderItem {
@@ -57,33 +52,26 @@ export interface OrderItem {
   image?: string
 }
 
-export interface PickupNote {
-  note: string
-  readyForPickupBy: string
-}
-
-export interface DeliveryNote {
-  contact: string
-  phone: string
-  note: string
-}
-
 export interface Order {
-  jobName: string
-  orderThrough: OrderThrough
-  pickupAddress: string
-  deliveryAddress: string
-  vehicleType: VehicleType
-  lastestDeliverBy: string
-  pickupNote: PickupNote
-  deliveryNote: DeliveryNote
-
+  job_name: string
+  vehicle_type: VehicleType
+  ordered_directly: boolean
+  order_no: string
   items: OrderItem[]
-  orderId: string
+
+  pickup_address: string
+  pickup_datetime: string
+  pickup_note: string
+
+  delivery_address: string
+  delivery_datetime: string
+  delivery_username: string
+  delivery_phone: string
+  delivery_note: string
 }
 
-export type MainOrderFormValues = Omit<Order, 'items' | 'orderId'>
-export type OrderItemsFormValues = Pick<Order, 'items' | 'orderId'>
+export type MainOrderFormValues = Omit<Order, 'items' | 'order_no'>
+export type OrderItemsFormValues = Pick<Order, 'items' | 'order_no'>
 
 export const DEFAULT_USER: User = {
   first_name: '',

@@ -21,12 +21,12 @@ const ModalTitle = styled.h1`
 const PickupNotesModal: React.FC<Props> = ({ isOpen, onClose }) => (
   <IonModal isOpen={isOpen} mode="ios" onDidDismiss={onClose}>
     <IonHeader>
-      <ModalTitle>Pickup Note</ModalTitle>
+      <ModalTitle>Pickup Notes</ModalTitle>
     </IonHeader>
 
     <IonContent>
       <Field
-        name="pickupNote.note"
+        name="pickup_note"
         component={FormikTextarea}
         label="Pickup Note"
         placeholder="For example: Go to tool counter in back. Picking up compressor, replacement hose and 3 boxes of nails."
@@ -34,7 +34,7 @@ const PickupNotesModal: React.FC<Props> = ({ isOpen, onClose }) => (
       />
 
       <Field
-        name="pickupNote.readyForPickupBy"
+        name="pickup_datetime"
         component={FormikDatetime}
         label="Ready For Pickup By"
         placeholder="Enter ready for pickup time"
