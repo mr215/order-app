@@ -37,7 +37,7 @@ export default class OrderStore {
     set(this.order, newOrder)
   }
 
-  resetOrder() {
+  reset() {
     this.updateOrder(DEFAULT_ORDER)
   }
 

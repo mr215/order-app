@@ -61,5 +61,5 @@ export const addFavoriteAddress = (params: FavoriteAddressAttributes) =>
 export const deleteFavoriteAddress = (id: string) =>
   axiosInstance.delete(`/favorite_addresses/${id}`).then(({ data }) => data)
 
-export const createOrder = (params: Record<string, any>) =>
-  axiosInstance.post('/tasks', params).then(({ data }) => data)
+export const createOrder = (task: Record<string, any>) =>
+  axiosInstance.post('/tasks', { task }).then(({ data }) => data)

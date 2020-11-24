@@ -1,20 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import {
   IonContent,
   IonItem,
   IonItemGroup,
   IonLabel,
+  IonLoading,
   IonNote,
   IonPage,
+  IonText,
+  IonToast,
   // IonRouterLink,
 } from '@ionic/react'
 import styled from 'styled-components'
-import { toJS } from 'mobx'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-import useStores from 'hooks/useStores'
+import { TOAST_DURATION, HOME_ROUTE } from 'utils/config'
 import { formatCurrency } from 'utils/formatters'
+import { createOrder } from 'utils/api'
+import useStores from 'hooks/useStores'
+
 import Header from 'components/Header'
 import FooterWithButton from 'components/FooterWithButton'
 import DirectionsMap from 'components/DirectionsMap'
@@ -23,8 +28,16 @@ const Title = styled.h2`
   text-align: center;
 `
 
-const OrderSummary: React.FC<RouteComponentProps> = () => {
+const Error = styled.h5`
+  text-align: center;
+`
+
+const OrderSummary: React.FC<RouteComponentProps> = ({ history }) => {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
   const { appStore, orderStore } = useStores()
+
   const localStore = useLocalObservable(() => ({
     deliveryFee: 0,
     setDeliveryFee(deliveryFee: number) {
@@ -36,8 +49,24 @@ const OrderSummary: React.FC<RouteComponentProps> = () => {
     localStore.setDeliveryFee(orderStore.calculateDeliveryFee(miles))
   }
 
-  const handleSubmit = () => {
-    console.log(toJS(orderStore.order))
+  const handleSubmit = async () => {
+    try {
+      setError('')
+      setLoading(true)
+
+      await createOrder(orderStore.order)
+      setMessage('Order has been placed successfully!')
+    } catch (e) {
+      setError(e.toString())
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleToastDismiss = () => {
+    orderStore.reset()
+
+    history.push({ pathname: HOME_ROUTE })
   }
 
   if (!appStore.currentPaymentMethod) {
@@ -46,10 +75,27 @@ const OrderSummary: React.FC<RouteComponentProps> = () => {
 
   return (
     <IonPage>
+      <IonLoading isOpen={loading} />
+
+      {message && (
+        <IonToast
+          isOpen
+          message={message}
+          duration={TOAST_DURATION}
+          onDidDismiss={handleToastDismiss}
+        />
+      )}
+
       <Header />
 
       <IonContent>
         <Title>Payment</Title>
+
+        {error && (
+          <IonText color="danger">
+            <Error>{error}</Error>
+          </IonText>
+        )}
 
         <IonItemGroup>
           <IonItem lines="full">
@@ -109,7 +155,9 @@ const OrderSummary: React.FC<RouteComponentProps> = () => {
         />
       </IonContent>
 
-      <FooterWithButton onClick={handleSubmit}>Place Order</FooterWithButton>
+      <FooterWithButton disabled={!!error || !!message} onClick={handleSubmit}>
+        Place Order
+      </FooterWithButton>
     </IonPage>
   )
 }
