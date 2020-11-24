@@ -2,26 +2,24 @@ import { makeAutoObservable, set } from 'mobx'
 import { add, formatISO } from 'date-fns'
 
 import { BASE_MILEAGE, FEES } from 'utils/config'
-import { Order, VehicleType, OrderThrough, DEFAULT_ORDER_ITEM } from 'types'
+import { Order, VehicleType, DEFAULT_ORDER_ITEM } from 'types'
 
 const DEFAULT_ORDER = {
-  pickupAddress: '',
-  deliveryAddress: '',
-  vehicleType: VehicleType.Truck,
-  lastestDeliverBy: formatISO(add(new Date(), { hours: 4 })),
-  jobName: '',
-  orderThrough: OrderThrough.SupplyHound,
-  pickupNote: {
-    note: '',
-    readyForPickupBy: '',
-  },
-  deliveryNote: {
-    contact: '',
-    phone: '',
-    note: '',
-  },
-  orderId: '',
+  job_name: '',
+  vehicle_type: VehicleType.Truck,
+  ordered_directly: false,
+  order_no: '',
   items: [DEFAULT_ORDER_ITEM],
+
+  pickup_address: '',
+  pickup_datetime: formatISO(add(new Date(), { hours: 1 })),
+  pickup_note: '',
+
+  delivery_address: '',
+  delivery_datetime: formatISO(add(new Date(), { hours: 4 })),
+  delivery_username: '',
+  delivery_phone: '',
+  delivery_note: '',
 }
 
 export default class OrderStore {
@@ -32,19 +30,19 @@ export default class OrderStore {
   }
 
   get handlingFee(): number {
-    return this.order.orderThrough === OrderThrough.Supplier ? 0 : 5
+    return this.order.ordered_directly ? 0 : 5
   }
 
   updateOrder(newOrder: Partial<Order>) {
     set(this.order, newOrder)
   }
 
-  resetOrder() {
+  reset() {
     this.updateOrder(DEFAULT_ORDER)
   }
 
   calculateDeliveryFee(miles: number): number {
-    const fee = FEES[this.order.vehicleType]
+    const fee = FEES[this.order.vehicle_type]
 
     return miles <= BASE_MILEAGE
       ? fee.base

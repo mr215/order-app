@@ -1,7 +1,7 @@
 import { VehicleType } from 'types'
 
 export const TOKEN_KEY = 'token'
-export const TOAST_DURATION = 1500
+export const TOAST_DURATION = 2000
 
 export const SIGNUP_ROUTE = '/signup'
 export const LANDING_ROUTE = '/landing'

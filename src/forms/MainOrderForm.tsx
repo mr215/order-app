@@ -4,12 +4,11 @@ import { observer } from 'mobx-react-lite'
 import { withFormik, FormikProps, FormikBag, Field } from 'formik'
 import { IonButton, IonContent, IonIcon, IonLabel } from '@ionic/react'
 import { pencilSharp } from 'ionicons/icons'
-import { startOfDay, formatISO } from 'date-fns'
 import * as Yup from 'yup'
 import flowRight from 'lodash/fp/flowRight'
 
 import useStores from 'hooks/useStores'
-import { OrderThrough, VehicleType, Order, MainOrderFormValues } from 'types'
+import { VehicleType, Order, MainOrderFormValues } from 'types'
 import {
   fetchFavoriteAddresses as fetchFavoriteAddressesApi,
   addFavoriteAddress as addFavoriteAddressApi,
@@ -35,8 +34,6 @@ interface MainOrderFormProps {
   order: Order
   onSubmit: (values: MainOrderFormValues) => void
 }
-
-const NOW = formatISO(startOfDay(new Date()))
 
 const VehicleImg = styled.img<{ small?: boolean }>`
   width: auto;
@@ -74,10 +71,10 @@ const MainOrderForm: React.FC<
 
   const makeFavoriteAddressButton = () => {
     const isDeliveryAddressFavorite = favoriteAddressesStore.exists(
-      values.deliveryAddress
+      values.delivery_address
     )
 
-    if (!values.deliveryAddress || isDeliveryAddressFavorite) {
+    if (!values.delivery_address || isDeliveryAddressFavorite) {
       return (
         <AddressButton
           slot="start"
@@ -93,7 +90,7 @@ const MainOrderForm: React.FC<
       <AddressButton
         slot="start"
         size="default"
-        onClick={() => addFavoriteAddress(values.deliveryAddress)}
+        onClick={() => addFavoriteAddress(values.delivery_address)}
       >
         Save
       </AddressButton>
@@ -117,13 +114,13 @@ const MainOrderForm: React.FC<
   }
 
   const handleFavoriteAddressSelect = (address: string) => {
-    setFieldValue('deliveryAddress', address)
+    setFieldValue('delivery_address', address)
 
     setShowFavoriteAddresses(false)
   }
 
   const handleSupplierSelect = (address: string) => {
-    setFieldValue('pickupAddress', address)
+    setFieldValue('pickup_address', address)
 
     setShowSuppliersModal(false)
   }
@@ -132,7 +129,7 @@ const MainOrderForm: React.FC<
     <>
       <IonContent>
         <Field
-          name="jobName"
+          name="job_name"
           component={FormikInput}
           type="text"
           label="Job Name"
@@ -142,24 +139,24 @@ const MainOrderForm: React.FC<
         />
 
         <Field
-          name="orderThrough"
+          name="ordered_directly"
           component={FormikRadioGroup}
           label="Submit a list of materials to your supplier through SupplyHound?"
           radioProps={{ slot: 'start', mode: 'md' }}
           items={[
             {
               label: 'Yes please - help me save more time!',
-              value: OrderThrough.SupplyHound,
+              value: false,
             },
             {
               label: "No thanks, I'll call it in myself",
-              value: OrderThrough.Supplier,
+              value: true,
             },
           ]}
         />
 
         <Field
-          name="pickupAddress"
+          name="pickup_address"
           component={FormikAddress}
           type="text"
           label="Pickup From"
@@ -185,7 +182,7 @@ const MainOrderForm: React.FC<
         />
 
         <Field
-          name="deliveryAddress"
+          name="delivery_address"
           component={FormikAddress}
           type="text"
           label="Deliver To"
@@ -203,7 +200,7 @@ const MainOrderForm: React.FC<
         />
 
         <Field
-          name="vehicleType"
+          name="vehicle_type"
           component={FormikRadioGroup}
           label="Vehicle Type"
           horizontal
@@ -221,13 +218,10 @@ const MainOrderForm: React.FC<
         />
 
         <Field
-          name="lastestDeliverBy"
+          name="delivery_datetime"
           component={FormikDatetime}
           label="Latest Deliver By"
           required
-          min={NOW}
-          displayFormat="DDD MMM D h:mm A"
-          minuteValues={[0, 15, 30, 45]}
         />
       </IonContent>
 
@@ -267,16 +261,14 @@ export default flowRight(
     enableReinitialize: true,
 
     validationSchema: Yup.object().shape({
-      jobName: Yup.string().required('Required'),
-      orderThrough: Yup.mixed()
-        .required()
-        .oneOf([OrderThrough.SupplyHound, OrderThrough.Supplier] as const),
-      pickupAddress: Yup.string().required('Required'),
-      deliveryAddress: Yup.string().required('Required'),
-      vehicleType: Yup.mixed()
+      job_name: Yup.string().required('Required'),
+      ordered_directly: Yup.boolean(),
+      pickup_address: Yup.string().required('Required'),
+      delivery_address: Yup.string().required('Required'),
+      vehicle_type: Yup.mixed()
         .required()
         .oneOf([VehicleType.Car, VehicleType.Truck] as const),
-      lastestDeliverBy: Yup.string().required('Required'),
+      delivery_datetime: Yup.string().required('Required'),
     }),
 
     mapPropsToValues({ order }: MainOrderFormProps): MainOrderFormValues {

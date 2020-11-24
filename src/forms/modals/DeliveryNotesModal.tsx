@@ -19,15 +19,15 @@ const ModalTitle = styled.h1`
   margin: 1rem 0;
 `
 
-const DeliveryNoteModal: React.FC<Props> = ({ isOpen, onClose }) => (
+const DeliveryNotesModal: React.FC<Props> = ({ isOpen, onClose }) => (
   <IonModal isOpen={isOpen} mode="ios" onDidDismiss={onClose}>
     <IonHeader>
-      <ModalTitle>Delivery Note</ModalTitle>
+      <ModalTitle>Delivery Notes</ModalTitle>
     </IonHeader>
 
     <IonContent>
       <Field
-        name="deliveryNote.contact"
+        name="delivery_username"
         component={FormikInput}
         type="text"
         label="Contact Name"
@@ -36,7 +36,7 @@ const DeliveryNoteModal: React.FC<Props> = ({ isOpen, onClose }) => (
       />
 
       <Field
-        name="deliveryNote.phone"
+        name="delivery_phone"
         component={FormikInput}
         type="tel"
         label="Contact Phone Number"
@@ -45,7 +45,7 @@ const DeliveryNoteModal: React.FC<Props> = ({ isOpen, onClose }) => (
       />
 
       <Field
-        name="deliveryNote.note"
+        name="delivery_note"
         component={FormikTextarea}
         label="Delivery Note"
         placeholder="For example: Call when 30 minutes out. Go to back of building."
@@ -58,6 +58,6 @@ const DeliveryNoteModal: React.FC<Props> = ({ isOpen, onClose }) => (
 )
 
 export default memo<Props>(
-  DeliveryNoteModal,
+  DeliveryNotesModal,
   (prevProps, nextProps) => prevProps.isOpen === nextProps.isOpen
 )
