@@ -65,6 +65,8 @@ const OrderSummary: React.FC<RouteComponentProps> = ({ history }) => {
 
   const handleToastDismiss = () => {
     orderStore.reset()
+    setError('')
+    setMessage('')
 
     history.push({ pathname: HOME_ROUTE })
   }
