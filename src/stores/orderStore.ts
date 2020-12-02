@@ -1,7 +1,12 @@
 import { makeAutoObservable, set } from 'mobx'
 import { add, formatISO } from 'date-fns'
 
-import { BASE_MILEAGE, FEES } from 'utils/config'
+import {
+  DISTANCE_THRESHOLDS,
+  BASE_FARES,
+  DISTANCE_RATES,
+  HANDLING_FEE,
+} from 'utils/config'
 import { Order, VehicleType, DEFAULT_ORDER_ITEM } from 'types'
 
 const DEFAULT_ORDER = {
@@ -20,6 +25,8 @@ const DEFAULT_ORDER = {
   delivery_username: '',
   delivery_phone: '',
   delivery_note: '',
+
+  job_distance: 0,
 }
 
 export default class OrderStore {
@@ -30,7 +37,17 @@ export default class OrderStore {
   }
 
   get handlingFee(): number {
-    return this.order.ordered_directly ? 0 : 5
+    return this.order.ordered_directly ? 0 : HANDLING_FEE
+  }
+
+  get subtotal(): number {
+    const baseFare = BASE_FARES[this.order.vehicle_type]
+    const distanceRate = DISTANCE_RATES[this.order.vehicle_type]
+    const distanceThreshold = DISTANCE_THRESHOLDS[this.order.vehicle_type]
+
+    return this.order.job_distance <= distanceThreshold
+      ? baseFare
+      : baseFare + (this.order.job_distance - distanceThreshold) * distanceRate
   }
 
   updateOrder(newOrder: Partial<Order>) {
@@ -39,13 +56,5 @@ export default class OrderStore {
 
   reset() {
     this.updateOrder(DEFAULT_ORDER)
-  }
-
-  calculateDeliveryFee(miles: number): number {
-    const fee = FEES[this.order.vehicle_type]
-
-    return miles <= BASE_MILEAGE
-      ? fee.base
-      : fee.base + (miles - BASE_MILEAGE) * fee.perMile
   }
 }

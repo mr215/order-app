@@ -13,7 +13,7 @@ import {
   // IonRouterLink,
 } from '@ionic/react'
 import styled from 'styled-components'
-import { observer, useLocalObservable } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 
 import { TOAST_DURATION, HOME_ROUTE } from 'utils/config'
 import { formatCurrency } from 'utils/formatters'
@@ -38,15 +38,8 @@ const OrderSummary: React.FC<RouteComponentProps> = ({ history }) => {
   const [message, setMessage] = useState('')
   const { appStore, orderStore } = useStores()
 
-  const localStore = useLocalObservable(() => ({
-    deliveryFee: 0,
-    setDeliveryFee(deliveryFee: number) {
-      this.deliveryFee = deliveryFee
-    },
-  }))
-
-  const directionsCallback = (miles: number) => {
-    localStore.setDeliveryFee(orderStore.calculateDeliveryFee(miles))
+  const directionsCallback = (distance: number) => {
+    orderStore.updateOrder({ job_distance: distance })
   }
 
   const handleSubmit = async () => {
@@ -104,7 +97,7 @@ const OrderSummary: React.FC<RouteComponentProps> = ({ history }) => {
             <IonLabel>Delivery</IonLabel>
 
             <div slot="end">
-              <IonLabel>{formatCurrency(localStore.deliveryFee)}</IonLabel>
+              <IonLabel>{formatCurrency(orderStore.subtotal)}</IonLabel>
             </div>
           </IonItem>
 
@@ -123,9 +116,7 @@ const OrderSummary: React.FC<RouteComponentProps> = ({ history }) => {
 
             <div slot="end">
               <IonLabel>
-                {formatCurrency(
-                  localStore.deliveryFee + orderStore.handlingFee
-                )}
+                {formatCurrency(orderStore.subtotal + orderStore.handlingFee)}
               </IonLabel>
             </div>
           </IonItem>

@@ -68,6 +68,8 @@ export interface Order {
   delivery_username: string
   delivery_phone: string
   delivery_note: string
+
+  job_distance: number
 }
 
 export type MainOrderFormValues = Omit<Order, 'items' | 'order_no'>
