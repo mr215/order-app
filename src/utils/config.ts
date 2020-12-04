@@ -8,14 +8,19 @@ export const LANDING_ROUTE = '/landing'
 export const LOGIN_ROUTE = '/login'
 export const HOME_ROUTE = '/home'
 
-export const BASE_MILEAGE = 10
-export const FEES = {
-  [VehicleType.Truck]: {
-    base: 55,
-    perMile: 2.5,
-  },
-  [VehicleType.Car]: {
-    base: 29,
-    perMile: 1.5,
-  },
+export const DISTANCE_THRESHOLDS = {
+  [VehicleType.Truck]: 10,
+  [VehicleType.Car]: 10,
 }
+
+export const BASE_FARES = {
+  [VehicleType.Truck]: 55,
+  [VehicleType.Car]: 29,
+}
+
+export const DISTANCE_RATES = {
+  [VehicleType.Truck]: 2.5,
+  [VehicleType.Car]: 1.5,
+}
+
+export const HANDLING_FEE = 5
