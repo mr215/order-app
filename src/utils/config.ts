@@ -23,4 +23,4 @@ export const DISTANCE_RATES = {
   [VehicleType.Car]: 1.5,
 }
 
-export const HANDLING_FEE = 5
+export const ORDER_MANAGEMENT_FEE = 5

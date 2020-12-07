@@ -5,7 +5,7 @@ import {
   DISTANCE_THRESHOLDS,
   BASE_FARES,
   DISTANCE_RATES,
-  HANDLING_FEE,
+  ORDER_MANAGEMENT_FEE,
 } from 'utils/config'
 import { Order, VehicleType, DEFAULT_ORDER_ITEM } from 'types'
 
@@ -37,7 +37,7 @@ export default class OrderStore {
   }
 
   get handlingFee(): number {
-    return this.order.ordered_directly ? 0 : HANDLING_FEE
+    return this.order.ordered_directly ? 0 : ORDER_MANAGEMENT_FEE
   }
 
   get subtotal(): number {
