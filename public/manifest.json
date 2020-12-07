@@ -4,14 +4,13 @@
   "icons": [
     {
       "src": "assets/icon/favicon.png",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "80x80 64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "assets/icon/icon.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "maskable"
+      "src": "assets/icon/apple-touch-icon.webp",
+      "type": "image/webp",
+      "sizes": "460x460"
     }
   ],
   "start_url": ".",

@@ -183,10 +183,13 @@ export default withFormik<OrderItemsFormProps, OrderItemsFormValues>({
     {
       props: { onSubmit },
       setSubmitting,
+      resetForm,
     }: FormikBag<OrderItemsFormProps, OrderItemsFormValues>
   ) {
     onSubmit(values)
-
     setSubmitting(false)
+
+    // Reset
+    resetForm()
   },
 })(OrderItemsForm)
