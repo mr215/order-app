@@ -22,6 +22,10 @@ const QuantityText = styled(IonText)`
   width: 4rem;
 `
 
+const DescriptionText = styled(IonText)`
+  white-space: pre-wrap;
+`
+
 const ErrorLabel = styled(IonLabel)`
   font-size: 0.75rem !important;
   margin: 0.25rem 1.25rem;
@@ -51,9 +55,9 @@ const OrderItemRow: React.FC<Props> = ({
           {orderItem.description || orderItem.quantity ? (
             <>
               <QuantityText>{orderItem.quantity}</QuantityText>
-              <IonText className="ion-text-wrap">
+              <DescriptionText>
                 {orderItem.description}
-              </IonText>
+              </DescriptionText>
             </>
           ) : (
             <IonText color="medium">
