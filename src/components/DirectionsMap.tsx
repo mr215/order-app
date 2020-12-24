@@ -6,10 +6,7 @@ import {
   DirectionsRenderer,
 } from '@react-google-maps/api'
 
-const DEFAULT_CENTER = {
-  lat: 37.77,
-  lng: -122.42,
-}
+import { METERS_PER_MILE, DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM }  from 'utils/config'
 
 type Props = Pick<GoogleMapProps, 'center' | 'zoom'> &
   google.maps.DirectionsRequest & {
@@ -17,8 +14,8 @@ type Props = Pick<GoogleMapProps, 'center' | 'zoom'> &
   }
 
 const DirectionsMap: React.FC<Props> = ({
-  center = DEFAULT_CENTER,
-  zoom = 10,
+  center = DEFAULT_MAP_CENTER,
+  zoom = DEFAULT_MAP_ZOOM,
   origin,
   destination,
   callback,
@@ -36,9 +33,7 @@ const DirectionsMap: React.FC<Props> = ({
     if (status === google.maps.DirectionsStatus.OK) {
       setDirections(result)
 
-      const miles = parseFloat(
-        result.routes[0].legs[0].distance.text.split(' ')[0]
-      )
+      const miles = result.routes[0].legs[0].distance.value / METERS_PER_MILE
 
       callback(miles)
     } else {
