@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import {
   IonContent,
@@ -12,6 +12,7 @@ import {
   IonToast,
   // IonRouterLink,
 } from '@ionic/react'
+import { GoogleMap } from '@react-google-maps/api'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 
@@ -145,13 +146,22 @@ const OrderSummary: React.FC<RouteComponentProps> = ({
           </IonItem>
         </IonItemGroup>
 
-        {location.pathname === ORDER_SUMMARY_ROUTE && (
-          <DirectionsMap
-            origin={orderStore.order.pickup_address}
-            destination={orderStore.order.delivery_address}
-            callback={directionsCallback}
-          />
-        )}
+        <GoogleMap
+          mapContainerStyle={{
+            height: '60%',
+            width: '75%',
+            margin: '1rem auto',
+          }}
+        >
+          {/* Render DirectionsMap only when order summary page is active */}
+          {location.pathname === ORDER_SUMMARY_ROUTE && (
+            <DirectionsMap
+              origin={orderStore.order.pickup_address}
+              destination={orderStore.order.delivery_address}
+              callback={directionsCallback}
+            />
+          )}
+        </GoogleMap>
       </IonContent>
 
       <FooterWithButton disabled={!!error || !!message} onClick={handleSubmit}>

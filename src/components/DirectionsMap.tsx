@@ -1,9 +1,5 @@
-import React, { memo, useState } from 'react'
-import {
-  GoogleMap,
-  DirectionsService,
-  DirectionsRenderer,
-} from '@react-google-maps/api'
+import React, { useState } from 'react'
+import { DirectionsService, DirectionsRenderer } from '@react-google-maps/api'
 
 import { METERS_PER_MILE } from 'utils/config'
 
@@ -32,42 +28,23 @@ const DirectionsMap: React.FC<Props> = ({ origin, destination, callback }) => {
     }
   }
 
-  const renderDirectionsService = () => {
-    if (!origin || !destination || directions) {
-      return
-    }
-
-    return (
-      <DirectionsService
-        options={{
-          origin,
-          destination,
-          travelMode: google.maps.TravelMode.DRIVING,
-          unitSystem: google.maps.UnitSystem.IMPERIAL,
-        }}
-        callback={directionsServiceCallback}
-      />
-    )
-  }
-
   return (
-    <GoogleMap
-      mapContainerStyle={{
-        height: '60%',
-        width: '75%',
-        margin: '1rem auto',
-      }}
-    >
-      {renderDirectionsService()}
+    <>
+      {origin && destination && !directions && (
+        <DirectionsService
+          options={{
+            origin,
+            destination,
+            travelMode: google.maps.TravelMode.DRIVING,
+            unitSystem: google.maps.UnitSystem.IMPERIAL,
+          }}
+          callback={directionsServiceCallback}
+        />
+      )}
 
       {directions && <DirectionsRenderer directions={directions} />}
-    </GoogleMap>
+    </>
   )
 }
 
-export default memo(
-  DirectionsMap,
-  (prevProps, nextProps) =>
-    prevProps.origin === nextProps.origin &&
-    prevProps.destination === nextProps.destination
-)
+export default DirectionsMap
