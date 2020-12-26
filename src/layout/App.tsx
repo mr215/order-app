@@ -8,6 +8,7 @@ import {
   LANDING_ROUTE,
   LOGIN_ROUTE,
   SIGNUP_ROUTE,
+  ORDER_SUMMARY_ROUTE,
 } from 'utils/config'
 
 import LogIn from 'pages/LogIn'
@@ -56,7 +57,7 @@ const App: React.FC = () => {
                 />
                 <PaymentProtectedRoute
                   exact
-                  path="/order-summary"
+                  path={ORDER_SUMMARY_ROUTE}
                   component={OrderSummary}
                 />
 

@@ -1,30 +1,21 @@
 import React, { memo, useState } from 'react'
 import {
   GoogleMap,
-  GoogleMapProps,
   DirectionsService,
   DirectionsRenderer,
 } from '@react-google-maps/api'
 
-import { METERS_PER_MILE, DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM }  from 'utils/config'
+import { METERS_PER_MILE } from 'utils/config'
 
-type Props = Pick<GoogleMapProps, 'center' | 'zoom'> &
-  google.maps.DirectionsRequest & {
-    callback: (miles: number) => void
-  }
+type Props = google.maps.DirectionsRequest & {
+  callback: (miles: number) => void
+}
 
-const DirectionsMap: React.FC<Props> = ({
-  center = DEFAULT_MAP_CENTER,
-  zoom = DEFAULT_MAP_ZOOM,
-  origin,
-  destination,
-  callback,
-}) => {
+const DirectionsMap: React.FC<Props> = ({ origin, destination, callback }) => {
   const [
     directions,
     setDirections,
   ] = useState<google.maps.DirectionsResult | null>(null)
-  const [error, setError] = useState<google.maps.DirectionsStatus | null>(null)
 
   const directionsServiceCallback = (
     result: google.maps.DirectionsResult,
@@ -37,15 +28,11 @@ const DirectionsMap: React.FC<Props> = ({
 
       callback(miles)
     } else {
-      setError(status)
+      console.log('DirectionsService error', result)
     }
   }
 
   const renderDirectionsService = () => {
-    if (error) {
-      return
-    }
-
     if (!origin || !destination || directions) {
       return
     }
@@ -70,12 +57,10 @@ const DirectionsMap: React.FC<Props> = ({
         width: '75%',
         margin: '1rem auto',
       }}
-      center={center}
-      zoom={zoom}
     >
       {renderDirectionsService()}
 
-      {directions && <DirectionsRenderer options={{ directions }} />}
+      {directions && <DirectionsRenderer directions={directions} />}
     </GoogleMap>
   )
 }
