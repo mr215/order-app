@@ -12,10 +12,11 @@ import {
   IonToast,
   // IonRouterLink,
 } from '@ionic/react'
+import { GoogleMap } from '@react-google-maps/api'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 
-import { TOAST_DURATION, HOME_ROUTE } from 'utils/config'
+import { TOAST_DURATION, HOME_ROUTE, ORDER_SUMMARY_ROUTE } from 'utils/config'
 import { formatCurrency } from 'utils/formatters'
 import { createOrder } from 'utils/api'
 import useStores from 'hooks/useStores'
@@ -32,7 +33,11 @@ const Error = styled.h5`
   text-align: center;
 `
 
-const OrderSummary: React.FC<RouteComponentProps> = ({ history }) => {
+const OrderSummary: React.FC<RouteComponentProps> = ({
+  history,
+  location,
+  match,
+}) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
@@ -141,11 +146,22 @@ const OrderSummary: React.FC<RouteComponentProps> = ({ history }) => {
           </IonItem>
         </IonItemGroup>
 
-        <DirectionsMap
-          origin={orderStore.order.pickup_address}
-          destination={orderStore.order.delivery_address}
-          callback={directionsCallback}
-        />
+        <GoogleMap
+          mapContainerStyle={{
+            height: '60%',
+            width: '75%',
+            margin: '1rem auto',
+          }}
+        >
+          {/* Render DirectionsMap only when order summary page is active */}
+          {location.pathname === ORDER_SUMMARY_ROUTE && (
+            <DirectionsMap
+              origin={orderStore.order.pickup_address}
+              destination={orderStore.order.delivery_address}
+              callback={directionsCallback}
+            />
+          )}
+        </GoogleMap>
       </IonContent>
 
       <FooterWithButton disabled={!!error || !!message} onClick={handleSubmit}>
